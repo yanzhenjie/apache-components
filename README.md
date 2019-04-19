@@ -8,7 +8,7 @@ If you need other libraries, please tell me in the [issue](https://github.com/ya
 It comes from [Apache commons-fileupload](http://commons.apache.org/proper/commons-fileupload/).  
 
 ```
-compile 'com.yanzhenjie.apache:fileupload:1.3.3'
+compile 'com.yanzhenjie.apache:fileupload:1.4'
 ```
 
 ```
@@ -23,13 +23,13 @@ compile 'com.yanzhenjie.apache:fileupload:1.3.3'
 It comes from [Apache httpcomponents-core-ga](http://hc.apache.org/httpcomponents-core-ga/).  
 
 ```
-compile 'com.yanzhenjie.apache:httpcore:4.4.10'
+implementation 'com.yanzhenjie.apache:httpcore:4.4.11'
 ```
 
 ```
 <dependency>
   <groupId>com.yanzhenjie.apache</groupId>
   <artifactId>httpcore</artifactId>
-  <version>4.4.10</version>
+  <version>4.4.11</version>
 </dependency>
 ```
