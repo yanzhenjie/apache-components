@@ -26,23 +26,22 @@
  */
 package org.apache.httpcore.impl.bootstrap;
 
-import org.apache.httpcore.ExceptionLogger;
-import org.apache.httpcore.HttpConnectionFactory;
-import org.apache.httpcore.HttpServerConnection;
-import org.apache.httpcore.config.SocketConfig;
-import org.apache.httpcore.protocol.HttpService;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.apache.httpcore.ExceptionLogger;
+import org.apache.httpcore.HttpConnectionFactory;
+import org.apache.httpcore.HttpServerConnection;
+import org.apache.httpcore.config.SocketConfig;
+import org.apache.httpcore.protocol.HttpService;
+
 /**
  * @since 4.4
  */
-class RequestListener
-  implements Runnable {
+class RequestListener implements Runnable {
 
     private final SocketConfig socketConfig;
     private final ServerSocket serversocket;
@@ -52,10 +51,13 @@ class RequestListener
     private final ExecutorService executorService;
     private final AtomicBoolean terminated;
 
-    public RequestListener(final SocketConfig socketConfig, final ServerSocket serversocket,
-      final HttpService httpService,
-      final HttpConnectionFactory<? extends HttpServerConnection> connectionFactory,
-      final ExceptionLogger exceptionLogger, final ExecutorService executorService) {
+    public RequestListener(
+            final SocketConfig socketConfig,
+            final ServerSocket serversocket,
+            final HttpService httpService,
+            final HttpConnectionFactory<? extends HttpServerConnection> connectionFactory,
+            final ExceptionLogger exceptionLogger,
+            final ExecutorService executorService) {
         this.socketConfig = socketConfig;
         this.serversocket = serversocket;
         this.connectionFactory = connectionFactory;

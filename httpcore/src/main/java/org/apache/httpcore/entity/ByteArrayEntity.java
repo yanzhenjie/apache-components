@@ -27,21 +27,19 @@
 
 package org.apache.httpcore.entity;
 
-import org.apache.httpcore.util.Args;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import org.apache.httpcore.util.Args;
 
 /**
  * A self contained, repeatable entity that obtains its content from a byte array.
  *
  * @since 4.0
  */
-public class ByteArrayEntity
-  extends AbstractHttpEntity
-  implements Cloneable {
+public class ByteArrayEntity extends AbstractHttpEntity implements Cloneable {
 
     /**
      * @deprecated (4.2)
@@ -54,7 +52,6 @@ public class ByteArrayEntity
     /**
      * @since 4.2
      */
-    @SuppressWarnings("deprecation")
     public ByteArrayEntity(final byte[] b, final ContentType contentType) {
         super();
         Args.notNull(b, "Source byte array");
@@ -70,11 +67,11 @@ public class ByteArrayEntity
     /**
      * @since 4.2
      */
-    @SuppressWarnings("deprecation")
     public ByteArrayEntity(final byte[] b, final int off, final int len, final ContentType contentType) {
         super();
         Args.notNull(b, "Source byte array");
-        if ((off < 0) || (off > b.length) || (len < 0) || ((off + len) < 0) || ((off + len) > b.length)) {
+        if ((off < 0) || (off > b.length) || (len < 0) ||
+                ((off + len) < 0) || ((off + len) > b.length)) {
             throw new IndexOutOfBoundsException("off: " + off + " len: " + len + " b.length: " + b.length);
         }
         this.content = b;
@@ -110,10 +107,10 @@ public class ByteArrayEntity
     }
 
     @Override
-    public void writeTo(final OutputStream outstream) throws IOException {
-        Args.notNull(outstream, "Output stream");
-        outstream.write(this.b, this.off, this.len);
-        outstream.flush();
+    public void writeTo(final OutputStream outStream) throws IOException {
+        Args.notNull(outStream, "Output stream");
+        outStream.write(this.b, this.off, this.len);
+        outStream.flush();
     }
 
 

@@ -33,30 +33,31 @@ import org.apache.httpcore.HttpException;
 import org.apache.httpcore.HttpMessage;
 import org.apache.httpcore.ParseException;
 import org.apache.httpcore.ProtocolException;
-import org.apache.httpcore.annotation.Contract;
 import org.apache.httpcore.annotation.ThreadingBehavior;
+import org.apache.httpcore.annotation.Contract;
 import org.apache.httpcore.entity.ContentLengthStrategy;
 import org.apache.httpcore.protocol.HTTP;
 import org.apache.httpcore.util.Args;
 
 /**
- * The lax implementation of the content length strategy. This class will ignore unrecognized transfer
- * encodings and malformed {@code Content-Length} header values. <p> This class recognizes "chunked" and
- * "identitiy" transfer-coding only.
+ * The lax implementation of the content length strategy. This class will ignore
+ * unrecognized transfer encodings and malformed {@code Content-Length}
+ * header values.
+ * <p>
+ * This class recognizes "chunked" and "identitiy" transfer-coding only.
  *
  * @since 4.0
  */
 @Contract(threading = ThreadingBehavior.IMMUTABLE)
-public class LaxContentLengthStrategy
-  implements ContentLengthStrategy {
+public class LaxContentLengthStrategy implements ContentLengthStrategy {
 
     public static final LaxContentLengthStrategy INSTANCE = new LaxContentLengthStrategy();
 
     private final int implicitLen;
 
     /**
-     * Creates {@code LaxContentLengthStrategy} instance with the given length used per default when content
-     * length is not explicitly specified in the message.
+     * Creates {@code LaxContentLengthStrategy} instance with the given length used per default
+     * when content length is not explicitly specified in the message.
      *
      * @param implicitLen implicit content length.
      *
@@ -68,8 +69,8 @@ public class LaxContentLengthStrategy
     }
 
     /**
-     * Creates {@code LaxContentLengthStrategy} instance. {@link ContentLengthStrategy#IDENTITY} is used per
-     * default when content length is not explicitly specified in the message.
+     * Creates {@code LaxContentLengthStrategy} instance. {@link ContentLengthStrategy#IDENTITY}
+     * is used per default when content length is not explicitly specified in the message.
      */
     public LaxContentLengthStrategy() {
         this(IDENTITY);
@@ -87,14 +88,16 @@ public class LaxContentLengthStrategy
             try {
                 encodings = transferEncodingHeader.getElements();
             } catch (final ParseException px) {
-                throw new ProtocolException(
-                  "Invalid Transfer-Encoding header value: " + transferEncodingHeader, px);
+                throw new ProtocolException
+                    ("Invalid Transfer-Encoding header value: " +
+                     transferEncodingHeader, px);
             }
             // The chunked encoding must be the last one applied RFC2616, 14.41
             final int len = encodings.length;
             if (HTTP.IDENTITY_CODING.equalsIgnoreCase(transferEncodingHeader.getValue())) {
                 return IDENTITY;
-            } else if ((len > 0) && (HTTP.CHUNK_CODING.equalsIgnoreCase(encodings[len - 1].getName()))) {
+            } else if ((len > 0) && (HTTP.CHUNK_CODING.equalsIgnoreCase(
+                    encodings[len - 1].getName()))) {
                 return CHUNKED;
             } else {
                 return IDENTITY;
@@ -102,22 +105,18 @@ public class LaxContentLengthStrategy
         }
         final Header contentLengthHeader = message.getFirstHeader(HTTP.CONTENT_LEN);
         if (contentLengthHeader != null) {
-            long contentlen = -1;
+            long contentLen = -1;
             final Header[] headers = message.getHeaders(HTTP.CONTENT_LEN);
             for (int i = headers.length - 1; i >= 0; i--) {
                 final Header header = headers[i];
                 try {
-                    contentlen = Long.parseLong(header.getValue());
+                    contentLen = Long.parseLong(header.getValue());
                     break;
                 } catch (final NumberFormatException ignore) {
                 }
                 // See if we can have better luck with another header, if present
             }
-            if (contentlen >= 0) {
-                return contentlen;
-            } else {
-                return IDENTITY;
-            }
+            return contentLen >= 0 ? contentLen : IDENTITY;
         }
         return this.implicitLen;
     }

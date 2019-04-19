@@ -40,8 +40,7 @@ import org.apache.httpcore.protocol.HTTP;
  * @since 4.0
  */
 public class BasicHttpEntityEnclosingRequest
-  extends BasicHttpRequest
-  implements HttpEntityEnclosingRequest {
+            extends BasicHttpRequest implements HttpEntityEnclosingRequest {
 
     private HttpEntity entity;
 
@@ -49,7 +48,8 @@ public class BasicHttpEntityEnclosingRequest
         super(method, uri);
     }
 
-    public BasicHttpEntityEnclosingRequest(final String method, final String uri, final ProtocolVersion ver) {
+    public BasicHttpEntityEnclosingRequest(final String method, final String uri,
+            final ProtocolVersion ver) {
         super(method, uri, ver);
     }
 

@@ -26,6 +26,7 @@
  */
 
 /**
- * HTTP message parser and writer APIs for synchronous, blocking communication.
+ * HTTP message parser and writer APIs for synchronous, blocking
+ * communication.
  */
 package org.apache.httpcore.io;

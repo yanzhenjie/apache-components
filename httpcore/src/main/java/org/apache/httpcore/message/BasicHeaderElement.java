@@ -37,8 +37,7 @@ import org.apache.httpcore.util.LangUtils;
  *
  * @since 4.0
  */
-public class BasicHeaderElement
-  implements HeaderElement, Cloneable {
+public class BasicHeaderElement implements HeaderElement, Cloneable {
 
     private final String name;
     private final String value;
@@ -49,10 +48,13 @@ public class BasicHeaderElement
      *
      * @param name header element name
      * @param value header element value. May be {@code null}
-     * @param parameters header element parameters. May be {@code null}. Parameters are copied by reference,
-     *   not by value
+     * @param parameters header element parameters. May be {@code null}.
+     *   Parameters are copied by reference, not by value
      */
-    public BasicHeaderElement(final String name, final String value, final NameValuePair[] parameters) {
+    public BasicHeaderElement(
+            final String name,
+            final String value,
+            final NameValuePair[] parameters) {
         super();
         this.name = Args.notNull(name, "Name");
         this.value = value;
@@ -70,7 +72,7 @@ public class BasicHeaderElement
      * @param value header element value. May be {@code null}
      */
     public BasicHeaderElement(final String name, final String value) {
-        this(name, value, null);
+       this(name, value, null);
     }
 
     @Override
@@ -118,12 +120,12 @@ public class BasicHeaderElement
             return true;
         }
         if (object instanceof HeaderElement) {
-            final BasicHeaderElement that = (BasicHeaderElement)object;
-            return this.name.equals(that.name) && LangUtils.equals(this.value, that.value) &&
-                   LangUtils.equals(this.parameters, that.parameters);
-        } else {
-            return false;
+            final BasicHeaderElement that = (BasicHeaderElement) object;
+            return this.name.equals(that.name)
+                && LangUtils.equals(this.value, that.value)
+                && LangUtils.equals(this.parameters, that.parameters);
         }
+        return false;
     }
 
     @Override
@@ -160,3 +162,4 @@ public class BasicHeaderElement
     }
 
 }
+

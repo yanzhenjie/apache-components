@@ -27,7 +27,6 @@
 
 /**
  * Deprecated.
- *
  * @deprecated (4.3).
  */
 package org.apache.httpcore.params;

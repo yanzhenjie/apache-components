@@ -40,11 +40,13 @@ import org.apache.httpcore.util.Args;
  * @since 4.0
  */
 @SuppressWarnings("deprecation")
-public abstract class AbstractHttpMessage
-  implements HttpMessage {
+public abstract class AbstractHttpMessage implements HttpMessage {
 
     protected HeaderGroup headergroup;
 
+    /**
+     * @deprecated Do not use.
+     */
     @Deprecated
     protected HttpParams params;
 

@@ -33,10 +33,11 @@ import java.util.LinkedList;
 import java.util.Map;
 
 /**
- * Builder class to build a linked list (chain) of unique class instances. Each class can have only one
- * instance in the list. Useful for building lists of protocol interceptors.
+ * Builder class to build a linked list (chain) of unique class instances. Each class can have
+ * only one instance in the list. Useful for building lists of protocol interceptors.
  *
  * @see ImmutableHttpProcessor
+ *
  * @since 4.3
  */
 final class ChainBuilder<E> {
@@ -45,8 +46,8 @@ final class ChainBuilder<E> {
     private final Map<Class<?>, E> uniqueClasses;
 
     public ChainBuilder() {
-        this.list = new LinkedList<>();
-        this.uniqueClasses = new HashMap<>();
+        this.list = new LinkedList<E>();
+        this.uniqueClasses = new HashMap<Class<?>, E>();
     }
 
     private void ensureUnique(final E e) {
@@ -79,7 +80,7 @@ final class ChainBuilder<E> {
         if (c == null) {
             return this;
         }
-        for (final E e : c) {
+        for (final E e: c) {
             addFirst(e);
         }
         return this;
@@ -89,7 +90,7 @@ final class ChainBuilder<E> {
         if (c == null) {
             return this;
         }
-        for (final E e : c) {
+        for (final E e: c) {
             addFirst(e);
         }
         return this;
@@ -99,7 +100,7 @@ final class ChainBuilder<E> {
         if (c == null) {
             return this;
         }
-        for (final E e : c) {
+        for (final E e: c) {
             addLast(e);
         }
         return this;
@@ -109,7 +110,7 @@ final class ChainBuilder<E> {
         if (c == null) {
             return this;
         }
-        for (final E e : c) {
+        for (final E e: c) {
             addLast(e);
         }
         return this;

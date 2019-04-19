@@ -34,22 +34,24 @@ import java.util.Iterator;
  *
  * @since 4.0
  */
-public interface HeaderElementIterator
-  extends Iterator<Object> {
+public interface HeaderElementIterator extends Iterator<Object> {
 
     /**
-     * Indicates whether there is another header element in this iteration.
+     * Indicates whether there is another header element in this
+     * iteration.
      *
-     * @return {@code true} if there is another header element, {@code false} otherwise
+     * @return  {@code true} if there is another header element,
+     *          {@code false} otherwise
      */
     @Override
     boolean hasNext();
 
     /**
-     * Obtains the next header element from this iteration. This method should only be called while {@link
-     * #hasNext hasNext} is true.
+     * Obtains the next header element from this iteration.
+     * This method should only be called while {@link #hasNext hasNext}
+     * is true.
      *
-     * @return the next header element in this iteration
+     * @return  the next header element in this iteration
      */
     HeaderElement nextElement();
 

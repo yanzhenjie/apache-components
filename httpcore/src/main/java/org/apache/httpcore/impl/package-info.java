@@ -26,6 +26,7 @@
  */
 
 /**
- * Default implementations of HTTP connections for synchronous, blocking communication.
+ * Default implementations of HTTP connections for synchronous,
+ * blocking communication.
  */
 package org.apache.httpcore.impl;

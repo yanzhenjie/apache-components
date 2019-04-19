@@ -30,22 +30,21 @@ package org.apache.httpcore.impl.entity;
 import org.apache.httpcore.HttpException;
 import org.apache.httpcore.HttpMessage;
 import org.apache.httpcore.ProtocolException;
-import org.apache.httpcore.annotation.Contract;
 import org.apache.httpcore.annotation.ThreadingBehavior;
+import org.apache.httpcore.annotation.Contract;
 import org.apache.httpcore.entity.ContentLengthStrategy;
 
 /**
- * Decorator for  {@link ContentLengthStrategy} implementations that disallows the use of identity transfer
- * encoding.
+ * Decorator for  {@link ContentLengthStrategy} implementations that disallows the use of
+ * identity transfer encoding.
  *
  * @since 4.2
  */
 @Contract(threading = ThreadingBehavior.IMMUTABLE_CONDITIONAL)
-public class DisallowIdentityContentLengthStrategy
-  implements ContentLengthStrategy {
+public class DisallowIdentityContentLengthStrategy implements ContentLengthStrategy {
 
     public static final DisallowIdentityContentLengthStrategy INSTANCE =
-      new DisallowIdentityContentLengthStrategy(new LaxContentLengthStrategy(0));
+        new DisallowIdentityContentLengthStrategy(new LaxContentLengthStrategy(0));
 
     private final ContentLengthStrategy contentLengthStrategy;
 

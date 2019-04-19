@@ -26,6 +26,7 @@
  */
 
 /**
- * Core HTTP protocol execution framework and HTTP protocol handlers for synchronous, blocking communication.
+ * Core HTTP protocol execution framework and HTTP protocol handlers
+ * for synchronous, blocking communication.
  */
 package org.apache.httpcore.protocol;

@@ -27,29 +27,30 @@
 
 package org.apache.httpcore.impl.io;
 
+import java.io.IOException;
+
 import org.apache.httpcore.HttpResponse;
 import org.apache.httpcore.io.SessionOutputBuffer;
 import org.apache.httpcore.message.LineFormatter;
-
-import java.io.IOException;
 
 /**
  * HTTP response writer that serializes its output to an instance of {@link SessionOutputBuffer}.
  *
  * @since 4.3
  */
-public class DefaultHttpResponseWriter
-  extends AbstractMessageWriter<HttpResponse> {
+public class DefaultHttpResponseWriter extends AbstractMessageWriter<HttpResponse> {
 
     /**
      * Creates an instance of DefaultHttpResponseWriter.
      *
      * @param buffer the session output buffer.
      * @param formatter the line formatter If {@code null}
-     * {@link org.apache.httpcore.message.BasicLineFormatter#INSTANCE}
+     *  {@link org.apache.httpcore.message.BasicLineFormatter#INSTANCE}
      *   will be used.
      */
-    public DefaultHttpResponseWriter(final SessionOutputBuffer buffer, final LineFormatter formatter) {
+    public DefaultHttpResponseWriter(
+            final SessionOutputBuffer buffer,
+            final LineFormatter formatter) {
         super(buffer, formatter);
     }
 

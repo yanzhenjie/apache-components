@@ -35,42 +35,40 @@ import org.apache.httpcore.TokenIterator;
 import org.apache.httpcore.util.Args;
 
 /**
- * Basic implementation of a {@link TokenIterator}. This implementation parses {@code #token} sequences as
- * defined by RFC 2616, section 2. It extends that definition somewhat beyond US-ASCII.
+ * Basic implementation of a {@link TokenIterator}.
+ * This implementation parses {@code #token} sequences as
+ * defined by RFC 2616, section 2.
+ * It extends that definition somewhat beyond US-ASCII.
  *
  * @since 4.0
  */
-public class BasicTokenIterator
-  implements TokenIterator {
+public class BasicTokenIterator implements TokenIterator {
 
-    /**
-     * The HTTP separator characters. Defined in RFC 2616, section 2.2.
-     */
+    /** The HTTP separator characters. Defined in RFC 2616, section 2.2. */
     // the order of the characters here is adjusted to put the
     // most likely candidates at the beginning of the collection
     public final static String HTTP_SEPARATORS = " ,;=()<>@:\\\"/[]?{}\t";
 
 
-    /**
-     * The iterator from which to obtain the next header.
-     */
+    /** The iterator from which to obtain the next header. */
     protected final HeaderIterator headerIt;
 
     /**
-     * The value of the current header. This is the header value that includes {@link #currentToken}.
+     * The value of the current header.
+     * This is the header value that includes {@link #currentToken}.
      * Undefined if the iteration is over.
      */
     protected String currentHeader;
 
     /**
-     * The token to be returned by the next call to {@link #nextToken()}. {@code null} if the iteration is
-     * over.
+     * The token to be returned by the next call to {@link #nextToken()}.
+     * {@code null} if the iteration is over.
      */
     protected String currentToken;
 
     /**
-     * The position after {@link #currentToken} in {@link #currentHeader}. Undefined if the iteration is
-     * over.
+     * The position after {@link #currentToken} in {@link #currentHeader}.
+     * Undefined if the iteration is over.
      */
     protected int searchPos;
 
@@ -78,7 +76,7 @@ public class BasicTokenIterator
     /**
      * Creates a new instance of {@link BasicTokenIterator}.
      *
-     * @param headerIterator the iterator for the headers to tokenize
+     * @param headerIterator    the iterator for the headers to tokenize
      */
     public BasicTokenIterator(final HeaderIterator headerIterator) {
         super();
@@ -97,13 +95,14 @@ public class BasicTokenIterator
     /**
      * Obtains the next token from this iteration.
      *
-     * @return the next token in this iteration
+     * @return  the next token in this iteration
      *
-     * @throws NoSuchElementException if the iteration is already over
-     * @throws ParseException if an invalid header value is encountered
+     * @throws NoSuchElementException   if the iteration is already over
+     * @throws ParseException   if an invalid header value is encountered
      */
     @Override
-    public String nextToken() throws NoSuchElementException, ParseException {
+    public String nextToken()
+        throws NoSuchElementException, ParseException {
 
         if (this.currentToken == null) {
             throw new NoSuchElementException("Iteration already finished.");
@@ -118,15 +117,17 @@ public class BasicTokenIterator
 
 
     /**
-     * Returns the next token. Same as {@link #nextToken}, but with generic return type.
+     * Returns the next token.
+     * Same as {@link #nextToken}, but with generic return type.
      *
-     * @return the next token in this iteration
+     * @return  the next token in this iteration
      *
-     * @throws NoSuchElementException if there are no more tokens
-     * @throws ParseException if an invalid header value is encountered
+     * @throws NoSuchElementException   if there are no more tokens
+     * @throws ParseException   if an invalid header value is encountered
      */
     @Override
-    public final Object next() throws NoSuchElementException, ParseException {
+    public final Object next()
+        throws NoSuchElementException, ParseException {
         return nextToken();
     }
 
@@ -134,27 +135,32 @@ public class BasicTokenIterator
     /**
      * Removing tokens is not supported.
      *
-     * @throws UnsupportedOperationException always
+     * @throws UnsupportedOperationException    always
      */
     @Override
-    public final void remove() throws UnsupportedOperationException {
+    public final void remove()
+        throws UnsupportedOperationException {
 
-        throw new UnsupportedOperationException("Removing tokens is not supported.");
+        throw new UnsupportedOperationException
+            ("Removing tokens is not supported.");
     }
 
 
     /**
-     * Determines the next token. If found, the token is stored in {@link #currentToken}. The return value
-     * indicates the position after the token in {@link #currentHeader}. If necessary, the next header will be
-     * obtained from {@link #headerIt}. If not found, {@link #currentToken} is set to {@code null}.
+     * Determines the next token.
+     * If found, the token is stored in {@link #currentToken}.
+     * The return value indicates the position after the token
+     * in {@link #currentHeader}. If necessary, the next header
+     * will be obtained from {@link #headerIt}.
+     * If not found, {@link #currentToken} is set to {@code null}.
      *
-     * @param pos the position in the current header at which to start the search, -1 to search in the first
-     *   header
+     * @param pos       the position in the current header at which to
+     *                  start the search, -1 to search in the first header
      *
-     * @return the position after the found token in the current header, or negative if there was no next
-     *   token
+     * @return  the position after the found token in the current header, or
+     *          negative if there was no next token
      *
-     * @throws ParseException if an invalid header value is encountered
+     * @throws ParseException   if an invalid header value is encountered
      */
     protected int findNext(final int pos) throws ParseException {
         int from = pos;
@@ -183,18 +189,25 @@ public class BasicTokenIterator
 
 
     /**
-     * Creates a new token to be returned. Called from {@link #findNext findNext} after the token is
-     * identified. The default implementation simply calls {@link String#substring String.substring}. <p> If
-     * header values are significantly longer than tokens, and some tokens are permanently referenced by the
-     * application, there can be problems with garbage collection. A substring will hold a reference to the
-     * full characters of the original string and therefore occupies more memory than might be expected. To
-     * avoid this, override this method and create a new string instead of a substring. </p>
+     * Creates a new token to be returned.
+     * Called from {@link #findNext findNext} after the token is identified.
+     * The default implementation simply calls
+     * {@link String#substring String.substring}.
+     * <p>
+     * If header values are significantly longer than tokens, and some
+     * tokens are permanently referenced by the application, there can
+     * be problems with garbage collection. A substring will hold a
+     * reference to the full characters of the original string and
+     * therefore occupies more memory than might be expected.
+     * To avoid this, override this method and create a new string
+     * instead of a substring.
+     * </p>
      *
-     * @param value the full header value from which to create a token
-     * @param start the index of the first token character
-     * @param end the index after the last token character
+     * @param value     the full header value from which to create a token
+     * @param start     the index of the first token character
+     * @param end       the index after the last token character
      *
-     * @return a string representing the token identified by the arguments
+     * @return  a string representing the token identified by the arguments
      */
     protected String createToken(final String value, final int start, final int end) {
         return value.substring(start, end);
@@ -202,13 +215,14 @@ public class BasicTokenIterator
 
 
     /**
-     * Determines the starting position of the next token. This method will iterate over headers if
-     * necessary.
+     * Determines the starting position of the next token.
+     * This method will iterate over headers if necessary.
      *
-     * @param pos the position in the current header at which to start the search
+     * @param pos       the position in the current header at which to
+     *                  start the search
      *
-     * @return the position of the token start in the current header, negative if no token start could be
-     *   found
+     * @return  the position of the token start in the current header,
+     *          negative if no token start could be found
      */
     protected int findTokenStart(final int pos) {
         int from = Args.notNegative(pos, "Search position");
@@ -226,8 +240,9 @@ public class BasicTokenIterator
                     // found the start of a token
                     found = true;
                 } else {
-                    throw new ParseException(
-                      "Invalid character before token (pos " + from + "): " + this.currentHeader);
+                    throw new ParseException
+                        ("Invalid character before token (pos " + from +
+                         "): " + this.currentHeader);
                 }
             }
             if (!found) {
@@ -245,15 +260,21 @@ public class BasicTokenIterator
 
 
     /**
-     * Determines the position of the next token separator. Because of multi-header joining rules, the end of
-     * a header value is a token separator. This method does therefore not need to iterate over headers.
+     * Determines the position of the next token separator.
+     * Because of multi-header joining rules, the end of a
+     * header value is a token separator. This method does
+     * therefore not need to iterate over headers.
      *
-     * @param pos the position in the current header at which to start the search
+     * @param pos       the position in the current header at which to
+     *                  start the search
      *
-     * @return the position of a token separator in the current header, or at the end
+     * @return  the position of a token separator in the current header,
+     *          or at the end
      *
-     * @throws ParseException if a new token is found before a token separator. RFC 2616, section 2.1
-     *   explicitly requires a comma between tokens for {@code #}.
+     * @throws ParseException
+     *         if a new token is found before a token separator.
+     *         RFC 2616, section 2.1 explicitly requires a comma between
+     *         tokens for {@code #}.
      */
     protected int findTokenSeparator(final int pos) {
         int from = Args.notNegative(pos, "Search position");
@@ -266,11 +287,13 @@ public class BasicTokenIterator
             } else if (isWhitespace(ch)) {
                 from++;
             } else if (isTokenChar(ch)) {
-                throw new ParseException(
-                  "Tokens without separator (pos " + from + "): " + this.currentHeader);
+                throw new ParseException
+                    ("Tokens without separator (pos " + from +
+                     "): " + this.currentHeader);
             } else {
-                throw new ParseException(
-                  "Invalid character after token (pos " + from + "): " + this.currentHeader);
+                throw new ParseException
+                    ("Invalid character after token (pos " + from +
+                     "): " + this.currentHeader);
             }
         }
 
@@ -279,18 +302,20 @@ public class BasicTokenIterator
 
 
     /**
-     * Determines the ending position of the current token. This method will not leave the current header
-     * value, since the end of the header value is a token boundary.
+     * Determines the ending position of the current token.
+     * This method will not leave the current header value,
+     * since the end of the header value is a token boundary.
      *
-     * @param from the position of the first character of the token
+     * @param from      the position of the first character of the token
      *
-     * @return the position after the last character of the token. The behavior is undefined if {@code from}
-     *   does not point to a token character in the current header value.
+     * @return  the position after the last character of the token.
+     *          The behavior is undefined if {@code from} does not
+     *          point to a token character in the current header value.
      */
     protected int findTokenEnd(final int from) {
         Args.notNegative(from, "Search position");
         final int to = this.currentHeader.length();
-        int end = from + 1;
+        int end = from+1;
         while ((end < to) && isTokenChar(this.currentHeader.charAt(end))) {
             end++;
         }
@@ -300,13 +325,15 @@ public class BasicTokenIterator
 
 
     /**
-     * Checks whether a character is a token separator. RFC 2616, section 2.1 defines comma as the separator
-     * for {@code #token} sequences. The end of a header value will also separate tokens, but that is not a
-     * character check.
+     * Checks whether a character is a token separator.
+     * RFC 2616, section 2.1 defines comma as the separator for
+     * {@code #token} sequences. The end of a header value will
+     * also separate tokens, but that is not a character check.
      *
-     * @param ch the character to check
+     * @param ch        the character to check
      *
-     * @return {@code true} if the character is a token separator, {@code false} otherwise
+     * @return  {@code true} if the character is a token separator,
+     *          {@code false} otherwise
      */
     protected boolean isTokenSeparator(final char ch) {
         return (ch == ',');
@@ -314,13 +341,15 @@ public class BasicTokenIterator
 
 
     /**
-     * Checks whether a character is a whitespace character. RFC 2616, section 2.2 defines space and
-     * horizontal tab as whitespace. The optional preceeding line break is irrelevant, since header
+     * Checks whether a character is a whitespace character.
+     * RFC 2616, section 2.2 defines space and horizontal tab as whitespace.
+     * The optional preceeding line break is irrelevant, since header
      * continuation is handled transparently when parsing messages.
      *
-     * @param ch the character to check
+     * @param ch        the character to check
      *
-     * @return {@code true} if the character is whitespace, {@code false} otherwise
+     * @return  {@code true} if the character is whitespace,
+     *          {@code false} otherwise
      */
     protected boolean isWhitespace(final char ch) {
 
@@ -331,14 +360,16 @@ public class BasicTokenIterator
 
 
     /**
-     * Checks whether a character is a valid token character. Whitespace, control characters, and HTTP
-     * separators are not valid token characters. The HTTP specification (RFC 2616, section 2.2) defines
-     * tokens only for the US-ASCII character set, this method extends the definition to other character
-     * sets.
+     * Checks whether a character is a valid token character.
+     * Whitespace, control characters, and HTTP separators are not
+     * valid token characters. The HTTP specification (RFC 2616, section 2.2)
+     * defines tokens only for the US-ASCII character set, this
+     * method extends the definition to other character sets.
      *
-     * @param ch the character to check
+     * @param ch        the character to check
      *
-     * @return {@code true} if the character is a valid token start, {@code false} otherwise
+     * @return  {@code true} if the character is a valid token start,
+     *          {@code false} otherwise
      */
     protected boolean isTokenChar(final char ch) {
 
@@ -368,13 +399,14 @@ public class BasicTokenIterator
 
 
     /**
-     * Checks whether a character is an HTTP separator. The implementation in this class checks only for the
-     * HTTP separators defined in RFC 2616, section 2.2. If you need to detect other separators beyond the
-     * US-ASCII character set, override this method.
+     * Checks whether a character is an HTTP separator.
+     * The implementation in this class checks only for the HTTP separators
+     * defined in RFC 2616, section 2.2. If you need to detect other
+     * separators beyond the US-ASCII character set, override this method.
      *
-     * @param ch the character to check
+     * @param ch        the character to check
      *
-     * @return {@code true} if the character is an HTTP separator
+     * @return  {@code true} if the character is an HTTP separator
      */
     protected boolean isHttpSeparator(final char ch) {
         return (HTTP_SEPARATORS.indexOf(ch) >= 0);
@@ -382,3 +414,4 @@ public class BasicTokenIterator
 
 
 } // class BasicTokenIterator
+

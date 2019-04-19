@@ -41,14 +41,17 @@ import org.apache.httpcore.util.Args;
  * @since 4.0
  */
 @Contract(threading = ThreadingBehavior.IMMUTABLE)
-public class BasicRequestLine
-  implements RequestLine, Cloneable, Serializable {
+public class BasicRequestLine implements RequestLine, Cloneable, Serializable {
+
+    private static final long serialVersionUID = 2810581718468737193L;
 
     private final ProtocolVersion protoversion;
     private final String method;
     private final String uri;
 
-    public BasicRequestLine(final String method, final String uri, final ProtocolVersion version) {
+    public BasicRequestLine(final String method,
+                            final String uri,
+                            final ProtocolVersion version) {
         super();
         this.method = Args.notNull(method, "Method");
         this.uri = Args.notNull(uri, "URI");

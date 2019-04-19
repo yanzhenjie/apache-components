@@ -51,20 +51,23 @@ import org.apache.httpcore.util.Args;
 import org.apache.httpcore.util.Asserts;
 
 /**
- * Abstract synchronous (blocking) pool of connections. <p> Please note that this class does not maintain its
- * own pool of execution {@link Thread}s. Therefore, one <b>must</b> call {@link Future#get()} or {@link
- * Future#get(long, TimeUnit)} method on the {@link Future} object returned by the
- * {@link #lease(Object, Object, FutureCallback)} method in order for the lease operation to complete.
+ * Abstract synchronous (blocking) pool of connections.
+ * <p>
+ * Please note that this class does not maintain its own pool of execution {@link Thread}s.
+ * Therefore, one <b>must</b> call {@link Future#get()} or {@link Future#get(long, TimeUnit)}
+ * method on the {@link Future} object returned by the
+ * {@link #lease(Object, Object, FutureCallback)} method in order for the lease operation
+ * to complete.
  *
- * @param <T> the route type that represents the opposite endpoint of a pooled connection.
+ * @param <T> the route type that represents the opposite endpoint of a pooled
+ *   connection.
  * @param <C> the connection type.
  * @param <E> the type of the pool entry containing a pooled connection.
- *
  * @since 4.2
  */
 @Contract(threading = ThreadingBehavior.SAFE_CONDITIONAL)
 public abstract class AbstractConnPool<T, C, E extends PoolEntry<T, C>>
-  implements ConnPool<T, E>, ConnPoolControl<T> {
+                                               implements ConnPool<T, E>, ConnPoolControl<T> {
 
     private final Lock lock;
     private final Condition condition;
@@ -80,19 +83,21 @@ public abstract class AbstractConnPool<T, C, E extends PoolEntry<T, C>>
     private volatile int maxTotal;
     private volatile int validateAfterInactivity;
 
-    public AbstractConnPool(final ConnFactory<T, C> connFactory, final int defaultMaxPerRoute,
-      final int maxTotal) {
+    public AbstractConnPool(
+            final ConnFactory<T, C> connFactory,
+            final int defaultMaxPerRoute,
+            final int maxTotal) {
         super();
         this.connFactory = Args.notNull(connFactory, "Connection factory");
         this.defaultMaxPerRoute = Args.positive(defaultMaxPerRoute, "Max per route value");
         this.maxTotal = Args.positive(maxTotal, "Max total value");
         this.lock = new ReentrantLock();
         this.condition = this.lock.newCondition();
-        this.routeToPool = new HashMap<>();
-        this.leased = new HashSet<>();
-        this.available = new LinkedList<>();
-        this.pending = new LinkedList<>();
-        this.maxPerRoute = new HashMap<>();
+        this.routeToPool = new HashMap<T, RouteSpecificPool<T, C, E>>();
+        this.leased = new HashSet<E>();
+        this.available = new LinkedList<E>();
+        this.pending = new LinkedList<Future<E>>();
+        this.maxPerRoute = new HashMap<T, Integer>();
     }
 
     /**
@@ -134,18 +139,18 @@ public abstract class AbstractConnPool<T, C, E extends PoolEntry<T, C>>
      */
     public void shutdown() throws IOException {
         if (this.isShutDown) {
-            return;
+            return ;
         }
         this.isShutDown = true;
         this.lock.lock();
         try {
-            for (final E entry : this.available) {
+            for (final E entry: this.available) {
                 entry.close();
             }
-            for (final E entry : this.leased) {
+            for (final E entry: this.leased) {
                 entry.close();
             }
-            for (final RouteSpecificPool<T, C, E> pool : this.routeToPool.values()) {
+            for (final RouteSpecificPool<T, C, E> pool: this.routeToPool.values()) {
                 pool.shutdown();
             }
             this.routeToPool.clear();
@@ -173,9 +178,12 @@ public abstract class AbstractConnPool<T, C, E extends PoolEntry<T, C>>
     }
 
     /**
-     * {@inheritDoc} <p> Please note that this class does not maintain its own pool of execution {@link
-     * Thread}s. Therefore, one <b>must</b> call {@link Future#get()} or {@link Future#get(long, TimeUnit)}
-     * method on the {@link Future} returned by this method in order for the lease operation to complete.
+     * {@inheritDoc}
+     * <p>
+     * Please note that this class does not maintain its own pool of execution
+     * {@link Thread}s. Therefore, one <b>must</b> call {@link Future#get()}
+     * or {@link Future#get(long, TimeUnit)} method on the {@link Future}
+     * returned by this method in order for the lease operation to complete.
      */
     @Override
     public Future<E> lease(final T route, final Object state, final FutureCallback<E> callback) {
@@ -202,9 +210,8 @@ public abstract class AbstractConnPool<T, C, E extends PoolEntry<T, C>>
                         callback.cancelled();
                     }
                     return true;
-                } else {
-                    return false;
                 }
+                return false;
             }
 
             @Override
@@ -227,19 +234,17 @@ public abstract class AbstractConnPool<T, C, E extends PoolEntry<T, C>>
             }
 
             @Override
-            public E get(final long timeout, final TimeUnit tunit)
-              throws InterruptedException, ExecutionException, TimeoutException {
+            public E get(final long timeout, final TimeUnit timeUnit) throws InterruptedException, ExecutionException, TimeoutException {
                 final E entry = entryRef.get();
                 if (entry != null) {
                     return entry;
                 }
                 synchronized (this) {
                     try {
-                        for (; ; ) {
-                            final E leasedEntry = getPoolEntryBlocking(route, state, timeout, tunit, this);
-                            if (validateAfterInactivity > 0) {
-                                if (leasedEntry.getUpdated() + validateAfterInactivity <=
-                                    System.currentTimeMillis()) {
+                        for (;;) {
+                            final E leasedEntry = getPoolEntryBlocking(route, state, timeout, timeUnit, this);
+                            if (validateAfterInactivity > 0)  {
+                                if (leasedEntry.getUpdated() + validateAfterInactivity <= System.currentTimeMillis()) {
                                     if (!validate(leasedEntry)) {
                                         leasedEntry.close();
                                         release(leasedEntry, false);
@@ -269,37 +274,41 @@ public abstract class AbstractConnPool<T, C, E extends PoolEntry<T, C>>
     }
 
     /**
-     * Attempts to lease a connection for the given route and with the given state from the pool. <p> Please
-     * note that this class does not maintain its own pool of execution {@link Thread}s. Therefore, one
-     * <b>must</b> call {@link Future#get()} or {@link Future#get(long, TimeUnit)} method on the {@link
-     * Future} returned by this method in order for the lease operation to complete.
+     * Attempts to lease a connection for the given route and with the given
+     * state from the pool.
+     * <p>
+     * Please note that this class does not maintain its own pool of execution
+     * {@link Thread}s. Therefore, one <b>must</b> call {@link Future#get()}
+     * or {@link Future#get(long, TimeUnit)} method on the {@link Future}
+     * returned by this method in order for the lease operation to complete.
      *
      * @param route route of the connection.
-     * @param state arbitrary object that represents a particular state (usually a security principal or a
-     *   unique token identifying the user whose credentials have been used while establishing the
-     *   connection). May be {@code null}.
-     *
+     * @param state arbitrary object that represents a particular state
+     *  (usually a security principal or a unique token identifying
+     *  the user whose credentials have been used while establishing the connection).
+     *  May be {@code null}.
      * @return future for a leased pool entry.
      */
     public Future<E> lease(final T route, final Object state) {
         return lease(route, state, null);
     }
 
-    private E getPoolEntryBlocking(final T route, final Object state, final long timeout,
-      final TimeUnit tunit, final Future<E> future)
-      throws IOException, InterruptedException, TimeoutException {
+    private E getPoolEntryBlocking(
+            final T route, final Object state,
+            final long timeout, final TimeUnit timeUnit,
+            final Future<E> future) throws IOException, InterruptedException, TimeoutException {
 
         Date deadline = null;
         if (timeout > 0) {
-            deadline = new Date(System.currentTimeMillis() + tunit.toMillis(timeout));
+            deadline = new Date (System.currentTimeMillis() + timeUnit.toMillis(timeout));
         }
         this.lock.lock();
         try {
             final RouteSpecificPool<T, C, E> pool = getPool(route);
             E entry;
-            for (; ; ) {
+            for (;;) {
                 Asserts.check(!this.isShutDown, "Connection pool shut down");
-                for (; ; ) {
+                for (;;) {
                     entry = pool.getFree(state);
                     if (entry == null) {
                         break;
@@ -422,11 +431,7 @@ public abstract class AbstractConnPool<T, C, E extends PoolEntry<T, C>>
 
     private int getMax(final T route) {
         final Integer v = this.maxPerRoute.get(route);
-        if (v != null) {
-            return v.intValue();
-        } else {
-            return this.defaultMaxPerRoute;
-        }
+        return v != null ? v.intValue() : this.defaultMaxPerRoute;
     }
 
     @Override
@@ -501,8 +506,11 @@ public abstract class AbstractConnPool<T, C, E extends PoolEntry<T, C>>
     public PoolStats getTotalStats() {
         this.lock.lock();
         try {
-            return new PoolStats(this.leased.size(), this.pending.size(), this.available.size(),
-              this.maxTotal);
+            return new PoolStats(
+                    this.leased.size(),
+                    this.pending.size(),
+                    this.available.size(),
+                    this.maxTotal);
         } finally {
             this.lock.unlock();
         }
@@ -514,8 +522,11 @@ public abstract class AbstractConnPool<T, C, E extends PoolEntry<T, C>>
         this.lock.lock();
         try {
             final RouteSpecificPool<T, C, E> pool = getPool(route);
-            return new PoolStats(pool.getLeasedCount(), pool.getPendingCount(), pool.getAvailableCount(),
-              getMax(route));
+            return new PoolStats(
+                    pool.getLeasedCount(),
+                    pool.getPendingCount(),
+                    pool.getAvailableCount(),
+                    getMax(route));
         } finally {
             this.lock.unlock();
         }
@@ -523,7 +534,6 @@ public abstract class AbstractConnPool<T, C, E extends PoolEntry<T, C>>
 
     /**
      * Returns snapshot of all knows routes
-     *
      * @return the set of routes
      *
      * @since 4.4
@@ -531,7 +541,7 @@ public abstract class AbstractConnPool<T, C, E extends PoolEntry<T, C>>
     public Set<T> getRoutes() {
         this.lock.lock();
         try {
-            return new HashSet<>(routeToPool.keySet());
+            return new HashSet<T>(routeToPool.keySet());
         } finally {
             this.lock.unlock();
         }
@@ -591,15 +601,15 @@ public abstract class AbstractConnPool<T, C, E extends PoolEntry<T, C>>
     }
 
     /**
-     * Closes connections that have been idle longer than the given period of time and evicts them from the
-     * pool.
+     * Closes connections that have been idle longer than the given period
+     * of time and evicts them from the pool.
      *
      * @param idletime maximum idle time.
-     * @param tunit time unit.
+     * @param timeUnit time unit.
      */
-    public void closeIdle(final long idletime, final TimeUnit tunit) {
-        Args.notNull(tunit, "Time unit");
-        long time = tunit.toMillis(idletime);
+    public void closeIdle(final long idletime, final TimeUnit timeUnit) {
+        Args.notNull(timeUnit, "Time unit");
+        long time = timeUnit.toMillis(idletime);
         if (time < 0) {
             time = 0;
         }
@@ -635,7 +645,6 @@ public abstract class AbstractConnPool<T, C, E extends PoolEntry<T, C>>
 
     /**
      * @return the number of milliseconds
-     *
      * @since 4.4
      */
     public int getValidateAfterInactivity() {
@@ -644,7 +653,6 @@ public abstract class AbstractConnPool<T, C, E extends PoolEntry<T, C>>
 
     /**
      * @param ms the number of milliseconds
-     *
      * @since 4.4
      */
     public void setValidateAfterInactivity(final int ms) {
@@ -653,15 +661,20 @@ public abstract class AbstractConnPool<T, C, E extends PoolEntry<T, C>>
 
     @Override
     public String toString() {
-        final StringBuilder buffer = new StringBuilder();
-        buffer.append("[leased: ");
-        buffer.append(this.leased);
-        buffer.append("][available: ");
-        buffer.append(this.available);
-        buffer.append("][pending: ");
-        buffer.append(this.pending);
-        buffer.append("]");
-        return buffer.toString();
+        this.lock.lock();
+        try {
+            final StringBuilder buffer = new StringBuilder();
+            buffer.append("[leased: ");
+            buffer.append(this.leased);
+            buffer.append("][available: ");
+            buffer.append(this.available);
+            buffer.append("][pending: ");
+            buffer.append(this.pending);
+            buffer.append("]");
+            return buffer.toString();
+        } finally {
+            this.lock.unlock();
+        }
     }
 
 }

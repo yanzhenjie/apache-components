@@ -27,10 +27,10 @@
 package org.apache.httpcore.concurrent;
 
 /**
- * A callback interface that gets invoked upon completion of a {@link java.util.concurrent.Future}.
+ * A callback interface that gets invoked upon completion of
+ * a {@link java.util.concurrent.Future}.
  *
  * @param <T> the future result type returned by this callback.
- *
  * @since 4.2
  */
 public interface FutureCallback<T> {

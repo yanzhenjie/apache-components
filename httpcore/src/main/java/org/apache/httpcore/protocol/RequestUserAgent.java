@@ -39,15 +39,14 @@ import org.apache.httpcore.params.HttpParams;
 import org.apache.httpcore.util.Args;
 
 /**
- * RequestUserAgent is responsible for adding {@code User-Agent} header. This interceptor is recommended for
- * client side protocol processors.
+ * RequestUserAgent is responsible for adding {@code User-Agent} header.
+ * This interceptor is recommended for client side protocol processors.
  *
  * @since 4.0
  */
 @SuppressWarnings("deprecation")
 @Contract(threading = ThreadingBehavior.IMMUTABLE)
-public class RequestUserAgent
-  implements HttpRequestInterceptor {
+public class RequestUserAgent implements HttpRequestInterceptor {
 
     private final String userAgent;
 
@@ -62,13 +61,13 @@ public class RequestUserAgent
 
     @Override
     public void process(final HttpRequest request, final HttpContext context)
-      throws HttpException, IOException {
+        throws HttpException, IOException {
         Args.notNull(request, "HTTP request");
         if (!request.containsHeader(HTTP.USER_AGENT)) {
             String s = null;
             final HttpParams params = request.getParams();
             if (params != null) {
-                s = (String)params.getParameter(CoreProtocolPNames.USER_AGENT);
+                s = (String) params.getParameter(CoreProtocolPNames.USER_AGENT);
             }
             if (s == null) {
                 s = this.userAgent;

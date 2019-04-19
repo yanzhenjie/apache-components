@@ -32,8 +32,9 @@ package org.apache.httpcore;
  *
  * @since 4.1
  */
-public class TruncatedChunkException
-  extends MalformedChunkCodingException {
+public class TruncatedChunkException extends MalformedChunkCodingException {
+
+    private static final long serialVersionUID = -23506263930279460L;
 
     /**
      * Creates a TruncatedChunkException with the specified detail message.
@@ -42,6 +43,18 @@ public class TruncatedChunkException
      */
     public TruncatedChunkException(final String message) {
         super(message);
+    }
+
+    /**
+     * Constructs a new TruncatedChunkException with the specified detail message.
+     *
+     * @param format The exception detail message format; see {@link String#format(String, Object...)}.
+     * @param args The exception detail message arguments; see {@link String#format(String, Object...)}.
+     *
+     * @since 4.4.11
+     */
+    public TruncatedChunkException(final String format, final Object... args) {
+        super(HttpException.clean(String.format(format, args)));
     }
 
 }

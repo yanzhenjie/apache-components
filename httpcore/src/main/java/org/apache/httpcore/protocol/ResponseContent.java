@@ -42,22 +42,24 @@ import org.apache.httpcore.annotation.Contract;
 import org.apache.httpcore.util.Args;
 
 /**
- * ResponseContent is the most important interceptor for outgoing responses. It is responsible for delimiting
- * content length by adding {@code Content-Length} or {@code Transfer-Content} headers based on the properties
- * of the enclosed entity and the protocol version. This interceptor is required for correct functioning of
- * server side protocol processors.
+ * ResponseContent is the most important interceptor for outgoing responses.
+ * It is responsible for delimiting content length by adding
+ * {@code Content-Length} or {@code Transfer-Content} headers based
+ * on the properties of the enclosed entity and the protocol version.
+ * This interceptor is required for correct functioning of server side protocol
+ * processors.
  *
  * @since 4.0
  */
 @Contract(threading = ThreadingBehavior.IMMUTABLE)
-public class ResponseContent
-  implements HttpResponseInterceptor {
+public class ResponseContent implements HttpResponseInterceptor {
 
     private final boolean overwrite;
 
     /**
-     * Default constructor. The {@code Content-Length} or {@code Transfer-Encoding} will cause the interceptor
-     * to throw {@link ProtocolException} if already present in the response message.
+     * Default constructor. The {@code Content-Length} or {@code Transfer-Encoding}
+     * will cause the interceptor to throw {@link ProtocolException} if already present in the
+     * response message.
      */
     public ResponseContent() {
         this(false);
@@ -66,30 +68,29 @@ public class ResponseContent
     /**
      * Constructor that can be used to fine-tune behavior of this interceptor.
      *
-     * @param overwrite If set to {@code true} the {@code Content-Length} and {@code Transfer-Encoding}
-     *   headers will be created or updated if already present. If set to {@code false} the {@code
-     *   Content-Length} and {@code Transfer-Encoding} headers will cause the interceptor to throw {@link
-     *   ProtocolException} if already present in the response message.
+     * @param overwrite If set to {@code true} the {@code Content-Length} and
+     * {@code Transfer-Encoding} headers will be created or updated if already present.
+     * If set to {@code false} the {@code Content-Length} and
+     * {@code Transfer-Encoding} headers will cause the interceptor to throw
+     * {@link ProtocolException} if already present in the response message.
      *
      * @since 4.2
      */
-    public ResponseContent(final boolean overwrite) {
-        super();
-        this.overwrite = overwrite;
+     public ResponseContent(final boolean overwrite) {
+         super();
+         this.overwrite = overwrite;
     }
 
     /**
      * Processes the response (possibly updating or inserting) Content-Length and Transfer-Encoding headers.
-     *
      * @param response The HttpResponse to modify.
      * @param context Unused.
-     *
      * @throws ProtocolException If either the Content-Length or Transfer-Encoding headers are found.
      * @throws IllegalArgumentException If the response is null.
      */
     @Override
     public void process(final HttpResponse response, final HttpContext context)
-      throws HttpException, IOException {
+            throws HttpException, IOException {
         Args.notNull(response, "HTTP response");
         if (this.overwrite) {
             response.removeHeaders(HTTP.TRANSFER_ENCODING);
@@ -112,17 +113,20 @@ public class ResponseContent
                 response.addHeader(HTTP.CONTENT_LEN, Long.toString(entity.getContentLength()));
             }
             // Specify a content type if known
-            if (entity.getContentType() != null && !response.containsHeader(HTTP.CONTENT_TYPE)) {
+            if (entity.getContentType() != null && !response.containsHeader(
+                    HTTP.CONTENT_TYPE )) {
                 response.addHeader(entity.getContentType());
             }
             // Specify a content encoding if known
-            if (entity.getContentEncoding() != null && !response.containsHeader(HTTP.CONTENT_ENCODING)) {
+            if (entity.getContentEncoding() != null && !response.containsHeader(
+                    HTTP.CONTENT_ENCODING)) {
                 response.addHeader(entity.getContentEncoding());
             }
         } else {
             final int status = response.getStatusLine().getStatusCode();
-            if (status != HttpStatus.SC_NO_CONTENT && status != HttpStatus.SC_NOT_MODIFIED &&
-                status != HttpStatus.SC_RESET_CONTENT) {
+            if (status != HttpStatus.SC_NO_CONTENT
+                    && status != HttpStatus.SC_NOT_MODIFIED
+                    && status != HttpStatus.SC_RESET_CONTENT) {
                 response.addHeader(HTTP.CONTENT_LEN, "0");
             }
         }

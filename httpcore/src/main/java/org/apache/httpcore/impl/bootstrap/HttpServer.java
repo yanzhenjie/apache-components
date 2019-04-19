@@ -26,13 +26,6 @@
  */
 package org.apache.httpcore.impl.bootstrap;
 
-import org.apache.httpcore.ExceptionLogger;
-import org.apache.httpcore.HttpConnectionFactory;
-import org.apache.httpcore.HttpServerConnection;
-import org.apache.httpcore.config.SocketConfig;
-import org.apache.httpcore.impl.DefaultBHttpServerConnection;
-import org.apache.httpcore.protocol.HttpService;
-
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -45,16 +38,19 @@ import java.util.concurrent.atomic.AtomicReference;
 import javax.net.ServerSocketFactory;
 import javax.net.ssl.SSLServerSocket;
 
+import org.apache.httpcore.ExceptionLogger;
+import org.apache.httpcore.HttpConnectionFactory;
+import org.apache.httpcore.HttpServerConnection;
+import org.apache.httpcore.config.SocketConfig;
+import org.apache.httpcore.impl.DefaultBHttpServerConnection;
+import org.apache.httpcore.protocol.HttpService;
+
 /**
  * @since 4.4
  */
 public class HttpServer {
 
-    enum Status {
-        READY,
-        ACTIVE,
-        STOPPING
-    }
+    enum Status { READY, ACTIVE, STOPPING }
 
     private final int port;
     private final InetAddress ifAddress;
@@ -72,10 +68,15 @@ public class HttpServer {
     private volatile ServerSocket serverSocket;
     private volatile RequestListener requestListener;
 
-    HttpServer(final int port, final InetAddress ifAddress, final SocketConfig socketConfig,
-      final ServerSocketFactory serverSocketFactory, final HttpService httpService,
-      final HttpConnectionFactory<? extends DefaultBHttpServerConnection> connectionFactory,
-      final SSLServerSetupHandler sslSetupHandler, final ExceptionLogger exceptionLogger) {
+    HttpServer(
+            final int port,
+            final InetAddress ifAddress,
+            final SocketConfig socketConfig,
+            final ServerSocketFactory serverSocketFactory,
+            final HttpService httpService,
+            final HttpConnectionFactory<? extends DefaultBHttpServerConnection> connectionFactory,
+            final SSLServerSetupHandler sslSetupHandler,
+            final ExceptionLogger exceptionLogger) {
         this.port = port;
         this.ifAddress = ifAddress;
         this.socketConfig = socketConfig;
@@ -84,48 +85,46 @@ public class HttpServer {
         this.connectionFactory = connectionFactory;
         this.sslSetupHandler = sslSetupHandler;
         this.exceptionLogger = exceptionLogger;
-        this.listenerExecutorService =
-          new ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS, new SynchronousQueue<Runnable>(),
-            new ThreadFactoryImpl("HTTP-listener-" + this.port));
+        this.listenerExecutorService = new ThreadPoolExecutor(
+                1, 1, 0L, TimeUnit.MILLISECONDS,
+                new SynchronousQueue<Runnable>(),
+                new ThreadFactoryImpl("HTTP-listener-" + this.port));
         this.workerThreads = new ThreadGroup("HTTP-workers");
-        this.workerExecutorService =
-          new WorkerPoolExecutor(0, Integer.MAX_VALUE, 1L, TimeUnit.SECONDS, new SynchronousQueue<Runnable>(),
-            new ThreadFactoryImpl("HTTP-worker", this.workerThreads));
+        this.workerExecutorService = new WorkerPoolExecutor(
+                0, Integer.MAX_VALUE, 1L, TimeUnit.SECONDS,
+                new SynchronousQueue<Runnable>(),
+                new ThreadFactoryImpl("HTTP-worker", this.workerThreads));
         this.status = new AtomicReference<Status>(Status.READY);
     }
 
     public InetAddress getInetAddress() {
         final ServerSocket localSocket = this.serverSocket;
-        if (localSocket != null) {
-            return localSocket.getInetAddress();
-        } else {
-            return null;
-        }
+        return localSocket != null ? localSocket.getInetAddress() : null;
     }
 
     public int getLocalPort() {
         final ServerSocket localSocket = this.serverSocket;
-        if (localSocket != null) {
-            return localSocket.getLocalPort();
-        } else {
-            return -1;
-        }
+        return localSocket != null ? localSocket.getLocalPort() : -1;
     }
 
     public void start() throws IOException {
         if (this.status.compareAndSet(Status.READY, Status.ACTIVE)) {
-            this.serverSocket =
-              this.serverSocketFactory.createServerSocket(this.port, this.socketConfig.getBacklogSize(),
-                this.ifAddress);
+            this.serverSocket = this.serverSocketFactory.createServerSocket(
+                    this.port, this.socketConfig.getBacklogSize(), this.ifAddress);
             this.serverSocket.setReuseAddress(this.socketConfig.isSoReuseAddress());
             if (this.socketConfig.getRcvBufSize() > 0) {
                 this.serverSocket.setReceiveBufferSize(this.socketConfig.getRcvBufSize());
             }
             if (this.sslSetupHandler != null && this.serverSocket instanceof SSLServerSocket) {
-                this.sslSetupHandler.initialize((SSLServerSocket)this.serverSocket);
+                this.sslSetupHandler.initialize((SSLServerSocket) this.serverSocket);
             }
-            this.requestListener = new RequestListener(this.socketConfig, this.serverSocket, this.httpService,
-              this.connectionFactory, this.exceptionLogger, this.workerExecutorService);
+            this.requestListener = new RequestListener(
+                    this.socketConfig,
+                    this.serverSocket,
+                    this.httpService,
+                    this.connectionFactory,
+                    this.exceptionLogger,
+                    this.workerExecutorService);
             this.listenerExecutorService.execute(this.requestListener);
         }
     }
@@ -160,7 +159,7 @@ public class HttpServer {
             }
         }
         final Set<Worker> workers = this.workerExecutorService.getWorkers();
-        for (final Worker worker : workers) {
+        for (final Worker worker: workers) {
             final HttpServerConnection conn = worker.getConnection();
             try {
                 conn.shutdown();

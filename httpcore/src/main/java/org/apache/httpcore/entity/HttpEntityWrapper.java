@@ -27,36 +27,37 @@
 
 package org.apache.httpcore.entity;
 
-import org.apache.httpcore.Header;
-import org.apache.httpcore.HttpEntity;
-import org.apache.httpcore.util.Args;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.apache.httpcore.Header;
+import org.apache.httpcore.HttpEntity;
+import org.apache.httpcore.util.Args;
+
 /**
- * Base class for wrapping entities. Keeps a {@link #wrappedEntity wrappedEntity} and delegates all calls to
- * it. Implementations of wrapping entities can derive from this class and need to override only those methods
- * that should not be delegated to the wrapped entity.
+ * Base class for wrapping entities.
+ * Keeps a {@link #wrappedEntity wrappedEntity} and delegates all
+ * calls to it. Implementations of wrapping entities can derive
+ * from this class and need to override only those methods that
+ * should not be delegated to the wrapped entity.
  *
  * @since 4.0
  */
-public class HttpEntityWrapper
-  implements HttpEntity {
+public class HttpEntityWrapper implements HttpEntity {
 
-    /**
-     * The wrapped entity.
-     */
+    /** The wrapped entity. */
     protected HttpEntity wrappedEntity;
 
     /**
      * Creates a new entity wrapper.
+     *
+     * @param wrappedEntity the entity to wrap.
      */
     public HttpEntityWrapper(final HttpEntity wrappedEntity) {
         super();
         this.wrappedEntity = Args.notNull(wrappedEntity, "Wrapped entity");
-    } // constructor
+    }
 
     @Override
     public boolean isRepeatable() {
@@ -84,13 +85,15 @@ public class HttpEntityWrapper
     }
 
     @Override
-    public InputStream getContent() throws IOException {
+    public InputStream getContent()
+        throws IOException {
         return wrappedEntity.getContent();
     }
 
     @Override
-    public void writeTo(final OutputStream outstream) throws IOException {
-        wrappedEntity.writeTo(outstream);
+    public void writeTo(final OutputStream outStream)
+        throws IOException {
+        wrappedEntity.writeTo(outStream);
     }
 
     @Override
@@ -100,7 +103,7 @@ public class HttpEntityWrapper
 
     /**
      * @deprecated (4.1) Either use {@link #getContent()} and call {@link InputStream#close()} on that;
-     *   otherwise call {@link #writeTo(OutputStream)} which is required to free the resources.
+     * otherwise call {@link #writeTo(OutputStream)} which is required to free the resources.
      */
     @Override
     @Deprecated

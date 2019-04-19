@@ -44,14 +44,13 @@ import org.apache.httpcore.annotation.Contract;
 import org.apache.httpcore.util.Args;
 
 /**
- * RequestTargetHost is responsible for adding {@code Host} header. This interceptor is required for client
- * side protocol processors.
+ * RequestTargetHost is responsible for adding {@code Host} header. This
+ * interceptor is required for client side protocol processors.
  *
  * @since 4.0
  */
 @Contract(threading = ThreadingBehavior.IMMUTABLE)
-public class RequestTargetHost
-  implements HttpRequestInterceptor {
+public class RequestTargetHost implements HttpRequestInterceptor {
 
     public RequestTargetHost() {
         super();
@@ -59,7 +58,7 @@ public class RequestTargetHost
 
     @Override
     public void process(final HttpRequest request, final HttpContext context)
-      throws HttpException, IOException {
+            throws HttpException, IOException {
         Args.notNull(request, "HTTP request");
 
         final HttpCoreContext coreContext = HttpCoreContext.adapt(context);
@@ -77,8 +76,8 @@ public class RequestTargetHost
                 if (conn instanceof HttpInetConnection) {
                     // Populate the context with a default HTTP host based on the
                     // inet address of the target host
-                    final InetAddress address = ((HttpInetConnection)conn).getRemoteAddress();
-                    final int port = ((HttpInetConnection)conn).getRemotePort();
+                    final InetAddress address = ((HttpInetConnection) conn).getRemoteAddress();
+                    final int port = ((HttpInetConnection) conn).getRemotePort();
                     if (address != null) {
                         targetHost = new HttpHost(address.getHostName(), port);
                     }

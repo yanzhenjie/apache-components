@@ -34,42 +34,43 @@ import org.apache.httpcore.HttpResponse;
 import org.apache.httpcore.util.Args;
 
 /**
- * Implementation of {@link HttpContext} that provides convenience setters for user assignable attributes and
- * getter for readable attributes.
+ * Implementation of {@link HttpContext} that provides convenience
+ * setters for user assignable attributes and getter for readable attributes.
  *
  * @since 4.3
  */
-public class HttpCoreContext
-  implements HttpContext {
+public class HttpCoreContext implements HttpContext {
 
     /**
-     * Attribute name of a {@link org.apache.httpcore.HttpConnection} object that represents the actual HTTP
-     * connection.
+     * Attribute name of a {@link org.apache.httpcore.HttpConnection} object that
+     * represents the actual HTTP connection.
      */
-    public static final String HTTP_CONNECTION = "http.connection";
+    public static final String HTTP_CONNECTION  = "http.connection";
 
     /**
-     * Attribute name of a {@link org.apache.httpcore.HttpRequest} object that represents the actual HTTP
-     * request.
+     * Attribute name of a {@link org.apache.httpcore.HttpRequest} object that
+     * represents the actual HTTP request.
      */
-    public static final String HTTP_REQUEST = "http.request";
+    public static final String HTTP_REQUEST     = "http.request";
 
     /**
-     * Attribute name of a {@link org.apache.httpcore.HttpResponse} object that represents the actual HTTP
-     * response.
+     * Attribute name of a {@link org.apache.httpcore.HttpResponse} object that
+     * represents the actual HTTP response.
      */
-    public static final String HTTP_RESPONSE = "http.response";
+    public static final String HTTP_RESPONSE    = "http.response";
 
     /**
-     * Attribute name of a {@link org.apache.httpcore.HttpHost} object that represents the connection target.
+     * Attribute name of a {@link org.apache.httpcore.HttpHost} object that
+     * represents the connection target.
      */
     public static final String HTTP_TARGET_HOST = "http.target_host";
 
     /**
-     * Attribute name of a {@link Boolean} object that represents the the flag indicating whether the actual
-     * request has been fully transmitted to the target host.
+     * Attribute name of a {@link Boolean} object that represents the
+     * the flag indicating whether the actual request has been fully transmitted
+     * to the target host.
      */
-    public static final String HTTP_REQ_SENT = "http.request_sent";
+    public static final String HTTP_REQ_SENT    = "http.request_sent";
 
     public static HttpCoreContext create() {
         return new HttpCoreContext(new BasicHttpContext());
@@ -77,11 +78,9 @@ public class HttpCoreContext
 
     public static HttpCoreContext adapt(final HttpContext context) {
         Args.notNull(context, "HTTP context");
-        if (context instanceof HttpCoreContext) {
-            return (HttpCoreContext)context;
-        } else {
-            return new HttpCoreContext(context);
-        }
+        return context instanceof HttpCoreContext
+                        ? (HttpCoreContext) context
+                        : new HttpCoreContext(context);
     }
 
     private final HttpContext context;

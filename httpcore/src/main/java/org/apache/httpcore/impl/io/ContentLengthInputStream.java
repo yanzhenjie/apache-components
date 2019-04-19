@@ -36,33 +36,34 @@ import org.apache.httpcore.io.SessionInputBuffer;
 import org.apache.httpcore.util.Args;
 
 /**
- * Input stream that cuts off after a defined number of bytes. This class is used to receive content of HTTP
- * messages where the end of the content entity is determined by the value of the {@code Content-Length
- * header}. Entities transferred using this stream can be maximum {@link Long#MAX_VALUE} long. <p> Note that
- * this class NEVER closes the underlying stream, even when close gets called.  Instead, it will read until
- * the "end" of its limit on close, which allows for the seamless execution of subsequent HTTP 1.1 requests,
- * while not requiring the client to remember to read the entire contents of the response.
+ * Input stream that cuts off after a defined number of bytes. This class
+ * is used to receive content of HTTP messages where the end of the content
+ * entity is determined by the value of the {@code Content-Length header}.
+ * Entities transferred using this stream can be maximum {@link Long#MAX_VALUE}
+ * long.
+ * <p>
+ * Note that this class NEVER closes the underlying stream, even when close
+ * gets called.  Instead, it will read until the "end" of its limit on
+ * close, which allows for the seamless execution of subsequent HTTP 1.1
+ * requests, while not requiring the client to remember to read the entire
+ * contents of the response.
+ *
  *
  * @since 4.0
  */
-public class ContentLengthInputStream
-  extends InputStream {
+public class ContentLengthInputStream extends InputStream {
 
     private static final int BUFFER_SIZE = 2048;
     /**
-     * The maximum number of bytes that can be read from the stream. Subsequent read operations will return
-     * -1.
+     * The maximum number of bytes that can be read from the stream. Subsequent
+     * read operations will return -1.
      */
     private final long contentLength;
 
-    /**
-     * The current position
-     */
+    /** The current position */
     private long pos = 0;
 
-    /**
-     * True if the stream is closed.
-     */
+    /** True if the stream is closed. */
     private boolean closed = false;
 
     /**
@@ -71,11 +72,12 @@ public class ContentLengthInputStream
     private SessionInputBuffer in = null;
 
     /**
-     * Wraps a session input buffer and cuts off output after a defined number of bytes.
+     * Wraps a session input buffer and cuts off output after a defined number
+     * of bytes.
      *
      * @param in The session input buffer
-     * @param contentLength The maximum number of bytes that can be read from the stream. Subsequent read
-     *   operations will return -1.
+     * @param contentLength The maximum number of bytes that can be read from
+     * the stream. Subsequent read operations will return -1.
      */
     public ContentLengthInputStream(final SessionInputBuffer in, final long contentLength) {
         super();
@@ -86,9 +88,8 @@ public class ContentLengthInputStream
     /**
      * <p>Reads until the end of the known length of content.</p>
      *
-     * <p>Does not close the underlying socket input, but instead leaves it primed to parse the next
-     * response.</p>
-     *
+     * <p>Does not close the underlying socket input, but instead leaves it
+     * primed to parse the next response.</p>
      * @throws IOException If an IO problem occurs.
      */
     @Override
@@ -98,6 +99,7 @@ public class ContentLengthInputStream
                 if (pos < contentLength) {
                     final byte buffer[] = new byte[BUFFER_SIZE];
                     while (read(buffer) >= 0) {
+                        // do nothing.
                     }
                 }
             } finally {
@@ -111,18 +113,15 @@ public class ContentLengthInputStream
     @Override
     public int available() throws IOException {
         if (this.in instanceof BufferInfo) {
-            final int len = ((BufferInfo)this.in).length();
-            return Math.min(len, (int)(this.contentLength - this.pos));
-        } else {
-            return 0;
+            final int len = ((BufferInfo) this.in).length();
+            return Math.min(len, (int) (this.contentLength - this.pos));
         }
+        return 0;
     }
 
     /**
      * Read the next byte from the stream
-     *
      * @return The next byte or -1 if the end of stream has been reached.
-     *
      * @throws IOException If an IO problem occurs
      * @see InputStream#read()
      */
@@ -139,8 +138,8 @@ public class ContentLengthInputStream
         if (b == -1) {
             if (pos < contentLength) {
                 throw new ConnectionClosedException(
-                  "Premature end of Content-Length delimited message body (expected: " + contentLength +
-                  "; received: " + pos);
+                                "Premature end of Content-Length delimited message body (expected: %,d; received: %,d)",
+                                contentLength, pos);
             }
         } else {
             pos++;
@@ -149,14 +148,14 @@ public class ContentLengthInputStream
     }
 
     /**
-     * Does standard {@link InputStream#read(byte[], int, int)} behavior, but also notifies the watcher when
-     * the contents have been consumed.
+     * Does standard {@link InputStream#read(byte[], int, int)} behavior, but
+     * also notifies the watcher when the contents have been consumed.
      *
-     * @param b The byte array to fill.
-     * @param off Start filling at this position.
-     * @param len The number of bytes to attempt to read.
-     *
-     * @return The number of bytes read, or -1 if the end of content has been reached.
+     * @param b     The byte array to fill.
+     * @param off   Start filling at this position.
+     * @param len   The number of bytes to attempt to read.
+     * @return The number of bytes read, or -1 if the end of content has been
+     *  reached.
      *
      * @throws IOException Should an error occur on the wrapped stream.
      */
@@ -172,28 +171,25 @@ public class ContentLengthInputStream
 
         int chunk = len;
         if (pos + len > contentLength) {
-            chunk = (int)(contentLength - pos);
+            chunk = (int) (contentLength - pos);
         }
-        final int count = this.in.read(b, off, chunk);
-        if (count == -1 && pos < contentLength) {
+        final int readLen = this.in.read(b, off, chunk);
+        if (readLen == -1 && pos < contentLength) {
             throw new ConnectionClosedException(
-              "Premature end of Content-Length delimited message body (expected: " + contentLength +
-              "; received: " + pos);
+                            "Premature end of Content-Length delimited message body (expected: %,d; received: %,d)",
+                            contentLength, pos);
         }
-        if (count > 0) {
-            pos += count;
+        if (readLen > 0) {
+            pos += readLen;
         }
-        return count;
+        return readLen;
     }
 
 
     /**
      * Read more bytes from the stream.
-     *
      * @param b The byte array to put the new data in.
-     *
      * @return The number of bytes read into the buffer.
-     *
      * @throws IOException If an IO problem occurs
      * @see InputStream#read(byte[])
      */
@@ -204,11 +200,9 @@ public class ContentLengthInputStream
 
     /**
      * Skips and discards a number of bytes from the input stream.
-     *
      * @param n The number of bytes to skip.
-     *
-     * @return The actual number of bytes skipped. &le; 0 if no bytes are skipped.
-     *
+     * @return The actual number of bytes skipped. &le; 0 if no bytes
+     * are skipped.
      * @throws IOException If an error occurs while skipping bytes.
      * @see InputStream#skip(long)
      */
@@ -224,12 +218,12 @@ public class ContentLengthInputStream
         // skip and keep track of the bytes actually skipped
         long count = 0;
         while (remaining > 0) {
-            final int l = read(buffer, 0, (int)Math.min(BUFFER_SIZE, remaining));
-            if (l == -1) {
+            final int readLen = read(buffer, 0, (int)Math.min(BUFFER_SIZE, remaining));
+            if (readLen == -1) {
                 break;
             }
-            count += l;
-            remaining -= l;
+            count += readLen;
+            remaining -= readLen;
         }
         return count;
     }

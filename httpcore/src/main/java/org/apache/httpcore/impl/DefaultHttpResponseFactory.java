@@ -47,29 +47,26 @@ import org.apache.httpcore.util.Args;
  * @since 4.0
  */
 @Contract(threading = ThreadingBehavior.IMMUTABLE_CONDITIONAL)
-public class DefaultHttpResponseFactory
-  implements HttpResponseFactory {
+public class DefaultHttpResponseFactory implements HttpResponseFactory {
 
     public static final DefaultHttpResponseFactory INSTANCE = new DefaultHttpResponseFactory();
 
-    /**
-     * The catalog for looking up reason phrases.
-     */
+    /** The catalog for looking up reason phrases. */
     protected final ReasonPhraseCatalog reasonCatalog;
 
 
     /**
      * Creates a new response factory with the given catalog.
      *
-     * @param catalog the catalog of reason phrases
+     * @param catalog   the catalog of reason phrases
      */
     public DefaultHttpResponseFactory(final ReasonPhraseCatalog catalog) {
         this.reasonCatalog = Args.notNull(catalog, "Reason phrase catalog");
     }
 
     /**
-     * Creates a new response factory with the default catalog. The default catalog is {@link
-     * EnglishReasonPhraseCatalog}.
+     * Creates a new response factory with the default catalog.
+     * The default catalog is {@link EnglishReasonPhraseCatalog}.
      */
     public DefaultHttpResponseFactory() {
         this(EnglishReasonPhraseCatalog.INSTANCE);
@@ -78,11 +75,13 @@ public class DefaultHttpResponseFactory
 
     // non-javadoc, see interface HttpResponseFactory
     @Override
-    public HttpResponse newHttpResponse(final ProtocolVersion ver, final int status,
-      final HttpContext context) {
+    public HttpResponse newHttpResponse(
+            final ProtocolVersion ver,
+            final int status,
+            final HttpContext context) {
         Args.notNull(ver, "HTTP version");
         final Locale loc = determineLocale(context);
-        final String reason = this.reasonCatalog.getReason(status, loc);
+        final String reason   = this.reasonCatalog.getReason(status, loc);
         final StatusLine statusline = new BasicStatusLine(ver, status, reason);
         return new BasicHttpResponse(statusline, this.reasonCatalog, loc);
     }
@@ -90,19 +89,21 @@ public class DefaultHttpResponseFactory
 
     // non-javadoc, see interface HttpResponseFactory
     @Override
-    public HttpResponse newHttpResponse(final StatusLine statusline, final HttpContext context) {
+    public HttpResponse newHttpResponse(
+            final StatusLine statusline,
+            final HttpContext context) {
         Args.notNull(statusline, "Status line");
         return new BasicHttpResponse(statusline, this.reasonCatalog, determineLocale(context));
     }
 
     /**
-     * Determines the locale of the response. The implementation in this class always returns the default
-     * locale.
+     * Determines the locale of the response.
+     * The implementation in this class always returns the default locale.
      *
-     * @param context the context from which to determine the locale, or {@code null} to use the default
-     *   locale
+     * @param context   the context from which to determine the locale, or
+     *                  {@code null} to use the default locale
      *
-     * @return the locale for the response, never {@code null}
+     * @return  the locale for the response, never {@code null}
      */
     protected Locale determineLocale(final HttpContext context) {
         return Locale.getDefault();

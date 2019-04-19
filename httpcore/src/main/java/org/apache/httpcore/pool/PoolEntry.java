@@ -33,15 +33,19 @@ import org.apache.httpcore.util.Args;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Pool entry containing a pool connection object along with its route. <p> The connection contained by the
- * pool entry may have an expiration time which can be either set upon construction time or updated with the
- * {@link #updateExpiry(long, TimeUnit)}. <p> Pool entry may also have an object associated with it that
- * represents a connection state (usually a security principal or a unique token identifying the user whose
- * credentials have been used while establishing the connection).
+ * Pool entry containing a pool connection object along with its route.
+ * <p>
+ * The connection contained by the pool entry may have an expiration time which
+ * can be either set upon construction time or updated with
+ * the {@link #updateExpiry(long, TimeUnit)}.
+ * <p>
+ * Pool entry may also have an object associated with it that represents
+ * a connection state (usually a security principal or a unique token identifying
+ * the user whose credentials have been used while establishing the connection).
  *
- * @param <T> the route type that represents the opposite endpoint of a pooled connection.
+ * @param <T> the route type that represents the opposite endpoint of a pooled
+ *   connection.
  * @param <C> the connection type.
- *
  * @since 4.2
  */
 @Contract(threading = ThreadingBehavior.SAFE_CONDITIONAL)
@@ -65,23 +69,23 @@ public abstract class PoolEntry<T, C> {
      * @param id unique identifier of the pool entry. May be {@code null}.
      * @param route route to the opposite endpoint.
      * @param conn the connection.
-     * @param timeToLive maximum time to live. May be zero if the connection does not have an expiry
-     *   deadline.
-     * @param tunit time unit.
+     * @param timeToLive maximum time to live. May be zero if the connection
+     *   does not have an expiry deadline.
+     * @param timeUnit time unit.
      */
-    public PoolEntry(final String id, final T route, final C conn, final long timeToLive,
-      final TimeUnit tunit) {
+    public PoolEntry(final String id, final T route, final C conn,
+            final long timeToLive, final TimeUnit timeUnit) {
         super();
         Args.notNull(route, "Route");
         Args.notNull(conn, "Connection");
-        Args.notNull(tunit, "Time unit");
+        Args.notNull(timeUnit, "Time unit");
         this.id = id;
         this.route = route;
         this.conn = conn;
         this.created = System.currentTimeMillis();
         this.updated = this.created;
         if (timeToLive > 0) {
-            final long deadline = this.created + tunit.toMillis(timeToLive);
+            final long deadline = this.created + timeUnit.toMillis(timeToLive);
             // If the above overflows then default to Long.MAX_VALUE
             this.validityDeadline = deadline > 0 ? deadline : Long.MAX_VALUE;
         } else {
@@ -148,12 +152,12 @@ public abstract class PoolEntry<T, C> {
         return this.expiry;
     }
 
-    public synchronized void updateExpiry(final long time, final TimeUnit tunit) {
-        Args.notNull(tunit, "Time unit");
+    public synchronized void updateExpiry(final long time, final TimeUnit timeUnit) {
+        Args.notNull(timeUnit, "Time unit");
         this.updated = System.currentTimeMillis();
         final long newExpiry;
         if (time > 0) {
-            newExpiry = this.updated + tunit.toMillis(time);
+            newExpiry = this.updated + timeUnit.toMillis(time);
         } else {
             newExpiry = Long.MAX_VALUE;
         }
@@ -165,7 +169,8 @@ public abstract class PoolEntry<T, C> {
     }
 
     /**
-     * Invalidates the pool entry and closes the pooled connection associated with it.
+     * Invalidates the pool entry and closes the pooled connection associated
+     * with it.
      */
     public abstract void close();
 

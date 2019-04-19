@@ -30,14 +30,16 @@ package org.apache.httpcore.config;
 import org.apache.httpcore.util.Args;
 
 /**
- * HTTP Message constraints: line length and header count. <p> Please note that line length is defined in
- * bytes and not characters. This is only relevant however when using non-standard HTTP charsets for protocol
- * elements such as UTF-8. </p>
+ * HTTP Message constraints: line length and header count.
+ * <p>
+ * Please note that line length is defined in bytes and not characters.
+ * This is only relevant however when using non-standard HTTP charsets
+ * for protocol elements such as UTF-8.
+ * </p>
  *
  * @since 4.3
  */
-public class MessageConstraints
-  implements Cloneable {
+public class MessageConstraints implements Cloneable {
 
     public static final MessageConstraints DEFAULT = new Builder().build();
 
@@ -60,17 +62,15 @@ public class MessageConstraints
 
     @Override
     protected MessageConstraints clone() throws CloneNotSupportedException {
-        return (MessageConstraints)super.clone();
+        return (MessageConstraints) super.clone();
     }
 
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
-        builder.append("[maxLineLength=")
-          .append(maxLineLength)
-          .append(", maxHeaderCount=")
-          .append(maxHeaderCount)
-          .append("]");
+        builder.append("[maxLineLength=").append(maxLineLength)
+                .append(", maxHeaderCount=").append(maxHeaderCount)
+                .append("]");
         return builder.toString();
     }
 
@@ -84,8 +84,9 @@ public class MessageConstraints
 
     public static Builder copy(final MessageConstraints config) {
         Args.notNull(config, "Message constraints");
-        return new Builder().setMaxHeaderCount(config.getMaxHeaderCount())
-          .setMaxLineLength(config.getMaxLineLength());
+        return new Builder()
+            .setMaxHeaderCount(config.getMaxHeaderCount())
+            .setMaxLineLength(config.getMaxLineLength());
     }
 
     public static class Builder {

@@ -37,15 +37,15 @@ import org.apache.httpcore.annotation.Contract;
 import org.apache.httpcore.util.Args;
 
 /**
- * RequestConnControl is responsible for adding {@code Connection} header to the outgoing requests, which is
- * essential for managing persistence of {@code HTTP/1.0} connections. This interceptor is recommended for
+ * RequestConnControl is responsible for adding {@code Connection} header
+ * to the outgoing requests, which is essential for managing persistence of
+ * {@code HTTP/1.0} connections. This interceptor is recommended for
  * client side protocol processors.
  *
  * @since 4.0
  */
 @Contract(threading = ThreadingBehavior.IMMUTABLE)
-public class RequestConnControl
-  implements HttpRequestInterceptor {
+public class RequestConnControl implements HttpRequestInterceptor {
 
     public RequestConnControl() {
         super();
@@ -53,7 +53,7 @@ public class RequestConnControl
 
     @Override
     public void process(final HttpRequest request, final HttpContext context)
-      throws HttpException, IOException {
+            throws HttpException, IOException {
         Args.notNull(request, "HTTP request");
 
         final String method = request.getRequestLine().getMethod();

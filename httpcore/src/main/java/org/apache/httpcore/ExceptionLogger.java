@@ -31,7 +31,7 @@ package org.apache.httpcore;
  */
 public interface ExceptionLogger {
 
-    ExceptionLogger NO_OP = new ExceptionLogger() {
+    public static final ExceptionLogger NO_OP = new ExceptionLogger() {
 
         @Override
         public void log(final Exception ex) {
@@ -40,7 +40,7 @@ public interface ExceptionLogger {
 
     };
 
-    ExceptionLogger STD_ERR = new ExceptionLogger() {
+    public static final ExceptionLogger STD_ERR = new ExceptionLogger() {
 
         @Override
         public void log(final Exception ex) {

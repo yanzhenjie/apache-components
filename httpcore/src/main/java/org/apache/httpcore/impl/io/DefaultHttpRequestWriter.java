@@ -38,18 +38,19 @@ import org.apache.httpcore.message.LineFormatter;
  *
  * @since 4.3
  */
-public class DefaultHttpRequestWriter
-  extends AbstractMessageWriter<HttpRequest> {
+public class DefaultHttpRequestWriter extends AbstractMessageWriter<HttpRequest> {
 
     /**
      * Creates an instance of DefaultHttpRequestWriter.
      *
      * @param buffer the session output buffer.
      * @param formatter the line formatter If {@code null}
-     * {@link org.apache.httpcore.message.BasicLineFormatter#INSTANCE}
+     *   {@link org.apache.httpcore.message.BasicLineFormatter#INSTANCE}
      *   will be used.
      */
-    public DefaultHttpRequestWriter(final SessionOutputBuffer buffer, final LineFormatter formatter) {
+    public DefaultHttpRequestWriter(
+            final SessionOutputBuffer buffer,
+            final LineFormatter formatter) {
         super(buffer, formatter);
     }
 

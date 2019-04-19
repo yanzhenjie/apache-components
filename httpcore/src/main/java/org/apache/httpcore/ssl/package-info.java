@@ -26,6 +26,7 @@
  */
 
 /**
- * Utility classes for trust and key material management and TLS/SSL context initialization.
+ * Utility classes for trust and key material management
+ * and TLS/SSL context initialization.
  */
 package org.apache.httpcore.ssl;

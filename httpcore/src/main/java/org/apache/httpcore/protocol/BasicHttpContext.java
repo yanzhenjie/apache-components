@@ -35,14 +35,15 @@ import org.apache.httpcore.annotation.Contract;
 import org.apache.httpcore.util.Args;
 
 /**
- * Default implementation of {@link HttpContext}. <p> Please note instances of this class can be thread unsafe
- * if the parent context is not thread safe.
+ * Default implementation of {@link HttpContext}.
+ * <p>
+ * Please note instances of this class can be thread unsafe if the
+ * parent context is not thread safe.
  *
  * @since 4.0
  */
 @Contract(threading = ThreadingBehavior.SAFE_CONDITIONAL)
-public class BasicHttpContext
-  implements HttpContext {
+public class BasicHttpContext implements HttpContext {
 
     private final HttpContext parentContext;
     private final Map<String, Object> map;
@@ -53,7 +54,7 @@ public class BasicHttpContext
 
     public BasicHttpContext(final HttpContext parentContext) {
         super();
-        this.map = new ConcurrentHashMap<>();
+        this.map = new ConcurrentHashMap<String, Object>();
         this.parentContext = parentContext;
     }
 

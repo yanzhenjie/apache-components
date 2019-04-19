@@ -43,15 +43,15 @@ import org.apache.httpcore.annotation.Contract;
 import org.apache.httpcore.util.Args;
 
 /**
- * ResponseConnControl is responsible for adding {@code Connection} header to the outgoing responses, which is
- * essential for managing persistence of {@code HTTP/1.0} connections. This interceptor is recommended for
+ * ResponseConnControl is responsible for adding {@code Connection} header
+ * to the outgoing responses, which is essential for managing persistence of
+ * {@code HTTP/1.0} connections. This interceptor is recommended for
  * server side protocol processors.
  *
  * @since 4.0
  */
 @Contract(threading = ThreadingBehavior.IMMUTABLE)
-public class ResponseConnControl
-  implements HttpResponseInterceptor {
+public class ResponseConnControl implements HttpResponseInterceptor {
 
     public ResponseConnControl() {
         super();
@@ -59,17 +59,20 @@ public class ResponseConnControl
 
     @Override
     public void process(final HttpResponse response, final HttpContext context)
-      throws HttpException, IOException {
+            throws HttpException, IOException {
         Args.notNull(response, "HTTP response");
 
         final HttpCoreContext corecontext = HttpCoreContext.adapt(context);
 
         // Always drop connection after certain type of responses
         final int status = response.getStatusLine().getStatusCode();
-        if (status == HttpStatus.SC_BAD_REQUEST || status == HttpStatus.SC_REQUEST_TIMEOUT ||
-            status == HttpStatus.SC_LENGTH_REQUIRED || status == HttpStatus.SC_REQUEST_TOO_LONG ||
-            status == HttpStatus.SC_REQUEST_URI_TOO_LONG || status == HttpStatus.SC_SERVICE_UNAVAILABLE ||
-            status == HttpStatus.SC_NOT_IMPLEMENTED) {
+        if (status == HttpStatus.SC_BAD_REQUEST ||
+                status == HttpStatus.SC_REQUEST_TIMEOUT ||
+                status == HttpStatus.SC_LENGTH_REQUIRED ||
+                status == HttpStatus.SC_REQUEST_TOO_LONG ||
+                status == HttpStatus.SC_REQUEST_URI_TOO_LONG ||
+                status == HttpStatus.SC_SERVICE_UNAVAILABLE ||
+                status == HttpStatus.SC_NOT_IMPLEMENTED) {
             response.setHeader(HTTP.CONN_DIRECTIVE, HTTP.CONN_CLOSE);
             return;
         }
@@ -84,7 +87,7 @@ public class ResponseConnControl
         if (entity != null) {
             final ProtocolVersion ver = response.getStatusLine().getProtocolVersion();
             if (entity.getContentLength() < 0 &&
-                (!entity.isChunked() || ver.lessEquals(HttpVersion.HTTP_1_0))) {
+                    (!entity.isChunked() || ver.lessEquals(HttpVersion.HTTP_1_0))) {
                 response.setHeader(HTTP.CONN_DIRECTIVE, HTTP.CONN_CLOSE);
                 return;
             }

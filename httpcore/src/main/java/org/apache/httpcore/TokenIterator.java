@@ -30,27 +30,30 @@ package org.apache.httpcore;
 import java.util.Iterator;
 
 /**
- * An iterator for {@link String} tokens. This interface is designed as a complement to {@link
- * HeaderElementIterator}, in cases where the items are plain strings rather than full header elements.
+ * An iterator for {@link String} tokens.
+ * This interface is designed as a complement to
+ * {@link HeaderElementIterator}, in cases where the items
+ * are plain strings rather than full header elements.
  *
  * @since 4.0
  */
-public interface TokenIterator
-  extends Iterator<Object> {
+public interface TokenIterator extends Iterator<Object> {
 
     /**
      * Indicates whether there is another token in this iteration.
      *
-     * @return {@code true} if there is another token, {@code false} otherwise
+     * @return  {@code true} if there is another token,
+     *          {@code false} otherwise
      */
     @Override
     boolean hasNext();
 
     /**
-     * Obtains the next token from this iteration. This method should only be called while {@link #hasNext
-     * hasNext} is true.
+     * Obtains the next token from this iteration.
+     * This method should only be called while {@link #hasNext hasNext}
+     * is true.
      *
-     * @return the next token in this iteration
+     * @return  the next token in this iteration
      */
     String nextToken();
 

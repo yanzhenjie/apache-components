@@ -27,8 +27,6 @@
 
 package org.apache.httpcore.entity;
 
-import org.apache.httpcore.util.Args;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -37,15 +35,17 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 
+import org.apache.httpcore.util.Args;
+
 /**
- * A streamed entity that obtains its content from a {@link Serializable}. The content obtained from the
- * {@link Serializable} instance can optionally be buffered in a byte array in order to make the entity
- * self-contained and repeatable.
+ * A streamed entity that obtains its content from a {@link Serializable}.
+ * The content obtained from the {@link Serializable} instance can
+ * optionally be buffered in a byte array in order to make the
+ * entity self-contained and repeatable.
  *
  * @since 4.0
  */
-public class SerializableEntity
-  extends AbstractHttpEntity {
+public class SerializableEntity extends AbstractHttpEntity {
 
     private byte[] objSer;
 
@@ -55,8 +55,8 @@ public class SerializableEntity
      * Creates new instance of this class.
      *
      * @param ser input
-     * @param bufferize tells whether the content should be stored in an internal buffer
-     *
+     * @param bufferize tells whether the content should be
+     *        stored in an internal buffer
      * @throws IOException in case of an I/O error
      */
     public SerializableEntity(final Serializable ser, final boolean bufferize) throws IOException {
@@ -70,12 +70,16 @@ public class SerializableEntity
     }
 
     /**
+     * Creates new instance of this class.
+     *
+     * @param serializable The object to serialize.
+     *
      * @since 4.3
      */
-    public SerializableEntity(final Serializable ser) {
+    public SerializableEntity(final Serializable serializable) {
         super();
-        Args.notNull(ser, "Source object");
-        this.objRef = ser;
+        Args.notNull(serializable, "Source object");
+        this.objRef = serializable;
     }
 
     private void createBytes(final Serializable ser) throws IOException {
@@ -96,11 +100,7 @@ public class SerializableEntity
 
     @Override
     public long getContentLength() {
-        if (this.objSer == null) {
-            return -1;
-        } else {
-            return this.objSer.length;
-        }
+        return this.objSer ==  null ? -1 : this.objSer.length;
     }
 
     @Override
@@ -114,15 +114,15 @@ public class SerializableEntity
     }
 
     @Override
-    public void writeTo(final OutputStream outstream) throws IOException {
-        Args.notNull(outstream, "Output stream");
+    public void writeTo(final OutputStream outStream) throws IOException {
+        Args.notNull(outStream, "Output stream");
         if (this.objSer == null) {
-            final ObjectOutputStream out = new ObjectOutputStream(outstream);
+            final ObjectOutputStream out = new ObjectOutputStream(outStream);
             out.writeObject(this.objRef);
             out.flush();
         } else {
-            outstream.write(this.objSer);
-            outstream.flush();
+            outStream.write(this.objSer);
+            outStream.flush();
         }
     }
 

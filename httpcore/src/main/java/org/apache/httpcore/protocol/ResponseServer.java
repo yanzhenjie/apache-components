@@ -37,14 +37,13 @@ import org.apache.httpcore.annotation.Contract;
 import org.apache.httpcore.util.Args;
 
 /**
- * ResponseServer is responsible for adding {@code Server} header. This interceptor is recommended for server
- * side protocol processors.
+ * ResponseServer is responsible for adding {@code Server} header. This
+ * interceptor is recommended for server side protocol processors.
  *
  * @since 4.0
  */
 @Contract(threading = ThreadingBehavior.IMMUTABLE)
-public class ResponseServer
-  implements HttpResponseInterceptor {
+public class ResponseServer implements HttpResponseInterceptor {
 
     private final String originServer;
 
@@ -62,7 +61,7 @@ public class ResponseServer
 
     @Override
     public void process(final HttpResponse response, final HttpContext context)
-      throws HttpException, IOException {
+            throws HttpException, IOException {
         Args.notNull(response, "HTTP response");
         if (!response.containsHeader(HTTP.SERVER_HEADER)) {
             if (this.originServer != null) {

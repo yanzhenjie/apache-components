@@ -29,8 +29,8 @@ package org.apache.httpcore.impl.io;
 
 import org.apache.httpcore.HttpRequest;
 import org.apache.httpcore.HttpRequestFactory;
-import org.apache.httpcore.annotation.Contract;
 import org.apache.httpcore.annotation.ThreadingBehavior;
+import org.apache.httpcore.annotation.Contract;
 import org.apache.httpcore.config.MessageConstraints;
 import org.apache.httpcore.impl.DefaultHttpRequestFactory;
 import org.apache.httpcore.io.HttpMessageParser;
@@ -45,8 +45,7 @@ import org.apache.httpcore.message.LineParser;
  * @since 4.3
  */
 @Contract(threading = ThreadingBehavior.IMMUTABLE_CONDITIONAL)
-public class DefaultHttpRequestParserFactory
-  implements HttpMessageParserFactory<HttpRequest> {
+public class DefaultHttpRequestParserFactory implements HttpMessageParserFactory<HttpRequest> {
 
     public static final DefaultHttpRequestParserFactory INSTANCE = new DefaultHttpRequestParserFactory();
 
@@ -54,10 +53,11 @@ public class DefaultHttpRequestParserFactory
     private final HttpRequestFactory requestFactory;
 
     public DefaultHttpRequestParserFactory(final LineParser lineParser,
-      final HttpRequestFactory requestFactory) {
+            final HttpRequestFactory requestFactory) {
         super();
         this.lineParser = lineParser != null ? lineParser : BasicLineParser.INSTANCE;
-        this.requestFactory = requestFactory != null ? requestFactory : DefaultHttpRequestFactory.INSTANCE;
+        this.requestFactory = requestFactory != null ? requestFactory
+                : DefaultHttpRequestFactory.INSTANCE;
     }
 
     public DefaultHttpRequestParserFactory() {
@@ -66,7 +66,7 @@ public class DefaultHttpRequestParserFactory
 
     @Override
     public HttpMessageParser<HttpRequest> create(final SessionInputBuffer buffer,
-      final MessageConstraints constraints) {
+            final MessageConstraints constraints) {
         return new DefaultHttpRequestParser(buffer, lineParser, requestFactory, constraints);
     }
 

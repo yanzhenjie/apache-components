@@ -41,36 +41,32 @@ import org.apache.httpcore.util.Args;
  * @since 4.0
  */
 @Contract(threading = ThreadingBehavior.IMMUTABLE)
-public class BasicStatusLine
-  implements StatusLine, Cloneable, Serializable {
+public class BasicStatusLine implements StatusLine, Cloneable, Serializable {
+
+    private static final long serialVersionUID = -2443303766890459269L;
 
     // ----------------------------------------------------- Instance Variables
 
-    /**
-     * The protocol version.
-     */
+    /** The protocol version. */
     private final ProtocolVersion protoVersion;
 
-    /**
-     * The status code.
-     */
+    /** The status code. */
     private final int statusCode;
 
-    /**
-     * The reason phrase.
-     */
+    /** The reason phrase. */
     private final String reasonPhrase;
 
     // ----------------------------------------------------------- Constructors
-
     /**
      * Creates a new status line with the given version, status, and reason.
      *
-     * @param version the protocol version of the response
-     * @param statusCode the status code of the response
-     * @param reasonPhrase the reason phrase to the status code, or {@code null}
+     * @param version           the protocol version of the response
+     * @param statusCode        the status code of the response
+     * @param reasonPhrase      the reason phrase to the status code, or
+     *                          {@code null}
      */
-    public BasicStatusLine(final ProtocolVersion version, final int statusCode, final String reasonPhrase) {
+    public BasicStatusLine(final ProtocolVersion version, final int statusCode,
+                           final String reasonPhrase) {
         super();
         this.protoVersion = Args.notNull(version, "Version");
         this.statusCode = Args.notNegative(statusCode, "Status code");

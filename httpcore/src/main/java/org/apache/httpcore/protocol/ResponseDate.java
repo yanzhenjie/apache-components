@@ -38,14 +38,14 @@ import org.apache.httpcore.annotation.Contract;
 import org.apache.httpcore.util.Args;
 
 /**
- * ResponseDate is responsible for adding {@code Date} header to the outgoing responses. This interceptor is
- * recommended for server side protocol processors.
+ * ResponseDate is responsible for adding {@code Date} header to the
+ * outgoing responses. This interceptor is recommended for server side protocol
+ * processors.
  *
  * @since 4.0
  */
 @Contract(threading = ThreadingBehavior.SAFE)
-public class ResponseDate
-  implements HttpResponseInterceptor {
+public class ResponseDate implements HttpResponseInterceptor {
 
     private static final HttpDateGenerator DATE_GENERATOR = new HttpDateGenerator();
 
@@ -55,10 +55,11 @@ public class ResponseDate
 
     @Override
     public void process(final HttpResponse response, final HttpContext context)
-      throws HttpException, IOException {
+            throws HttpException, IOException {
         Args.notNull(response, "HTTP response");
         final int status = response.getStatusLine().getStatusCode();
-        if ((status >= HttpStatus.SC_OK) && !response.containsHeader(HTTP.DATE_HEADER)) {
+        if ((status >= HttpStatus.SC_OK) &&
+            !response.containsHeader(HTTP.DATE_HEADER)) {
             final String httpdate = DATE_GENERATOR.getCurrentDate();
             response.setHeader(HTTP.DATE_HEADER, httpdate);
         }

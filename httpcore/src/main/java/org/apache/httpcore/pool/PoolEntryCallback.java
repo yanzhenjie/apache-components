@@ -29,9 +29,9 @@ package org.apache.httpcore.pool;
 /**
  * Pool entry callabck.
  *
- * @param <T> the route type that represents the opposite endpoint of a pooled connection.
+ * @param <T> the route type that represents the opposite endpoint of a pooled
+ *   connection.
  * @param <C> the connection type.
- *
  * @since 4.3
  */
 public interface PoolEntryCallback<T, C> {

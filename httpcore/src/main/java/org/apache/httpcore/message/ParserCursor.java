@@ -28,8 +28,11 @@
 package org.apache.httpcore.message;
 
 /**
- * This class represents a context of a parsing operation: <ul> <li>the current position the parsing operation
- * is expected to start at</li> <li>the bounds limiting the scope of the parsing operation</li> </ul>
+ * This class represents a context of a parsing operation:
+ * <ul>
+ *  <li>the current position the parsing operation is expected to start at</li>
+ *  <li>the bounds limiting the scope of the parsing operation</li>
+ * </ul>
  *
  * @since 4.0
  */
@@ -66,10 +69,10 @@ public class ParserCursor {
 
     public void updatePos(final int pos) {
         if (pos < this.lowerBound) {
-            throw new IndexOutOfBoundsException("pos: " + pos + " < lowerBound: " + this.lowerBound);
+            throw new IndexOutOfBoundsException("pos: "+pos+" < lowerBound: "+this.lowerBound);
         }
         if (pos > this.upperBound) {
-            throw new IndexOutOfBoundsException("pos: " + pos + " > upperBound: " + this.upperBound);
+            throw new IndexOutOfBoundsException("pos: "+pos+" > upperBound: "+this.upperBound);
         }
         this.pos = pos;
     }

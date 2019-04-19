@@ -26,6 +26,7 @@
  */
 
 /**
- * Default implementations of message parses and writers for synchronous, blocking communication.
+ * Default implementations of message parses and writers
+ * for synchronous, blocking communication.
  */
 package org.apache.httpcore.impl.io;

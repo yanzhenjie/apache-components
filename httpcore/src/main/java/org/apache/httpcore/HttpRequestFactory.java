@@ -34,8 +34,10 @@ package org.apache.httpcore;
  */
 public interface HttpRequestFactory {
 
-    HttpRequest newHttpRequest(RequestLine requestline) throws MethodNotSupportedException;
+    HttpRequest newHttpRequest(RequestLine requestline)
+        throws MethodNotSupportedException;
 
-    HttpRequest newHttpRequest(String method, String uri) throws MethodNotSupportedException;
+    HttpRequest newHttpRequest(String method, String uri)
+        throws MethodNotSupportedException;
 
 }

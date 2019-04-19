@@ -27,32 +27,33 @@
 
 package org.apache.httpcore.message;
 
-import org.apache.httpcore.HeaderElement;
-import org.apache.httpcore.NameValuePair;
-import org.apache.httpcore.ParseException;
-import org.apache.httpcore.annotation.Contract;
-import org.apache.httpcore.annotation.ThreadingBehavior;
-import org.apache.httpcore.util.Args;
-import org.apache.httpcore.util.CharArrayBuffer;
-
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 
+import org.apache.httpcore.HeaderElement;
+import org.apache.httpcore.NameValuePair;
+import org.apache.httpcore.ParseException;
+import org.apache.httpcore.annotation.ThreadingBehavior;
+import org.apache.httpcore.annotation.Contract;
+import org.apache.httpcore.util.Args;
+import org.apache.httpcore.util.CharArrayBuffer;
+
 /**
- * Basic implementation for parsing header values into elements. Instances of this class are stateless and
- * thread-safe. Derived classes are expected to maintain these properties.
+ * Basic implementation for parsing header values into elements.
+ * Instances of this class are stateless and thread-safe.
+ * Derived classes are expected to maintain these properties.
  *
  * @since 4.0
  */
 @Contract(threading = ThreadingBehavior.IMMUTABLE)
-public class BasicHeaderValueParser
-  implements HeaderValueParser {
+public class BasicHeaderValueParser implements HeaderValueParser {
 
     /**
-     * A default instance of this class, for use as default or fallback. Note that {@link
-     * BasicHeaderValueParser} is not a singleton, there can be many instances of the class itself and of
-     * derived classes. The instance here provides non-customized, default behavior.
+     * A default instance of this class, for use as default or fallback.
+     * Note that {@link BasicHeaderValueParser} is not a singleton, there
+     * can be many instances of the class itself and of derived classes.
+     * The instance here provides non-customized, default behavior.
      *
      * @deprecated (4.3) use {@link #INSTANCE}
      */
@@ -61,8 +62,8 @@ public class BasicHeaderValueParser
 
     public final static BasicHeaderValueParser INSTANCE = new BasicHeaderValueParser();
 
-    private final static char PARAM_DELIMITER = ';';
-    private final static char ELEM_DELIMITER = ',';
+    private final static char PARAM_DELIMITER                = ';';
+    private final static char ELEM_DELIMITER                 = ',';
 
     // IMPORTANT!
     // These private static variables must be treated as immutable and never exposed outside this class
@@ -78,33 +79,35 @@ public class BasicHeaderValueParser
     /**
      * Parses elements with the given parser.
      *
-     * @param value the header value to parse
-     * @param parser the parser to use, or {@code null} for default
+     * @param value     the header value to parse
+     * @param parser    the parser to use, or {@code null} for default
      *
-     * @return array holding the header elements, never {@code null}
-     *
+     * @return  array holding the header elements, never {@code null}
      * @throws ParseException in case of a parsing error
      */
-    public static HeaderElement[] parseElements(final String value, final HeaderValueParser parser)
-      throws ParseException {
+    public static
+        HeaderElement[] parseElements(final String value,
+                                      final HeaderValueParser parser) throws ParseException {
         Args.notNull(value, "Value");
 
         final CharArrayBuffer buffer = new CharArrayBuffer(value.length());
         buffer.append(value);
         final ParserCursor cursor = new ParserCursor(0, value.length());
-        return (parser != null ? parser : BasicHeaderValueParser.INSTANCE).parseElements(buffer, cursor);
+        return (parser != null ? parser : BasicHeaderValueParser.INSTANCE)
+            .parseElements(buffer, cursor);
     }
 
 
     // non-javadoc, see interface HeaderValueParser
     @Override
-    public HeaderElement[] parseElements(final CharArrayBuffer buffer, final ParserCursor cursor) {
+    public HeaderElement[] parseElements(final CharArrayBuffer buffer,
+                                         final ParserCursor cursor) {
         Args.notNull(buffer, "Char array buffer");
         Args.notNull(cursor, "Parser cursor");
-        final List<HeaderElement> elements = new ArrayList<>();
+        final List<HeaderElement> elements = new ArrayList<HeaderElement>();
         while (!cursor.atEnd()) {
             final HeaderElement element = parseHeaderElement(buffer, cursor);
-            if (!(element.getName().length() == 0 && element.getValue() == null)) {
+            if (!(element.getName().isEmpty() && element.getValue() == null)) {
                 elements.add(element);
             }
         }
@@ -115,25 +118,28 @@ public class BasicHeaderValueParser
     /**
      * Parses an element with the given parser.
      *
-     * @param value the header element to parse
-     * @param parser the parser to use, or {@code null} for default
+     * @param value     the header element to parse
+     * @param parser    the parser to use, or {@code null} for default
      *
-     * @return the parsed header element
+     * @return  the parsed header element
      */
-    public static HeaderElement parseHeaderElement(final String value, final HeaderValueParser parser)
-      throws ParseException {
+    public static
+        HeaderElement parseHeaderElement(final String value,
+                                         final HeaderValueParser parser) throws ParseException {
         Args.notNull(value, "Value");
 
         final CharArrayBuffer buffer = new CharArrayBuffer(value.length());
         buffer.append(value);
         final ParserCursor cursor = new ParserCursor(0, value.length());
-        return (parser != null ? parser : BasicHeaderValueParser.INSTANCE).parseHeaderElement(buffer, cursor);
+        return (parser != null ? parser : BasicHeaderValueParser.INSTANCE)
+                .parseHeaderElement(buffer, cursor);
     }
 
 
     // non-javadoc, see interface HeaderValueParser
     @Override
-    public HeaderElement parseHeaderElement(final CharArrayBuffer buffer, final ParserCursor cursor) {
+    public HeaderElement parseHeaderElement(final CharArrayBuffer buffer,
+                                            final ParserCursor cursor) {
         Args.notNull(buffer, "Char array buffer");
         Args.notNull(cursor, "Parser cursor");
         final NameValuePair nvp = parseNameValuePair(buffer, cursor);
@@ -149,12 +155,15 @@ public class BasicHeaderValueParser
 
 
     /**
-     * Creates a header element. Called from {@link #parseHeaderElement}.
+     * Creates a header element.
+     * Called from {@link #parseHeaderElement}.
      *
-     * @return a header element representing the argument
+     * @return  a header element representing the argument
      */
-    protected HeaderElement createHeaderElement(final String name, final String value,
-      final NameValuePair[] params) {
+    protected HeaderElement createHeaderElement(
+            final String name,
+            final String value,
+            final NameValuePair[] params) {
         return new BasicHeaderElement(name, value, params);
     }
 
@@ -162,25 +171,29 @@ public class BasicHeaderValueParser
     /**
      * Parses parameters with the given parser.
      *
-     * @param value the parameter list to parse
-     * @param parser the parser to use, or {@code null} for default
+     * @param value     the parameter list to parse
+     * @param parser    the parser to use, or {@code null} for default
      *
-     * @return array holding the parameters, never {@code null}
+     * @return  array holding the parameters, never {@code null}
      */
-    public static NameValuePair[] parseParameters(final String value, final HeaderValueParser parser)
-      throws ParseException {
+    public static
+        NameValuePair[] parseParameters(final String value,
+                                        final HeaderValueParser parser) throws ParseException {
         Args.notNull(value, "Value");
 
         final CharArrayBuffer buffer = new CharArrayBuffer(value.length());
         buffer.append(value);
         final ParserCursor cursor = new ParserCursor(0, value.length());
-        return (parser != null ? parser : BasicHeaderValueParser.INSTANCE).parseParameters(buffer, cursor);
+        return (parser != null ? parser : BasicHeaderValueParser.INSTANCE)
+                .parseParameters(buffer, cursor);
     }
+
 
 
     // non-javadoc, see interface HeaderValueParser
     @Override
-    public NameValuePair[] parseParameters(final CharArrayBuffer buffer, final ParserCursor cursor) {
+    public NameValuePair[] parseParameters(final CharArrayBuffer buffer,
+                                           final ParserCursor cursor) {
         Args.notNull(buffer, "Char array buffer");
         Args.notNull(cursor, "Parser cursor");
         tokenParser.skipWhiteSpace(buffer, cursor);
@@ -199,25 +212,28 @@ public class BasicHeaderValueParser
     /**
      * Parses a name-value-pair with the given parser.
      *
-     * @param value the NVP to parse
-     * @param parser the parser to use, or {@code null} for default
+     * @param value     the NVP to parse
+     * @param parser    the parser to use, or {@code null} for default
      *
-     * @return the parsed name-value pair
+     * @return  the parsed name-value pair
      */
-    public static NameValuePair parseNameValuePair(final String value, final HeaderValueParser parser)
-      throws ParseException {
+    public static
+       NameValuePair parseNameValuePair(final String value,
+                                        final HeaderValueParser parser) throws ParseException {
         Args.notNull(value, "Value");
 
         final CharArrayBuffer buffer = new CharArrayBuffer(value.length());
         buffer.append(value);
         final ParserCursor cursor = new ParserCursor(0, value.length());
-        return (parser != null ? parser : BasicHeaderValueParser.INSTANCE).parseNameValuePair(buffer, cursor);
+        return (parser != null ? parser : BasicHeaderValueParser.INSTANCE)
+                .parseNameValuePair(buffer, cursor);
     }
 
 
     // non-javadoc, see interface HeaderValueParser
     @Override
-    public NameValuePair parseNameValuePair(final CharArrayBuffer buffer, final ParserCursor cursor) {
+    public NameValuePair parseNameValuePair(final CharArrayBuffer buffer,
+                                            final ParserCursor cursor) {
         Args.notNull(buffer, "Char array buffer");
         Args.notNull(cursor, "Parser cursor");
 
@@ -241,14 +257,15 @@ public class BasicHeaderValueParser
      * @deprecated (4.4) use {@link org.apache.httpcore.message.TokenParser}
      */
     @Deprecated
-    public NameValuePair parseNameValuePair(final CharArrayBuffer buffer, final ParserCursor cursor,
-      final char[] delimiters) {
+    public NameValuePair parseNameValuePair(final CharArrayBuffer buffer,
+                                            final ParserCursor cursor,
+                                            final char[] delimiters) {
         Args.notNull(buffer, "Char array buffer");
         Args.notNull(cursor, "Parser cursor");
 
         final BitSet delimSet = new BitSet();
         if (delimiters != null) {
-            for (final char delimiter : delimiters) {
+            for (final char delimiter: delimiters) {
                 delimSet.set(delimiter);
             }
         }
@@ -271,15 +288,17 @@ public class BasicHeaderValueParser
     }
 
     /**
-     * Creates a name-value pair. Called from {@link #parseNameValuePair}.
+     * Creates a name-value pair.
+     * Called from {@link #parseNameValuePair}.
      *
-     * @param name the name
-     * @param value the value, or {@code null}
+     * @param name      the name
+     * @param value     the value, or {@code null}
      *
-     * @return a name-value pair representing the arguments
+     * @return  a name-value pair representing the arguments
      */
     protected NameValuePair createNameValuePair(final String name, final String value) {
         return new BasicNameValuePair(name, value);
     }
 
 }
+

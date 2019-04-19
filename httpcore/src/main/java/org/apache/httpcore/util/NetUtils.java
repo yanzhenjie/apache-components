@@ -36,15 +36,16 @@ import java.net.SocketAddress;
  */
 public final class NetUtils {
 
-    public static void formatAddress(final StringBuilder buffer, final SocketAddress socketAddress) {
+    public static void formatAddress(
+            final StringBuilder buffer,
+            final SocketAddress socketAddress) {
         Args.notNull(buffer, "Buffer");
         Args.notNull(socketAddress, "Socket address");
         if (socketAddress instanceof InetSocketAddress) {
-            final InetSocketAddress socketaddr = ((InetSocketAddress)socketAddress);
+            final InetSocketAddress socketaddr = ((InetSocketAddress) socketAddress);
             final InetAddress inetaddr = socketaddr.getAddress();
             buffer.append(inetaddr != null ? inetaddr.getHostAddress() : inetaddr)
-              .append(':')
-              .append(socketaddr.getPort());
+                .append(':').append(socketaddr.getPort());
         } else {
             buffer.append(socketAddress);
         }

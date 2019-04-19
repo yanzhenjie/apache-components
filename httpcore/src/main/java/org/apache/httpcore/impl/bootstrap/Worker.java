@@ -26,26 +26,27 @@
  */
 package org.apache.httpcore.impl.bootstrap;
 
+import java.io.IOException;
+
 import org.apache.httpcore.ExceptionLogger;
 import org.apache.httpcore.HttpServerConnection;
 import org.apache.httpcore.protocol.BasicHttpContext;
 import org.apache.httpcore.protocol.HttpCoreContext;
 import org.apache.httpcore.protocol.HttpService;
 
-import java.io.IOException;
-
 /**
  * @since 4.4
  */
-class Worker
-  implements Runnable {
+class Worker implements Runnable {
 
     private final HttpService httpservice;
     private final HttpServerConnection conn;
     private final ExceptionLogger exceptionLogger;
 
-    Worker(final HttpService httpservice, final HttpServerConnection conn,
-      final ExceptionLogger exceptionLogger) {
+    Worker(
+            final HttpService httpservice,
+            final HttpServerConnection conn,
+            final ExceptionLogger exceptionLogger) {
         super();
         this.httpservice = httpservice;
         this.conn = conn;

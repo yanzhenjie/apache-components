@@ -34,24 +34,25 @@ import org.apache.httpcore.io.SessionOutputBuffer;
 import org.apache.httpcore.util.Args;
 
 /**
- * Output stream that writes data without any transformation. The end of the content entity is demarcated by
- * closing the underlying connection (EOF condition). Entities transferred using this input stream can be of
- * unlimited length. <p> Note that this class NEVER closes the underlying stream, even when close gets called.
- * Instead, the stream will be marked as closed and no further output will be permitted.
+ * Output stream that writes data without any transformation. The end of
+ * the content entity is demarcated by closing the underlying connection
+ * (EOF condition). Entities transferred using this input stream can be of
+ * unlimited length.
+ * <p>
+ * Note that this class NEVER closes the underlying stream, even when close
+ * gets called.  Instead, the stream will be marked as closed and no further
+ * output will be permitted.
  *
  * @since 4.0
  */
-public class IdentityOutputStream
-  extends OutputStream {
+public class IdentityOutputStream extends OutputStream {
 
     /**
      * Wrapped session output buffer.
      */
     private final SessionOutputBuffer out;
 
-    /**
-     * True if the stream is closed.
-     */
+    /** True if the stream is closed. */
     private boolean closed = false;
 
     public IdentityOutputStream(final SessionOutputBuffer out) {

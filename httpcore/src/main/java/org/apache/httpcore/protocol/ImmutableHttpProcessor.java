@@ -26,16 +26,16 @@
  */
 package org.apache.httpcore.protocol;
 
+import java.io.IOException;
+import java.util.List;
+
 import org.apache.httpcore.HttpException;
 import org.apache.httpcore.HttpRequest;
 import org.apache.httpcore.HttpRequestInterceptor;
 import org.apache.httpcore.HttpResponse;
 import org.apache.httpcore.HttpResponseInterceptor;
-import org.apache.httpcore.annotation.Contract;
 import org.apache.httpcore.annotation.ThreadingBehavior;
-
-import java.io.IOException;
-import java.util.List;
+import org.apache.httpcore.annotation.Contract;
 
 /**
  * Immutable {@link HttpProcessor}.
@@ -43,14 +43,14 @@ import java.util.List;
  * @since 4.1
  */
 @Contract(threading = ThreadingBehavior.IMMUTABLE_CONDITIONAL)
-public final class ImmutableHttpProcessor
-  implements HttpProcessor {
+public final class ImmutableHttpProcessor implements HttpProcessor {
 
     private final HttpRequestInterceptor[] requestInterceptors;
     private final HttpResponseInterceptor[] responseInterceptors;
 
-    public ImmutableHttpProcessor(final HttpRequestInterceptor[] requestInterceptors,
-      final HttpResponseInterceptor[] responseInterceptors) {
+    public ImmutableHttpProcessor(
+            final HttpRequestInterceptor[] requestInterceptors,
+            final HttpResponseInterceptor[] responseInterceptors) {
         super();
         if (requestInterceptors != null) {
             final int l = requestInterceptors.length;
@@ -71,8 +71,9 @@ public final class ImmutableHttpProcessor
     /**
      * @since 4.3
      */
-    public ImmutableHttpProcessor(final List<HttpRequestInterceptor> requestInterceptors,
-      final List<HttpResponseInterceptor> responseInterceptors) {
+    public ImmutableHttpProcessor(
+            final List<HttpRequestInterceptor> requestInterceptors,
+            final List<HttpResponseInterceptor> responseInterceptors) {
         super();
         if (requestInterceptors != null) {
             final int l = requestInterceptors.size();
@@ -92,8 +93,9 @@ public final class ImmutableHttpProcessor
      * @deprecated (4.3) do not use.
      */
     @Deprecated
-    public ImmutableHttpProcessor(final HttpRequestInterceptorList requestInterceptors,
-      final HttpResponseInterceptorList responseInterceptors) {
+    public ImmutableHttpProcessor(
+            final HttpRequestInterceptorList requestInterceptors,
+            final HttpResponseInterceptorList responseInterceptors) {
         super();
         if (requestInterceptors != null) {
             final int count = requestInterceptors.getRequestInterceptorCount();
@@ -124,16 +126,18 @@ public final class ImmutableHttpProcessor
     }
 
     @Override
-    public void process(final HttpRequest request, final HttpContext context)
-      throws IOException, HttpException {
+    public void process(
+            final HttpRequest request,
+            final HttpContext context) throws IOException, HttpException {
         for (final HttpRequestInterceptor requestInterceptor : this.requestInterceptors) {
             requestInterceptor.process(request, context);
         }
     }
 
     @Override
-    public void process(final HttpResponse response, final HttpContext context)
-      throws IOException, HttpException {
+    public void process(
+            final HttpResponse response,
+            final HttpContext context) throws IOException, HttpException {
         for (final HttpResponseInterceptor responseInterceptor : this.responseInterceptors) {
             responseInterceptor.process(response, context);
         }

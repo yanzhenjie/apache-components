@@ -35,15 +35,15 @@ import org.apache.httpcore.annotation.Contract;
 import org.apache.httpcore.pool.PoolEntry;
 
 /**
- * A very basic {@link PoolEntry} implementation that represents an entry in a pool of blocking {@link
- * HttpClientConnection}s identified by an {@link HttpHost} instance.
+ * A very basic {@link PoolEntry} implementation that represents an entry
+ * in a pool of blocking {@link HttpClientConnection}s identified by
+ * an {@link HttpHost} instance.
  *
  * @see HttpHost
  * @since 4.2
  */
 @Contract(threading = ThreadingBehavior.SAFE_CONDITIONAL)
-public class BasicPoolEntry
-  extends PoolEntry<HttpHost, HttpClientConnection> {
+public class BasicPoolEntry extends PoolEntry<HttpHost, HttpClientConnection> {
 
     public BasicPoolEntry(final String id, final HttpHost route, final HttpClientConnection conn) {
         super(id, route, conn);

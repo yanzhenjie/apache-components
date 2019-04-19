@@ -47,21 +47,25 @@ import org.apache.httpcore.protocol.HttpCoreContext;
 import org.apache.httpcore.util.Args;
 
 /**
- * Default implementation of a strategy deciding about connection re-use. The default implementation first
- * checks some basics, for example whether the connection is still open or whether the end of the request
- * entity can be determined without closing the connection. If these checks pass, the tokens in the {@code
- * Connection} header will be examined. In the absence of a {@code Connection} header, the non-standard but
- * commonly used {@code Proxy-Connection} header takes it's role. A token {@code close} indicates that the
- * connection cannot be reused. If there is no such token, a token {@code keep-alive} indicates that the
- * connection should be re-used. If neither token is found, or if there are no {@code Connection} headers, the
- * default policy for the HTTP version is applied. Since {@code HTTP/1.1}, connections are re-used by default.
- * Up until {@code HTTP/1.0}, connections are not re-used by default.
+ * Default implementation of a strategy deciding about connection re-use.
+ * The default implementation first checks some basics, for example
+ * whether the connection is still open or whether the end of the
+ * request entity can be determined without closing the connection.
+ * If these checks pass, the tokens in the {@code Connection} header will
+ * be examined. In the absence of a {@code Connection} header, the
+ * non-standard but commonly used {@code Proxy-Connection} header takes
+ * it's role. A token {@code close} indicates that the connection cannot
+ * be reused. If there is no such token, a token {@code keep-alive}
+ * indicates that the connection should be re-used. If neither token is found,
+ * or if there are no {@code Connection} headers, the default policy for
+ * the HTTP version is applied. Since {@code HTTP/1.1}, connections are
+ * re-used by default. Up until {@code HTTP/1.0}, connections are not
+ * re-used by default.
  *
  * @since 4.0
  */
 @Contract(threading = ThreadingBehavior.IMMUTABLE)
-public class DefaultConnectionReuseStrategy
-  implements ConnectionReuseStrategy {
+public class DefaultConnectionReuseStrategy implements ConnectionReuseStrategy {
 
     public static final DefaultConnectionReuseStrategy INSTANCE = new DefaultConnectionReuseStrategy();
 
@@ -71,7 +75,8 @@ public class DefaultConnectionReuseStrategy
 
     // see interface ConnectionReuseStrategy
     @Override
-    public boolean keepAlive(final HttpResponse response, final HttpContext context) {
+    public boolean keepAlive(final HttpResponse response,
+                             final HttpContext context) {
         Args.notNull(response, "HTTP response");
         Args.notNull(context, "HTTP context");
 
@@ -97,11 +102,10 @@ public class DefaultConnectionReuseStrategy
             }
         }
 
-        final HttpRequest request = (HttpRequest)context.getAttribute(HttpCoreContext.HTTP_REQUEST);
+        final HttpRequest request = (HttpRequest) context.getAttribute(HttpCoreContext.HTTP_REQUEST);
         if (request != null) {
             try {
-                final TokenIterator ti =
-                  new BasicTokenIterator(request.headerIterator(HttpHeaders.CONNECTION));
+                final TokenIterator ti = new BasicTokenIterator(request.headerIterator(HttpHeaders.CONNECTION));
                 while (ti.hasNext()) {
                     final String token = ti.nextToken();
                     if (HTTP.CONN_CLOSE.equalsIgnoreCase(token)) {
@@ -188,7 +192,7 @@ public class DefaultConnectionReuseStrategy
                 }
                 if (keepalive) {
                     return true;
-                    // neither "close" nor "keep-alive", use default policy
+                // neither "close" nor "keep-alive", use default policy
                 }
 
             } catch (final ParseException px) {
@@ -203,12 +207,13 @@ public class DefaultConnectionReuseStrategy
 
 
     /**
-     * Creates a token iterator from a header iterator. This method can be overridden to replace the
-     * implementation of the token iterator.
+     * Creates a token iterator from a header iterator.
+     * This method can be overridden to replace the implementation of
+     * the token iterator.
      *
-     * @param hit the header iterator
+     * @param hit       the header iterator
      *
-     * @return the token iterator
+     * @return  the token iterator
      */
     protected TokenIterator createTokenIterator(final HeaderIterator hit) {
         return new BasicTokenIterator(hit);
@@ -219,8 +224,10 @@ public class DefaultConnectionReuseStrategy
             return false;
         }
         final int status = response.getStatusLine().getStatusCode();
-        return status >= HttpStatus.SC_OK && status != HttpStatus.SC_NO_CONTENT &&
-               status != HttpStatus.SC_NOT_MODIFIED && status != HttpStatus.SC_RESET_CONTENT;
+        return status >= HttpStatus.SC_OK
+            && status != HttpStatus.SC_NO_CONTENT
+            && status != HttpStatus.SC_NOT_MODIFIED
+            && status != HttpStatus.SC_RESET_CONTENT;
     }
 
 }

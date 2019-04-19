@@ -27,11 +27,11 @@
 
 package org.apache.httpcore.config;
 
-import org.apache.httpcore.util.Args;
-
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
+import org.apache.httpcore.util.Args;
 
 /**
  * Builder for {@link Registry} instances.
@@ -48,7 +48,7 @@ public final class RegistryBuilder<I> {
 
     RegistryBuilder() {
         super();
-        this.items = new HashMap<>();
+        this.items = new HashMap<String, I>();
     }
 
     public RegistryBuilder<I> register(final String id, final I item) {
@@ -59,7 +59,7 @@ public final class RegistryBuilder<I> {
     }
 
     public Registry<I> build() {
-        return new Registry<>(items);
+        return new Registry<I>(items);
     }
 
     @Override

@@ -37,25 +37,24 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Default implementation of {@link HttpParams} interface. <p> Please note access to the internal structures
- * of this class is not synchronized and therefore this class may be thread-unsafe.
+ * Default implementation of {@link HttpParams} interface.
+ * <p>
+ * Please note access to the internal structures of this class is not
+ * synchronized and therefore this class may be thread-unsafe.
  *
  * @since 4.0
- * @deprecated (4.3) use configuration classes provided 'org.apache.httpcore.config' and
- *   'org.apache.httpcore.client.config'
+ *
+ * @deprecated (4.3) use configuration classes provided 'org.apache.httpcore.config'
+ *  and 'org.apache.httpcore.client.config'
  */
 @Deprecated
 @Contract(threading = ThreadingBehavior.SAFE)
-public class BasicHttpParams
-  extends AbstractHttpParams
-  implements Serializable, Cloneable {
+public class BasicHttpParams extends AbstractHttpParams implements Serializable, Cloneable {
 
     private static final long serialVersionUID = -7086398485908701455L;
 
-    /**
-     * Map of HTTP parameters that this collection contains.
-     */
-    private final Map<String, Object> parameters = new ConcurrentHashMap<>();
+    /** Map of HTTP parameters that this collection contains. */
+    private final Map<String, Object> parameters = new ConcurrentHashMap<String, Object>();
 
     public BasicHttpParams() {
         super();
@@ -85,9 +84,8 @@ public class BasicHttpParams
         if (this.parameters.containsKey(name)) {
             this.parameters.remove(name);
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -103,11 +101,14 @@ public class BasicHttpParams
     }
 
     /**
-     * Is the parameter set? <p> Uses {@link #getParameter(String)} (which is overrideable) to fetch the
-     * parameter value, if any. <p> Also @see {@link #isParameterSetLocally(String)}
+     * Is the parameter set?
+     * <p>
+     * Uses {@link #getParameter(String)} (which is overrideable) to
+     * fetch the parameter value, if any.
+     * <p>
+     * Also @see {@link #isParameterSetLocally(String)}
      *
      * @param name parameter name
-     *
      * @return true if parameter is defined and non-null
      */
     public boolean isParameterSet(final String name) {
@@ -115,11 +116,13 @@ public class BasicHttpParams
     }
 
     /**
-     * Is the parameter set in this object? <p> The parameter value is fetched directly. <p> Also @see {@link
-     * #isParameterSet(String)}
+     * Is the parameter set in this object?
+     * <p>
+     * The parameter value is fetched directly.
+     * <p>
+     * Also @see {@link #isParameterSet(String)}
      *
      * @param name parameter name
-     *
      * @return true if parameter is defined and non-null
      */
     public boolean isParameterSetLocally(final String name) {
@@ -134,37 +137,39 @@ public class BasicHttpParams
     }
 
     /**
-     * Creates a copy of these parameters. This implementation calls {@link #clone()}.
+     * Creates a copy of these parameters.
+     * This implementation calls {@link #clone()}.
      *
-     * @return a new set of params holding a copy of the <i>local</i> parameters in this object.
+     * @return  a new set of params holding a copy of the
+     *          <i>local</i> parameters in this object.
      *
      * @throws UnsupportedOperationException if the clone() fails
      */
     @Override
     public HttpParams copy() {
         try {
-            return (HttpParams)clone();
+            return (HttpParams) clone();
         } catch (final CloneNotSupportedException ex) {
             throw new UnsupportedOperationException("Cloning not supported");
         }
     }
 
     /**
-     * Clones the instance. Uses {@link #copyParams(HttpParams)} to copy the parameters.
+     * Clones the instance.
+     * Uses {@link #copyParams(HttpParams)} to copy the parameters.
      */
     @Override
     public Object clone() throws CloneNotSupportedException {
-        final BasicHttpParams clone = (BasicHttpParams)super.clone();
+        final BasicHttpParams clone = (BasicHttpParams) super.clone();
         copyParams(clone);
         return clone;
     }
 
     /**
-     * Copies the locally defined parameters to the argument parameters. This method is called from {@link
-     * #clone()}.
+     * Copies the locally defined parameters to the argument parameters.
+     * This method is called from {@link #clone()}.
      *
-     * @param target the parameters to which to copy
-     *
+     * @param target    the parameters to which to copy
      * @since 4.2
      */
     public void copyParams(final HttpParams target) {
@@ -176,15 +181,15 @@ public class BasicHttpParams
     /**
      * Returns the current set of names.
      *
-     * Changes to the underlying HttpParams are not reflected in the set - it is a snapshot.
+     * Changes to the underlying HttpParams are not reflected
+     * in the set - it is a snapshot.
      *
      * @return the names, as a Set&lt;String&gt;
-     *
      * @since 4.2
      */
     @Override
     public Set<String> getNames() {
-        return new HashSet<>(this.parameters.keySet());
+        return new HashSet<String>(this.parameters.keySet());
     }
 
     @Override

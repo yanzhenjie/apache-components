@@ -37,39 +37,30 @@ import org.apache.httpcore.util.Args;
 import org.apache.httpcore.util.LangUtils;
 
 /**
- * Holds all of the variables needed to describe an HTTP connection to a host. This includes remote host name,
- * port and scheme.
+ * Holds all of the variables needed to describe an HTTP connection to a host.
+ * This includes remote host name, port and scheme.
  *
  * @since 4.0
  */
 @Contract(threading = ThreadingBehavior.IMMUTABLE)
-public final class HttpHost
-  implements Cloneable, Serializable {
+public final class HttpHost implements Cloneable, Serializable {
 
-    /**
-     * The default scheme is "http".
-     */
+    private static final long serialVersionUID = -7529410654042457626L;
+
+    /** The default scheme is "http". */
     public static final String DEFAULT_SCHEME_NAME = "http";
 
-    /**
-     * The host to use.
-     */
+    /** The host to use. */
     protected final String hostname;
 
-    /**
-     * The lowercase host, for {@link #equals} and {@link #hashCode}.
-     */
+    /** The lowercase host, for {@link #equals} and {@link #hashCode}. */
     protected final String lcHostname;
 
 
-    /**
-     * The port to use, defaults to -1 if not set.
-     */
+    /** The port to use, defaults to -1 if not set. */
     protected final int port;
 
-    /**
-     * The scheme (lowercased)
-     */
+    /** The scheme (lowercased) */
     protected final String schemeName;
 
     protected final InetAddress address;
@@ -77,14 +68,16 @@ public final class HttpHost
     /**
      * Creates {@code HttpHost} instance with the given scheme, hostname and port.
      *
-     * @param hostname the hostname (IP or DNS name)
-     * @param port the port number. {@code -1} indicates the scheme default port.
-     * @param scheme the name of the scheme. {@code null} indicates the {@link #DEFAULT_SCHEME_NAME default
-     *   scheme}
+     * @param hostname  the hostname (IP or DNS name)
+     * @param port      the port number.
+     *                  {@code -1} indicates the scheme default port.
+     * @param scheme    the name of the scheme.
+     *                  {@code null} indicates the
+     *                  {@link #DEFAULT_SCHEME_NAME default scheme}
      */
     public HttpHost(final String hostname, final int port, final String scheme) {
         super();
-        this.hostname = Args.containsNoBlanks(hostname, "Host name");
+        this.hostname   = Args.containsNoBlanks(hostname, "Host name");
         this.lcHostname = hostname.toLowerCase(Locale.ROOT);
         if (scheme != null) {
             this.schemeName = scheme.toLowerCase(Locale.ROOT);
@@ -98,8 +91,9 @@ public final class HttpHost
     /**
      * Creates {@code HttpHost} instance with the default scheme and the given hostname and port.
      *
-     * @param hostname the hostname (IP or DNS name)
-     * @param port the port number. {@code -1} indicates the scheme default port.
+     * @param hostname  the hostname (IP or DNS name)
+     * @param port      the port number.
+     *                  {@code -1} indicates the scheme default port.
      */
     public HttpHost(final String hostname, final int port) {
         this(hostname, port, null);
@@ -135,7 +129,7 @@ public final class HttpHost
     /**
      * Creates {@code HttpHost} instance with the default scheme and port and the given hostname.
      *
-     * @param hostname the hostname (IP or DNS name)
+     * @param hostname  the hostname (IP or DNS name)
      */
     public HttpHost(final String hostname) {
         this(hostname, -1, null);
@@ -144,25 +138,29 @@ public final class HttpHost
     /**
      * Creates {@code HttpHost} instance with the given scheme, inet address and port.
      *
-     * @param address the inet address.
-     * @param port the port number. {@code -1} indicates the scheme default port.
-     * @param scheme the name of the scheme. {@code null} indicates the {@link #DEFAULT_SCHEME_NAME default
-     *   scheme}
+     * @param address   the inet address.
+     * @param port      the port number.
+     *                  {@code -1} indicates the scheme default port.
+     * @param scheme    the name of the scheme.
+     *                  {@code null} indicates the
+     *                  {@link #DEFAULT_SCHEME_NAME default scheme}
      *
      * @since 4.3
      */
     public HttpHost(final InetAddress address, final int port, final String scheme) {
-        this(Args.notNull(address, "Inet address"), address.getHostName(), port, scheme);
+        this(Args.notNull(address,"Inet address"), address.getHostName(), port, scheme);
     }
-
     /**
-     * Creates a new {@link HttpHost HttpHost}, specifying all values. Constructor for HttpHost.
+     * Creates a new {@link HttpHost HttpHost}, specifying all values.
+     * Constructor for HttpHost.
      *
-     * @param address the inet address.
-     * @param hostname the hostname (IP or DNS name)
-     * @param port the port number. {@code -1} indicates the scheme default port.
-     * @param scheme the name of the scheme. {@code null} indicates the {@link #DEFAULT_SCHEME_NAME default
-     *   scheme}
+     * @param address   the inet address.
+     * @param hostname   the hostname (IP or DNS name)
+     * @param port      the port number.
+     *                  {@code -1} indicates the scheme default port.
+     * @param scheme    the name of the scheme.
+     *                  {@code null} indicates the
+     *                  {@link #DEFAULT_SCHEME_NAME default scheme}
      *
      * @since 4.4
      */
@@ -180,10 +178,12 @@ public final class HttpHost
     }
 
     /**
-     * Creates {@code HttpHost} instance with the default scheme and the given inet address and port.
+     * Creates {@code HttpHost} instance with the default scheme and the given inet address
+     * and port.
      *
-     * @param address the inet address.
-     * @param port the port number. {@code -1} indicates the scheme default port.
+     * @param address   the inet address.
+     * @param port      the port number.
+     *                  {@code -1} indicates the scheme default port.
      *
      * @since 4.3
      */
@@ -192,9 +192,10 @@ public final class HttpHost
     }
 
     /**
-     * Creates {@code HttpHost} instance with the default scheme and port and the given inet address.
+     * Creates {@code HttpHost} instance with the default scheme and port and the given inet
+     * address.
      *
-     * @param address the inet address.
+     * @param address   the inet address.
      *
      * @since 4.3
      */
@@ -207,10 +208,10 @@ public final class HttpHost
      *
      * @param httphost the HTTP host to copy details from
      */
-    public HttpHost(final HttpHost httphost) {
+    public HttpHost (final HttpHost httphost) {
         super();
         Args.notNull(httphost, "HTTP host");
-        this.hostname = httphost.hostname;
+        this.hostname   = httphost.hostname;
         this.lcHostname = httphost.lcHostname;
         this.schemeName = httphost.schemeName;
         this.port = httphost.port;
@@ -245,8 +246,8 @@ public final class HttpHost
     }
 
     /**
-     * Returns the inet address if explicitly set by a constructor, {@code null} otherwise.
-     *
+     * Returns the inet address if explicitly set by a constructor,
+     *   {@code null} otherwise.
      * @return the inet address
      *
      * @since 4.3
@@ -276,7 +277,7 @@ public final class HttpHost
     /**
      * Obtains the host string, without scheme prefix.
      *
-     * @return the host string, for example {@code localhost:8080}
+     * @return  the host string, for example {@code localhost:8080}
      */
     public String toHostString() {
         if (this.port != -1) {
@@ -286,9 +287,8 @@ public final class HttpHost
             buffer.append(":");
             buffer.append(Integer.toString(this.port));
             return buffer.toString();
-        } else {
-            return this.hostname;
         }
+        return this.hostname;
     }
 
 
@@ -304,13 +304,13 @@ public final class HttpHost
             return true;
         }
         if (obj instanceof HttpHost) {
-            final HttpHost that = (HttpHost)obj;
-            return this.lcHostname.equals(that.lcHostname) && this.port == that.port &&
-                   this.schemeName.equals(that.schemeName) &&
-                   (this.address == null ? that.address == null : this.address.equals(that.address));
-        } else {
-            return false;
+            final HttpHost that = (HttpHost) obj;
+            return this.lcHostname.equals(that.lcHostname)
+                && this.port == that.port
+                && this.schemeName.equals(that.schemeName)
+                && (this.address==null ? that.address== null : this.address.equals(that.address));
         }
+        return false;
     }
 
     /**
@@ -322,7 +322,7 @@ public final class HttpHost
         hash = LangUtils.hashCode(hash, this.lcHostname);
         hash = LangUtils.hashCode(hash, this.port);
         hash = LangUtils.hashCode(hash, this.schemeName);
-        if (address != null) {
+        if (address!=null) {
             hash = LangUtils.hashCode(hash, address);
         }
         return hash;

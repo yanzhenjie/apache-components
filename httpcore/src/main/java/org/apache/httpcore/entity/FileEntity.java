@@ -27,26 +27,29 @@
 
 package org.apache.httpcore.entity;
 
-import org.apache.httpcore.util.Args;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.apache.httpcore.util.Args;
+
 /**
  * A self contained, repeatable entity that obtains its content from a file.
  *
  * @since 4.0
  */
-public class FileEntity
-  extends AbstractHttpEntity
-  implements Cloneable {
+public class FileEntity extends AbstractHttpEntity implements Cloneable {
 
     protected final File file;
 
     /**
+     * Creates a new instance.
+     *
+     * @param file The file to serve.
+     * @param contentType  The content type for the given {@code file}.
+     *
      * @deprecated (4.1.3) {@link #FileEntity(File, ContentType)}
      */
     @Deprecated
@@ -57,6 +60,11 @@ public class FileEntity
     }
 
     /**
+     * Creates a new instance.
+     *
+     * @param file The file to serve.
+     * @param contentType  The content type for the given {@code file}.
+     *
      * @since 4.2
      */
     public FileEntity(final File file, final ContentType contentType) {
@@ -68,6 +76,10 @@ public class FileEntity
     }
 
     /**
+     * Creates a new instance.
+     *
+     * @param file The file to serve.
+     *
      * @since 4.2
      */
     public FileEntity(final File file) {
@@ -91,18 +103,18 @@ public class FileEntity
     }
 
     @Override
-    public void writeTo(final OutputStream outstream) throws IOException {
-        Args.notNull(outstream, "Output stream");
-        final InputStream instream = new FileInputStream(this.file);
+    public void writeTo(final OutputStream outStream) throws IOException {
+        Args.notNull(outStream, "Output stream");
+        final InputStream inStream = new FileInputStream(this.file);
         try {
             final byte[] tmp = new byte[OUTPUT_BUFFER_SIZE];
             int l;
-            while ((l = instream.read(tmp)) != -1) {
-                outstream.write(tmp, 0, l);
+            while ((l = inStream.read(tmp)) != -1) {
+                outStream.write(tmp, 0, l);
             }
-            outstream.flush();
+            outStream.flush();
         } finally {
-            instream.close();
+            inStream.close();
         }
     }
 

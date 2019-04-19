@@ -36,34 +36,39 @@ import org.apache.httpcore.ProtocolVersion;
 import org.apache.httpcore.ReasonPhraseCatalog;
 import org.apache.httpcore.StatusLine;
 import org.apache.httpcore.util.Args;
+import org.apache.httpcore.util.TextUtils;
 
 /**
  * Basic implementation of {@link HttpResponse}.
  *
  * @see org.apache.httpcore.impl.DefaultHttpResponseFactory
+ *
  * @since 4.0
  */
-public class BasicHttpResponse
-  extends AbstractHttpMessage
-  implements HttpResponse {
+public class BasicHttpResponse extends AbstractHttpMessage implements HttpResponse {
 
-    private StatusLine statusline;
-    private ProtocolVersion ver;
-    private int code;
-    private String reasonPhrase;
-    private HttpEntity entity;
+    private StatusLine          statusline;
+    private ProtocolVersion     ver;
+    private int                 code;
+    private String              reasonPhrase;
+    private HttpEntity          entity;
     private final ReasonPhraseCatalog reasonCatalog;
-    private Locale locale;
+    private Locale              locale;
 
     /**
-     * Creates a new response. This is the constructor to which all others map.
+     * Creates a new response.
+     * This is the constructor to which all others map.
      *
-     * @param statusline the status line
-     * @param catalog the reason phrase catalog, or {@code null} to disable automatic reason phrase lookup
-     * @param locale the locale for looking up reason phrases, or {@code null} for the system locale
+     * @param statusline        the status line
+     * @param catalog           the reason phrase catalog, or
+     *                          {@code null} to disable automatic
+     *                          reason phrase lookup
+     * @param locale            the locale for looking up reason phrases, or
+     *                          {@code null} for the system locale
      */
-    public BasicHttpResponse(final StatusLine statusline, final ReasonPhraseCatalog catalog,
-      final Locale locale) {
+    public BasicHttpResponse(final StatusLine statusline,
+                             final ReasonPhraseCatalog catalog,
+                             final Locale locale) {
         super();
         this.statusline = Args.notNull(statusline, "Status line");
         this.ver = statusline.getProtocolVersion();
@@ -74,10 +79,11 @@ public class BasicHttpResponse
     }
 
     /**
-     * Creates a response from a status line. The response will not have a reason phrase catalog and use the
-     * system default locale.
+     * Creates a response from a status line.
+     * The response will not have a reason phrase catalog and
+     * use the system default locale.
      *
-     * @param statusline the status line
+     * @param statusline        the status line
      */
     public BasicHttpResponse(final StatusLine statusline) {
         super();
@@ -90,14 +96,18 @@ public class BasicHttpResponse
     }
 
     /**
-     * Creates a response from elements of a status line. The response will not have a reason phrase catalog
-     * and use the system default locale.
+     * Creates a response from elements of a status line.
+     * The response will not have a reason phrase catalog and
+     * use the system default locale.
      *
-     * @param ver the protocol version of the response
-     * @param code the status code of the response
-     * @param reason the reason phrase to the status code, or {@code null}
+     * @param ver       the protocol version of the response
+     * @param code      the status code of the response
+     * @param reason    the reason phrase to the status code, or
+     *                  {@code null}
      */
-    public BasicHttpResponse(final ProtocolVersion ver, final int code, final String reason) {
+    public BasicHttpResponse(final ProtocolVersion ver,
+                             final int code,
+                             final String reason) {
         super();
         Args.notNegative(code, "Status code");
         this.statusline = null;
@@ -119,9 +129,10 @@ public class BasicHttpResponse
     @Override
     public StatusLine getStatusLine() {
         if (this.statusline == null) {
-            this.statusline =
-              new BasicStatusLine(this.ver != null ? this.ver : HttpVersion.HTTP_1_1, this.code,
-                this.reasonPhrase != null ? this.reasonPhrase : getReason(this.code));
+            this.statusline = new BasicStatusLine(
+                    this.ver != null ? this.ver : HttpVersion.HTTP_1_1,
+                    this.code,
+                    this.reasonPhrase != null ? this.reasonPhrase : getReason(this.code));
         }
         return this.statusline;
     }
@@ -158,7 +169,8 @@ public class BasicHttpResponse
 
     // non-javadoc, see interface HttpResponse
     @Override
-    public void setStatusLine(final ProtocolVersion ver, final int code, final String reason) {
+    public void setStatusLine(
+            final ProtocolVersion ver, final int code, final String reason) {
         Args.notNegative(code, "Status code");
         this.statusline = null;
         this.ver = ver;
@@ -179,7 +191,7 @@ public class BasicHttpResponse
     @Override
     public void setReasonPhrase(final String reason) {
         this.statusline = null;
-        this.reasonPhrase = reason;
+        this.reasonPhrase = TextUtils.isBlank(reason) ? null : reason;
     }
 
     // non-javadoc, see interface HttpResponse
@@ -195,16 +207,17 @@ public class BasicHttpResponse
     }
 
     /**
-     * Looks up a reason phrase. This method evaluates the currently set catalog and locale. It also handles a
-     * missing catalog.
+     * Looks up a reason phrase.
+     * This method evaluates the currently set catalog and locale.
+     * It also handles a missing catalog.
      *
-     * @param code the status code for which to look up the reason
+     * @param code      the status code for which to look up the reason
      *
-     * @return the reason phrase, or {@code null} if there is none
+     * @return  the reason phrase, or {@code null} if there is none
      */
     protected String getReason(final int code) {
         return this.reasonCatalog != null ? this.reasonCatalog.getReason(code,
-          this.locale != null ? this.locale : Locale.getDefault()) : null;
+                this.locale != null ? this.locale : Locale.getDefault()) : null;
     }
 
     @Override

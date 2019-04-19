@@ -42,21 +42,20 @@ import org.apache.httpcore.params.CoreProtocolPNames;
 import org.apache.httpcore.util.Args;
 
 /**
- * RequestExpectContinue is responsible for enabling the 'expect-continue' handshake by adding {@code Expect}
- * header. This interceptor is recommended for client side protocol processors.
+ * RequestExpectContinue is responsible for enabling the 'expect-continue'
+ * handshake by adding {@code Expect} header. This interceptor is
+ * recommended for client side protocol processors.
  *
  * @since 4.0
  */
 @Contract(threading = ThreadingBehavior.IMMUTABLE)
 @SuppressWarnings("deprecation")
-public class RequestExpectContinue
-  implements HttpRequestInterceptor {
+public class RequestExpectContinue implements HttpRequestInterceptor {
 
     private final boolean activeByDefault;
 
     /**
-     * @deprecated (4.3) use
-     * {@link org.apache.httpcore.protocol.RequestExpectContinue#RequestExpectContinue(boolean)}
+     * @deprecated (4.3) use {@link org.apache.httpcore.protocol.RequestExpectContinue#RequestExpectContinue(boolean)}
      */
     @Deprecated
     public RequestExpectContinue() {
@@ -73,7 +72,7 @@ public class RequestExpectContinue
 
     @Override
     public void process(final HttpRequest request, final HttpContext context)
-      throws HttpException, IOException {
+            throws HttpException, IOException {
         Args.notNull(request, "HTTP request");
 
         if (!request.containsHeader(HTTP.EXPECT_DIRECTIVE)) {
@@ -81,10 +80,10 @@ public class RequestExpectContinue
                 final ProtocolVersion ver = request.getRequestLine().getProtocolVersion();
                 final HttpEntity entity = ((HttpEntityEnclosingRequest)request).getEntity();
                 // Do not send the expect header if request body is known to be empty
-                if (entity != null && entity.getContentLength() != 0 &&
-                    !ver.lessEquals(HttpVersion.HTTP_1_0)) {
-                    final boolean active = request.getParams()
-                      .getBooleanParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE, this.activeByDefault);
+                if (entity != null
+                        && entity.getContentLength() != 0 && !ver.lessEquals(HttpVersion.HTTP_1_0)) {
+                    final boolean active = request.getParams().getBooleanParameter(
+                            CoreProtocolPNames.USE_EXPECT_CONTINUE, this.activeByDefault);
                     if (active) {
                         request.addHeader(HTTP.EXPECT_DIRECTIVE, HTTP.EXPECT_CONTINUE);
                     }

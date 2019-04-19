@@ -26,6 +26,7 @@
  */
 
 /**
- * Default implementations of client side connection pools for synchronous, blocking communication.
+ * Default implementations of client side connection pools
+ * for synchronous, blocking communication.
  */
 package org.apache.httpcore.impl.pool;

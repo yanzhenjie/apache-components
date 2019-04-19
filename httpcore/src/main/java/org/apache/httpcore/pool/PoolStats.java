@@ -32,14 +32,15 @@ import org.apache.httpcore.annotation.Contract;
 import java.io.Serializable;
 
 /**
- * Pool statistics. <p> The total number of connections in the pool is equal to {@code available} plus {@code
- * leased}. </p>
+ * Pool statistics.
+ * <p>
+ * The total number of connections in the pool is equal to {@code available} plus {@code leased}.
+ * </p>
  *
  * @since 4.2
  */
 @Contract(threading = ThreadingBehavior.IMMUTABLE)
-public class PoolStats
-  implements Serializable {
+public class PoolStats implements Serializable {
 
     private static final long serialVersionUID = -2807686144795228544L;
 
@@ -57,9 +58,11 @@ public class PoolStats
     }
 
     /**
-     * Gets the number of persistent connections tracked by the connection manager currently being used to
-     * execute requests. <p> The total number of connections in the pool is equal to {@code available} plus
-     * {@code leased}. </p>
+     * Gets the number of persistent connections tracked by the connection manager currently being used to execute
+     * requests.
+     * <p>
+     * The total number of connections in the pool is equal to {@code available} plus {@code leased}.
+     * </p>
      *
      * @return the number of persistent connections.
      */
@@ -68,8 +71,8 @@ public class PoolStats
     }
 
     /**
-     * Gets the number of connection requests being blocked awaiting a free connection. This can happen only
-     * if there are more worker threads contending for fewer connections.
+     * Gets the number of connection requests being blocked awaiting a free connection. This can happen only if there
+     * are more worker threads contending for fewer connections.
      *
      * @return the number of connection requests being blocked awaiting a free connection.
      */
@@ -78,8 +81,10 @@ public class PoolStats
     }
 
     /**
-     * Gets the number idle persistent connections. <p> The total number of connections in the pool is equal
-     * to {@code available} plus {@code leased}. </p>
+     * Gets the number idle persistent connections.
+     * <p>
+     * The total number of connections in the pool is equal to {@code available} plus {@code leased}.
+     * </p>
      *
      * @return number idle persistent connections.
      */

@@ -36,13 +36,14 @@ import org.apache.httpcore.util.Args;
 import org.apache.httpcore.util.CharArrayBuffer;
 
 /**
- * This class represents a raw HTTP header whose content is parsed 'on demand' only when the header value
- * needs to be consumed.
+ * This class represents a raw HTTP header whose content is parsed 'on demand'
+ * only when the header value needs to be consumed.
  *
  * @since 4.0
  */
-public class BufferedHeader
-  implements FormattedHeader, Cloneable, Serializable {
+public class BufferedHeader implements FormattedHeader, Cloneable, Serializable {
+
+    private static final long serialVersionUID = -2768352615787625448L;
 
     /**
      * Header name.
@@ -61,24 +62,28 @@ public class BufferedHeader
 
 
     /**
-     * Creates a new header from a buffer. The name of the header will be parsed immediately, the value only
-     * if it is accessed.
+     * Creates a new header from a buffer.
+     * The name of the header will be parsed immediately,
+     * the value only if it is accessed.
      *
-     * @param buffer the buffer containing the header to represent
+     * @param buffer    the buffer containing the header to represent
      *
-     * @throws ParseException in case of a parse error
+     * @throws ParseException   in case of a parse error
      */
-    public BufferedHeader(final CharArrayBuffer buffer) throws ParseException {
+    public BufferedHeader(final CharArrayBuffer buffer)
+        throws ParseException {
 
         super();
         Args.notNull(buffer, "Char array buffer");
         final int colon = buffer.indexOf(':');
         if (colon == -1) {
-            throw new ParseException("Invalid header: " + buffer.toString());
+            throw new ParseException
+                ("Invalid header: " + buffer.toString());
         }
         final String s = buffer.substringTrimmed(0, colon);
-        if (s.length() == 0) {
-            throw new ParseException("Invalid header: " + buffer.toString());
+        if (s.isEmpty()) {
+            throw new ParseException
+                ("Invalid header: " + buffer.toString());
         }
         this.buffer = buffer;
         this.name = s;

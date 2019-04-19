@@ -49,16 +49,15 @@ import org.apache.httpcore.pool.ConnFactory;
 import org.apache.httpcore.util.Args;
 
 /**
- * A very basic {@link ConnFactory} implementation that creates {@link HttpClientConnection} instances given a
- * {@link HttpHost} instance.
+ * A very basic {@link ConnFactory} implementation that creates
+ * {@link HttpClientConnection} instances given a {@link HttpHost} instance.
  *
  * @see HttpHost
  * @since 4.2
  */
 @SuppressWarnings("deprecation")
 @Contract(threading = ThreadingBehavior.IMMUTABLE_CONDITIONAL)
-public class BasicConnFactory
-  implements ConnFactory<HttpHost, HttpClientConnection> {
+public class BasicConnFactory implements ConnFactory<HttpHost, HttpClientConnection> {
 
     private final SocketFactory plainfactory;
     private final SSLSocketFactory sslfactory;
@@ -68,7 +67,8 @@ public class BasicConnFactory
 
     /**
      * @deprecated (4.3) use
-     * {@link BasicConnFactory#BasicConnFactory(SocketFactory, SSLSocketFactory, int, SocketConfig, ConnectionConfig)}.
+     *   {@link BasicConnFactory#BasicConnFactory(SocketFactory, SSLSocketFactory, int,
+     *     SocketConfig, ConnectionConfig)}.
      */
     @Deprecated
     public BasicConnFactory(final SSLSocketFactory sslfactory, final HttpParams params) {
@@ -78,12 +78,13 @@ public class BasicConnFactory
         this.sslfactory = sslfactory;
         this.connectTimeout = params.getIntParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 0);
         this.sconfig = HttpParamConfig.getSocketConfig(params);
-        this.connFactory =
-          new DefaultBHttpClientConnectionFactory(HttpParamConfig.getConnectionConfig(params));
+        this.connFactory = new DefaultBHttpClientConnectionFactory(
+                HttpParamConfig.getConnectionConfig(params));
     }
 
     /**
-     * @deprecated (4.3) use {@link BasicConnFactory#BasicConnFactory(int, SocketConfig, ConnectionConfig)}.
+     * @deprecated (4.3) use
+     *   {@link BasicConnFactory#BasicConnFactory(int, SocketConfig, ConnectionConfig)}.
      */
     @Deprecated
     public BasicConnFactory(final HttpParams params) {
@@ -93,22 +94,26 @@ public class BasicConnFactory
     /**
      * @since 4.3
      */
-    public BasicConnFactory(final SocketFactory plainfactory, final SSLSocketFactory sslfactory,
-      final int connectTimeout, final SocketConfig sconfig, final ConnectionConfig cconfig) {
+    public BasicConnFactory(
+            final SocketFactory plainfactory,
+            final SSLSocketFactory sslfactory,
+            final int connectTimeout,
+            final SocketConfig sconfig,
+            final ConnectionConfig cconfig) {
         super();
         this.plainfactory = plainfactory;
         this.sslfactory = sslfactory;
         this.connectTimeout = connectTimeout;
         this.sconfig = sconfig != null ? sconfig : SocketConfig.DEFAULT;
-        this.connFactory =
-          new DefaultBHttpClientConnectionFactory(cconfig != null ? cconfig : ConnectionConfig.DEFAULT);
+        this.connFactory = new DefaultBHttpClientConnectionFactory(
+                cconfig != null ? cconfig : ConnectionConfig.DEFAULT);
     }
 
     /**
      * @since 4.3
      */
-    public BasicConnFactory(final int connectTimeout, final SocketConfig sconfig,
-      final ConnectionConfig cconfig) {
+    public BasicConnFactory(
+            final int connectTimeout, final SocketConfig sconfig, final ConnectionConfig cconfig) {
         this(null, null, connectTimeout, sconfig, cconfig);
     }
 
@@ -142,11 +147,11 @@ public class BasicConnFactory
         final String scheme = host.getSchemeName();
         Socket socket = null;
         if ("http".equalsIgnoreCase(scheme)) {
-            socket = this.plainfactory != null ? this.plainfactory.createSocket() : new Socket();
-        }
-        if ("https".equalsIgnoreCase(scheme)) {
-            socket =
-              (this.sslfactory != null ? this.sslfactory : SSLSocketFactory.getDefault()).createSocket();
+            socket = this.plainfactory != null ? this.plainfactory.createSocket() :
+                    new Socket();
+        } if ("https".equalsIgnoreCase(scheme)) {
+            socket = (this.sslfactory != null ? this.sslfactory :
+                    SSLSocketFactory.getDefault()).createSocket();
         }
         if (socket == null) {
             throw new IOException(scheme + " scheme is not supported");

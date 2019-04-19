@@ -42,22 +42,24 @@ import org.apache.httpcore.annotation.Contract;
 import org.apache.httpcore.util.Args;
 
 /**
- * RequestContent is the most important interceptor for outgoing requests. It is responsible for delimiting
- * content length by adding {@code Content-Length} or {@code Transfer-Content} headers based on the properties
- * of the enclosed entity and the protocol version. This interceptor is required for correct functioning of
- * client side protocol processors.
+ * RequestContent is the most important interceptor for outgoing requests.
+ * It is responsible for delimiting content length by adding
+ * {@code Content-Length} or {@code Transfer-Content} headers based
+ * on the properties of the enclosed entity and the protocol version.
+ * This interceptor is required for correct functioning of client side protocol
+ * processors.
  *
  * @since 4.0
  */
 @Contract(threading = ThreadingBehavior.IMMUTABLE)
-public class RequestContent
-  implements HttpRequestInterceptor {
+public class RequestContent implements HttpRequestInterceptor {
 
     private final boolean overwrite;
 
     /**
-     * Default constructor. The {@code Content-Length} or {@code Transfer-Encoding} will cause the interceptor
-     * to throw {@link ProtocolException} if already present in the response message.
+     * Default constructor. The {@code Content-Length} or {@code Transfer-Encoding}
+     * will cause the interceptor to throw {@link ProtocolException} if already present in the
+     * response message.
      */
     public RequestContent() {
         this(false);
@@ -66,21 +68,22 @@ public class RequestContent
     /**
      * Constructor that can be used to fine-tune behavior of this interceptor.
      *
-     * @param overwrite If set to {@code true} the {@code Content-Length} and {@code Transfer-Encoding}
-     *   headers will be created or updated if already present. If set to {@code false} the {@code
-     *   Content-Length} and {@code Transfer-Encoding} headers will cause the interceptor to throw {@link
-     *   ProtocolException} if already present in the response message.
+     * @param overwrite If set to {@code true} the {@code Content-Length} and
+     * {@code Transfer-Encoding} headers will be created or updated if already present.
+     * If set to {@code false} the {@code Content-Length} and
+     * {@code Transfer-Encoding} headers will cause the interceptor to throw
+     * {@link ProtocolException} if already present in the response message.
      *
      * @since 4.2
      */
-    public RequestContent(final boolean overwrite) {
-        super();
-        this.overwrite = overwrite;
+     public RequestContent(final boolean overwrite) {
+         super();
+         this.overwrite = overwrite;
     }
 
     @Override
     public void process(final HttpRequest request, final HttpContext context)
-      throws HttpException, IOException {
+            throws HttpException, IOException {
         Args.notNull(request, "HTTP request");
         if (request instanceof HttpEntityEnclosingRequest) {
             if (this.overwrite) {
@@ -103,18 +106,21 @@ public class RequestContent
             // Must specify a transfer encoding or a content length
             if (entity.isChunked() || entity.getContentLength() < 0) {
                 if (ver.lessEquals(HttpVersion.HTTP_1_0)) {
-                    throw new ProtocolException("Chunked transfer encoding not allowed for " + ver);
+                    throw new ProtocolException(
+                            "Chunked transfer encoding not allowed for " + ver);
                 }
                 request.addHeader(HTTP.TRANSFER_ENCODING, HTTP.CHUNK_CODING);
             } else {
                 request.addHeader(HTTP.CONTENT_LEN, Long.toString(entity.getContentLength()));
             }
             // Specify a content type if known
-            if (entity.getContentType() != null && !request.containsHeader(HTTP.CONTENT_TYPE)) {
+            if (entity.getContentType() != null && !request.containsHeader(
+                    HTTP.CONTENT_TYPE )) {
                 request.addHeader(entity.getContentType());
             }
             // Specify a content encoding if known
-            if (entity.getContentEncoding() != null && !request.containsHeader(HTTP.CONTENT_ENCODING)) {
+            if (entity.getContentEncoding() != null && !request.containsHeader(
+                    HTTP.CONTENT_ENCODING)) {
                 request.addHeader(entity.getContentEncoding());
             }
         }

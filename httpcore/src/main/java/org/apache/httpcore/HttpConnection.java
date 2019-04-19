@@ -35,12 +35,13 @@ import java.io.IOException;
  *
  * @since 4.0
  */
-public interface HttpConnection
-  extends Closeable {
+public interface HttpConnection extends Closeable {
 
     /**
-     * Closes this connection gracefully. This method will attempt to flush the internal output buffer prior
-     * to closing the underlying socket. This method MUST NOT be called from a different thread to force
+     * Closes this connection gracefully.
+     * This method will attempt to flush the internal output
+     * buffer prior to closing the underlying socket.
+     * This method MUST NOT be called from a different thread to force
      * shutdown of the connection. Use {@link #shutdown shutdown} instead.
      */
     @Override
@@ -48,21 +49,24 @@ public interface HttpConnection
 
     /**
      * Checks if this connection is open.
-     *
      * @return true if it is open, false if it is closed.
      */
     boolean isOpen();
 
     /**
-     * Checks whether this connection has gone down. Network connections may get closed during some time of
-     * inactivity for several reasons. The next time a read is attempted on such a connection it will throw an
-     * IOException. This method tries to alleviate this inconvenience by trying to find out if a connection is
-     * still usable. Implementations may do that by attempting a read with a very small timeout. Thus this
-     * method may block for a small amount of time before returning a result. It is therefore an
-     * <i>expensive</i> operation.
+     * Checks whether this connection has gone down.
+     * Network connections may get closed during some time of inactivity
+     * for several reasons. The next time a read is attempted on such a
+     * connection it will throw an IOException.
+     * This method tries to alleviate this inconvenience by trying to
+     * find out if a connection is still usable. Implementations may do
+     * that by attempting a read with a very small timeout. Thus this
+     * method may block for a small amount of time before returning a result.
+     * It is therefore an <i>expensive</i> operation.
      *
-     * @return {@code true} if attempts to use this connection are likely to succeed, or {@code false} if they
-     *   are likely to fail and this connection should be closed
+     * @return  {@code true} if attempts to use this connection are
+     *          likely to succeed, or {@code false} if they are likely
+     *          to fail and this connection should be closed
      */
     boolean isStale();
 
@@ -76,14 +80,17 @@ public interface HttpConnection
     /**
      * Returns the socket timeout value.
      *
-     * @return positive value in milliseconds if a timeout is set, {@code 0} if timeout is disabled or {@code
-     *   -1} if timeout is undefined.
+     * @return positive value in milliseconds if a timeout is set,
+     * {@code 0} if timeout is disabled or {@code -1} if
+     * timeout is undefined.
      */
     int getSocketTimeout();
 
     /**
-     * Force-closes this connection. This is the only method of a connection which may be called from a
-     * different thread to terminate the connection. This method will not attempt to flush the transmitter's
+     * Force-closes this connection.
+     * This is the only method of a connection which may be called
+     * from a different thread to terminate the connection.
+     * This method will not attempt to flush the transmitter's
      * internal buffer prior to closing the underlying socket.
      */
     void shutdown() throws IOException;

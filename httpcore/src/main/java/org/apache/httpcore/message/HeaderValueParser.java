@@ -33,17 +33,21 @@ import org.apache.httpcore.ParseException;
 import org.apache.httpcore.util.CharArrayBuffer;
 
 /**
- * Interface for parsing header values into elements. Instances of this interface are expected to be stateless
- * and thread-safe.
+ * Interface for parsing header values into elements.
+ * Instances of this interface are expected to be stateless and thread-safe.
  *
  * @since 4.0
  */
 public interface HeaderValueParser {
 
     /**
-     * Parses a header value into elements. Parse errors are indicated as {@code RuntimeException}. <p> Some
-     * HTTP headers (such as the set-cookie header) have values that can be decomposed into multiple elements.
-     * In order to be processed by this parser, such headers must be in the following form: </p>
+     * Parses a header value into elements.
+     * Parse errors are indicated as {@code RuntimeException}.
+     * <p>
+     * Some HTTP headers (such as the set-cookie header) have values that
+     * can be decomposed into multiple elements. In order to be processed
+     * by this parser, such headers must be in the following form:
+     * </p>
      * <pre>
      * header  = [ element ] *( "," [ element ] )
      * element = name [ "=" [ value ] ] *( ";" [ param ] )
@@ -58,48 +62,56 @@ public interface HeaderValueParser {
      * text          = any char except &lt;"&gt;
      * quoted-char   = "\" char
      * </pre>
-     * <p> Any amount of white space is allowed between any part of the header, element or param and is
-     * ignored. A missing value in any element or param will be stored as the empty {@link String}; if the "="
-     * is also missing <var>null</var> will be stored instead. </p> <p> Note that this parser does not apply
-     * to list-typed HTTP header fields in general; it is only suitable for fields that use the syntax
-     * described above. Counter-examples are "Link" (RFC 8288), "If-None-Match" (RFC 7232) or "Dav" (RFC
-     * 4918). </p>
+     * <p>
+     * Any amount of white space is allowed between any part of the
+     * header, element or param and is ignored. A missing value in any
+     * element or param will be stored as the empty {@link String};
+     * if the "=" is also missing <var>null</var> will be stored instead.
+     * </p>
+     * <p>
+     * Note that this parser does not apply to list-typed HTTP header fields in
+     * general; it is only suitable for fields that use the syntax described
+     * above. Counter-examples are "Link" (RFC 8288), "If-None-Match" (RFC 7232)
+     * or "Dav" (RFC 4918).
+     * </p>
      *
-     * @param buffer buffer holding the header value to parse
-     * @param cursor the parser cursor containing the current position and the bounds within the buffer for
-     *   the parsing operation
+     * @param buffer    buffer holding the header value to parse
+     * @param cursor    the parser cursor containing the current position and
+     *                  the bounds within the buffer for the parsing operation
      *
-     * @return an array holding all elements of the header value
+     * @return  an array holding all elements of the header value
      *
-     * @throws ParseException in case of a parsing error
+     * @throws ParseException        in case of a parsing error
      */
     HeaderElement[] parseElements(CharArrayBuffer buffer, ParserCursor cursor) throws ParseException;
 
     /**
-     * Parses a single header element. A header element consist of a semicolon-separate list of name=value
-     * definitions.
+     * Parses a single header element.
+     * A header element consist of a semicolon-separate list
+     * of name=value definitions.
      *
-     * @param buffer buffer holding the element to parse
-     * @param cursor the parser cursor containing the current position and the bounds within the buffer for
-     *   the parsing operation
+     * @param buffer    buffer holding the element to parse
+     * @param cursor    the parser cursor containing the current position and
+     *                  the bounds within the buffer for the parsing operation
      *
-     * @return the parsed element
+     * @return  the parsed element
      *
-     * @throws ParseException in case of a parse error
+     * @throws ParseException        in case of a parse error
      */
     HeaderElement parseHeaderElement(CharArrayBuffer buffer, ParserCursor cursor) throws ParseException;
 
     /**
-     * Parses a list of name-value pairs. These lists are used to specify parameters to a header element.
+     * Parses a list of name-value pairs.
+     * These lists are used to specify parameters to a header element.
      * Parse errors are indicated as {@code ParseException}.
      *
-     * @param buffer buffer holding the name-value list to parse
-     * @param cursor the parser cursor containing the current position and the bounds within the buffer for
-     *   the parsing operation
+     * @param buffer    buffer holding the name-value list to parse
+     * @param cursor    the parser cursor containing the current position and
+     *                  the bounds within the buffer for the parsing operation
      *
-     * @return an array holding all items of the name-value list
+     * @return  an array holding all items of the name-value list
      *
-     * @throws ParseException in case of a parse error
+     * @throws ParseException        in case of a parse error
      */
     NameValuePair[] parseParameters(CharArrayBuffer buffer, ParserCursor cursor) throws ParseException;
 
@@ -107,12 +119,14 @@ public interface HeaderValueParser {
     /**
      * Parses a name=value specification, where the = and value are optional.
      *
-     * @param buffer the buffer holding the name-value pair to parse
-     * @param cursor the parser cursor containing the current position and the bounds within the buffer for
-     *   the parsing operation
+     * @param buffer    the buffer holding the name-value pair to parse
+     * @param cursor    the parser cursor containing the current position and
+     *                  the bounds within the buffer for the parsing operation
      *
-     * @return the name-value pair, where the value is {@code null} if no value is specified
+     * @return  the name-value pair, where the value is {@code null}
+     *          if no value is specified
      */
     NameValuePair parseNameValuePair(CharArrayBuffer buffer, ParserCursor cursor) throws ParseException;
 
 }
+

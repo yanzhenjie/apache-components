@@ -30,8 +30,9 @@ package org.apache.httpcore.protocol;
 import org.apache.httpcore.HttpRequest;
 
 /**
- * HttpRequestHandlerMapper can be used to resolve an instance of {@link HttpRequestHandler} matching a
- * particular {@link HttpRequest}. Usually the mapped request handler will be used to process the request.
+ * HttpRequestHandlerMapper can be used to resolve an instance of
+ * {@link HttpRequestHandler} matching a particular {@link HttpRequest}. Usually the
+ * mapped request handler will be used to process the request.
  *
  * @since 4.3
  */
@@ -41,8 +42,8 @@ public interface HttpRequestHandlerMapper {
      * Looks up a handler matching the given request.
      *
      * @param request the request to map to a handler
-     *
-     * @return HTTP request handler or {@code null} if no match is found.
+     * @return HTTP request handler or {@code null} if no match
+     * is found.
      */
     HttpRequestHandler lookup(HttpRequest request);
 

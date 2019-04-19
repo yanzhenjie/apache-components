@@ -26,6 +26,7 @@
  */
 
 /**
- * Core HTTP message components, message element parser and writer APIs and their default implementations.
+ * Core HTTP message components, message element parser
+ * and writer APIs and their default implementations.
  */
 package org.apache.httpcore.message;

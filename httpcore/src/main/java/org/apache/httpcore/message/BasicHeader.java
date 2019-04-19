@@ -27,6 +27,8 @@
 
 package org.apache.httpcore.message;
 
+import java.io.Serializable;
+
 import org.apache.httpcore.Header;
 import org.apache.httpcore.HeaderElement;
 import org.apache.httpcore.ParseException;
@@ -34,18 +36,17 @@ import org.apache.httpcore.annotation.Contract;
 import org.apache.httpcore.annotation.ThreadingBehavior;
 import org.apache.httpcore.util.Args;
 
-import java.io.Serializable;
-
 /**
  * Implements a basic {@link Header}.
  *
  * @since 4.0
  */
 @Contract(threading = ThreadingBehavior.IMMUTABLE)
-public class BasicHeader
-  implements Header, Cloneable, Serializable {
+public class BasicHeader implements Header, Cloneable, Serializable {
 
     private static final HeaderElement[] EMPTY_HEADER_ELEMENTS = new HeaderElement[] {};
+
+    private static final long serialVersionUID = -5427236326487562174L;
 
     private final String name;
     private final String value;

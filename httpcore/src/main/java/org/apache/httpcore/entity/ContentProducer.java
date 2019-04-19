@@ -31,13 +31,14 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * An abstract entity content producer. <p>Content producers are expected to be able to produce their content
- * multiple times</p>
+ * An abstract entity content producer.
+ *<p>Content producers are expected to be able to produce their
+ * content multiple times</p>
  *
  * @since 4.0
  */
 public interface ContentProducer {
 
-    void writeTo(OutputStream outstream) throws IOException;
+    void writeTo(OutputStream outStream) throws IOException;
 
 }

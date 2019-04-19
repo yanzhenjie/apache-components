@@ -45,8 +45,7 @@ import org.apache.httpcore.message.LineParser;
  * @since 4.3
  */
 @Contract(threading = ThreadingBehavior.IMMUTABLE_CONDITIONAL)
-public class DefaultHttpResponseParserFactory
-  implements HttpMessageParserFactory<HttpResponse> {
+public class DefaultHttpResponseParserFactory implements HttpMessageParserFactory<HttpResponse> {
 
     public static final DefaultHttpResponseParserFactory INSTANCE = new DefaultHttpResponseParserFactory();
 
@@ -54,11 +53,11 @@ public class DefaultHttpResponseParserFactory
     private final HttpResponseFactory responseFactory;
 
     public DefaultHttpResponseParserFactory(final LineParser lineParser,
-      final HttpResponseFactory responseFactory) {
+            final HttpResponseFactory responseFactory) {
         super();
         this.lineParser = lineParser != null ? lineParser : BasicLineParser.INSTANCE;
-        this.responseFactory =
-          responseFactory != null ? responseFactory : DefaultHttpResponseFactory.INSTANCE;
+        this.responseFactory = responseFactory != null ? responseFactory
+                : DefaultHttpResponseFactory.INSTANCE;
     }
 
     public DefaultHttpResponseParserFactory() {
@@ -67,7 +66,7 @@ public class DefaultHttpResponseParserFactory
 
     @Override
     public HttpMessageParser<HttpResponse> create(final SessionInputBuffer buffer,
-      final MessageConstraints constraints) {
+            final MessageConstraints constraints) {
         return new DefaultHttpResponseParser(buffer, lineParser, responseFactory, constraints);
     }
 

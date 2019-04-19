@@ -28,7 +28,8 @@
 package org.apache.httpcore.io;
 
 /**
- * The point of access to the statistics of {@link SessionInputBuffer} or {@link SessionOutputBuffer}.
+ * The point of access to the statistics of {@link SessionInputBuffer} or
+ * {@link SessionOutputBuffer}.
  *
  * @since 4.0
  */

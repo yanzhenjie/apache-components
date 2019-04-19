@@ -28,8 +28,8 @@
 package org.apache.httpcore.impl.io;
 
 import org.apache.httpcore.HttpResponse;
-import org.apache.httpcore.annotation.Contract;
 import org.apache.httpcore.annotation.ThreadingBehavior;
+import org.apache.httpcore.annotation.Contract;
 import org.apache.httpcore.io.HttpMessageWriter;
 import org.apache.httpcore.io.HttpMessageWriterFactory;
 import org.apache.httpcore.io.SessionOutputBuffer;
@@ -42,8 +42,7 @@ import org.apache.httpcore.message.LineFormatter;
  * @since 4.3
  */
 @Contract(threading = ThreadingBehavior.IMMUTABLE_CONDITIONAL)
-public class DefaultHttpResponseWriterFactory
-  implements HttpMessageWriterFactory<HttpResponse> {
+public class DefaultHttpResponseWriterFactory implements HttpMessageWriterFactory<HttpResponse> {
 
     public static final DefaultHttpResponseWriterFactory INSTANCE = new DefaultHttpResponseWriterFactory();
 

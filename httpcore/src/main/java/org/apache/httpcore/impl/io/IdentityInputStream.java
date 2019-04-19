@@ -35,15 +35,18 @@ import org.apache.httpcore.io.SessionInputBuffer;
 import org.apache.httpcore.util.Args;
 
 /**
- * Input stream that reads data without any transformation. The end of the content entity is demarcated by
- * closing the underlying connection (EOF condition). Entities transferred using this input stream can be of
- * unlimited length. <p> Note that this class NEVER closes the underlying stream, even when close gets called.
- * Instead, it will read until the end of the stream (until {@code -1} is returned).
+ * Input stream that reads data without any transformation. The end of the
+ * content entity is demarcated by closing the underlying connection
+ * (EOF condition). Entities transferred using this input stream can be of
+ * unlimited length.
+ * <p>
+ * Note that this class NEVER closes the underlying stream, even when close
+ * gets called.  Instead, it will read until the end of the stream (until
+ * {@code -1} is returned).
  *
  * @since 4.0
  */
-public class IdentityInputStream
-  extends InputStream {
+public class IdentityInputStream extends InputStream {
 
     private final SessionInputBuffer in;
 
@@ -62,10 +65,9 @@ public class IdentityInputStream
     @Override
     public int available() throws IOException {
         if (this.in instanceof BufferInfo) {
-            return ((BufferInfo)this.in).length();
-        } else {
-            return 0;
+            return ((BufferInfo) this.in).length();
         }
+        return 0;
     }
 
     @Override
@@ -75,20 +77,12 @@ public class IdentityInputStream
 
     @Override
     public int read() throws IOException {
-        if (this.closed) {
-            return -1;
-        } else {
-            return this.in.read();
-        }
+        return this.closed ? -1 : this.in.read();
     }
 
     @Override
     public int read(final byte[] b, final int off, final int len) throws IOException {
-        if (this.closed) {
-            return -1;
-        } else {
-            return this.in.read(b, off, len);
-        }
+        return this.closed ? -1 : this.in.read(b, off, len);
     }
 
 }

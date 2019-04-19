@@ -33,16 +33,24 @@ import org.apache.httpcore.annotation.Contract;
 import org.apache.httpcore.util.Args;
 
 /**
- * Maintains a map of HTTP request handlers keyed by a request URI pattern. <br> Patterns may have three
- * formats: <ul> <li>{@code *}</li> <li>{@code *&lt;uri&gt;}</li> <li>{@code &lt;uri&gt;*}</li> </ul> <br>
- * This class can be used to map an instance of {@link HttpRequestHandler} matching a particular request URI.
- * Usually the mapped request handler will be used to process the request with the specified request URI.
+ * Maintains a map of HTTP request handlers keyed by a request URI pattern.
+ * <br>
+ * Patterns may have three formats:
+ * <ul>
+ *   <li>{@code *}</li>
+ *   <li>{@code *&lt;uri&gt;}</li>
+ *   <li>{@code &lt;uri&gt;*}</li>
+ * </ul>
+ * <br>
+ * This class can be used to map an instance of
+ * {@link HttpRequestHandler} matching a particular request URI. Usually the
+ * mapped request handler will be used to process the request with the
+ * specified request URI.
  *
  * @since 4.3
  */
 @Contract(threading = ThreadingBehavior.SAFE)
-public class UriHttpRequestHandlerMapper
-  implements HttpRequestHandlerMapper {
+public class UriHttpRequestHandlerMapper implements HttpRequestHandlerMapper {
 
     private final UriPatternMatcher<HttpRequestHandler> matcher;
 
@@ -56,7 +64,8 @@ public class UriHttpRequestHandlerMapper
     }
 
     /**
-     * Registers the given {@link HttpRequestHandler} as a handler for URIs matching the given pattern.
+     * Registers the given {@link HttpRequestHandler} as a handler for URIs
+     * matching the given pattern.
      *
      * @param pattern the pattern to register the handler for.
      * @param handler the handler.
@@ -97,7 +106,6 @@ public class UriHttpRequestHandlerMapper
      * Looks up a handler matching the given request URI.
      *
      * @param request the request
-     *
      * @return handler or {@code null} if no match is found.
      */
     @Override

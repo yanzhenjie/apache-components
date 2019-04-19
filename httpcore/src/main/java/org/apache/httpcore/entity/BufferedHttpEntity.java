@@ -27,32 +27,32 @@
 
 package org.apache.httpcore.entity;
 
-import org.apache.httpcore.HttpEntity;
-import org.apache.httpcore.util.Args;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.apache.httpcore.HttpEntity;
+import org.apache.httpcore.util.Args;
+
 /**
- * A wrapping entity that buffers it content if necessary. The buffered entity is always repeatable. If the
- * wrapped entity is repeatable itself, calls are passed through. If the wrapped entity is not repeatable, the
- * content is read into a buffer once and provided from there as often as required.
+ * A wrapping entity that buffers it content if necessary.
+ * The buffered entity is always repeatable.
+ * If the wrapped entity is repeatable itself, calls are passed through.
+ * If the wrapped entity is not repeatable, the content is read into a
+ * buffer once and provided from there as often as required.
  *
  * @since 4.0
  */
-public class BufferedHttpEntity
-  extends HttpEntityWrapper {
+public class BufferedHttpEntity extends HttpEntityWrapper {
 
     private final byte[] buffer;
 
     /**
      * Creates a new buffered entity wrapper.
      *
-     * @param entity the entity to wrap, not null
-     *
+     * @param entity   the entity to wrap, not null
      * @throws IllegalArgumentException if wrapped is null
      */
     public BufferedHttpEntity(final HttpEntity entity) throws IOException {
@@ -69,26 +69,18 @@ public class BufferedHttpEntity
 
     @Override
     public long getContentLength() {
-        if (this.buffer != null) {
-            return this.buffer.length;
-        } else {
-            return super.getContentLength();
-        }
+        return this.buffer != null ? this.buffer.length : super.getContentLength();
     }
 
     @Override
     public InputStream getContent() throws IOException {
-        if (this.buffer != null) {
-            return new ByteArrayInputStream(this.buffer);
-        } else {
-            return super.getContent();
-        }
+        return this.buffer != null ? new ByteArrayInputStream(this.buffer) : super.getContent();
     }
 
     /**
      * Tells that this entity does not have to be chunked.
      *
-     * @return {@code false}
+     * @return  {@code false}
      */
     @Override
     public boolean isChunked() {
@@ -98,7 +90,7 @@ public class BufferedHttpEntity
     /**
      * Tells that this entity is repeatable.
      *
-     * @return {@code true}
+     * @return  {@code true}
      */
     @Override
     public boolean isRepeatable() {
@@ -107,12 +99,12 @@ public class BufferedHttpEntity
 
 
     @Override
-    public void writeTo(final OutputStream outstream) throws IOException {
-        Args.notNull(outstream, "Output stream");
+    public void writeTo(final OutputStream outStream) throws IOException {
+        Args.notNull(outStream, "Output stream");
         if (this.buffer != null) {
-            outstream.write(this.buffer);
+            outStream.write(this.buffer);
         } else {
-            super.writeTo(outstream);
+            super.writeTo(outStream);
         }
     }
 

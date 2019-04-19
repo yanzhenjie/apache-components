@@ -49,11 +49,10 @@ public final class ConnSupport {
         final CodingErrorAction unmappable = cconfig.getUnmappableInputAction();
         if (charset != null) {
             return charset.newDecoder()
-              .onMalformedInput(malformed != null ? malformed : CodingErrorAction.REPORT)
-              .onUnmappableCharacter(unmappable != null ? unmappable : CodingErrorAction.REPORT);
-        } else {
-            return null;
+                    .onMalformedInput(malformed != null ? malformed : CodingErrorAction.REPORT)
+                    .onUnmappableCharacter(unmappable != null ? unmappable: CodingErrorAction.REPORT);
         }
+        return null;
     }
 
     public static CharsetEncoder createEncoder(final ConnectionConfig cconfig) {
@@ -65,11 +64,10 @@ public final class ConnSupport {
             final CodingErrorAction malformed = cconfig.getMalformedInputAction();
             final CodingErrorAction unmappable = cconfig.getUnmappableInputAction();
             return charset.newEncoder()
-              .onMalformedInput(malformed != null ? malformed : CodingErrorAction.REPORT)
-              .onUnmappableCharacter(unmappable != null ? unmappable : CodingErrorAction.REPORT);
-        } else {
-            return null;
+                .onMalformedInput(malformed != null ? malformed : CodingErrorAction.REPORT)
+                .onUnmappableCharacter(unmappable != null ? unmappable: CodingErrorAction.REPORT);
         }
+        return null;
     }
 
 }

@@ -43,11 +43,9 @@ public final class HTTP {
     public static final int SP = 32; // <US-ASCII SP, space (32)>
     public static final int HT = 9;  // <US-ASCII HT, horizontal-tab (9)>
 
-    /**
-     * HTTP header definitions
-     */
+    /** HTTP header definitions */
     public static final String TRANSFER_ENCODING = "Transfer-Encoding";
-    public static final String CONTENT_LEN = "Content-Length";
+    public static final String CONTENT_LEN  = "Content-Length";
     public static final String CONTENT_TYPE = "Content-Type";
     public static final String CONTENT_ENCODING = "Content-Encoding";
     public static final String EXPECT_DIRECTIVE = "Expect";
@@ -57,20 +55,14 @@ public final class HTTP {
     public static final String DATE_HEADER = "Date";
     public static final String SERVER_HEADER = "Server";
 
-    /**
-     * HTTP expectations
-     */
+    /** HTTP expectations */
     public static final String EXPECT_CONTINUE = "100-continue";
 
-    /**
-     * HTTP connection control
-     */
+    /** HTTP connection control */
     public static final String CONN_CLOSE = "Close";
     public static final String CONN_KEEP_ALIVE = "Keep-Alive";
 
-    /**
-     * Transfer encoding definitions
-     */
+    /** Transfer encoding definitions */
     public static final String CHUNK_CODING = "chunked";
     public static final String IDENTITY_CODING = "identity";
 

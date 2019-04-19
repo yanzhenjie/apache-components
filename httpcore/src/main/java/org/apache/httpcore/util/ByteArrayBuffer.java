@@ -36,6 +36,8 @@ import java.io.Serializable;
  */
 public final class ByteArrayBuffer implements Serializable {
 
+    private static final long serialVersionUID = 4359112959524048036L;
+
     private byte[] buffer;
     private int len;
 

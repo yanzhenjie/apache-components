@@ -27,19 +27,20 @@
 package org.apache.httpcore.annotation;
 
 /**
- * Defines types of threading behavior enforced at runtime.
+ Defines types of threading behavior enforced at runtime.
  */
 public enum ThreadingBehavior {
 
     /**
-     * Instances of classes with the given contract are expected to be fully immutable and thread-safe.
+     * Instances of classes with the given contract are expected to be fully immutable
+     * and thread-safe.
      */
     IMMUTABLE,
 
     /**
-     * Instances of classes with the given contract are expected to be immutable if their dependencies
-     * injected at construction time are immutable and are expected to be thread-safe if their dependencies
-     * are thread-safe.
+     * Instances of classes with the given contract are expected to be immutable if their
+     * dependencies injected at construction time are immutable and are expected to be thread-safe
+     * if their dependencies are thread-safe.
      */
     IMMUTABLE_CONDITIONAL,
 
@@ -49,8 +50,8 @@ public enum ThreadingBehavior {
     SAFE,
 
     /**
-     * Instances of classes with the given contract are expected to be thread-safe if their dependencies
-     * injected at construction time are thread-safe.
+     * Instances of classes with the given contract are expected to be thread-safe if their
+     * dependencies injected at construction time are thread-safe.
      */
     SAFE_CONDITIONAL,
 

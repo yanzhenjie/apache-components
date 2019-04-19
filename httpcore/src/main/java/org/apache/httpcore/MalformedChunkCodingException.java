@@ -34,8 +34,9 @@ import java.io.IOException;
  *
  * @since 4.0
  */
-public class MalformedChunkCodingException
-  extends IOException {
+public class MalformedChunkCodingException extends IOException {
+
+    private static final long serialVersionUID = 2158560246948994524L;
 
     /**
      * Creates a MalformedChunkCodingException without a detail message.

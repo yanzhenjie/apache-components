@@ -27,21 +27,21 @@
 
 package org.apache.httpcore.entity;
 
-import org.apache.httpcore.util.Args;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.apache.httpcore.util.Args;
+
 /**
- * Entity that delegates the process of content generation to a {@link ContentProducer}.
+ * Entity that delegates the process of content generation
+ * to a {@link ContentProducer}.
  *
  * @since 4.0
  */
-public class EntityTemplate
-  extends AbstractHttpEntity {
+public class EntityTemplate extends AbstractHttpEntity {
 
     private final ContentProducer contentproducer;
 
@@ -68,9 +68,9 @@ public class EntityTemplate
     }
 
     @Override
-    public void writeTo(final OutputStream outstream) throws IOException {
-        Args.notNull(outstream, "Output stream");
-        this.contentproducer.writeTo(outstream);
+    public void writeTo(final OutputStream outStream) throws IOException {
+        Args.notNull(outStream, "Output stream");
+        this.contentproducer.writeTo(outStream);
     }
 
     @Override

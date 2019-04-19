@@ -28,9 +28,13 @@
 package org.apache.httpcore;
 
 /**
- * One element of an HTTP {@link Header header} value consisting of a name / value pair and a number of
- * optional name / value parameters. <p> Some HTTP headers (such as the set-cookie header) have values that
- * can be decomposed into multiple elements.  Such headers must be in the following form: </p>
+ * One element of an HTTP {@link Header header} value consisting of
+ * a name / value pair and a number of optional name / value parameters.
+ * <p>
+ * Some HTTP headers (such as the set-cookie header) have values that
+ * can be decomposed into multiple elements.  Such headers must be in the
+ * following form:
+ * </p>
  * <pre>
  * header  = [ element ] *( "," [ element ] )
  * element = name [ "=" [ value ] ] *( ";" [ param ] )
@@ -45,9 +49,11 @@ package org.apache.httpcore;
  * text          = any char except &lt;"&gt;
  * quoted-char   = "\" char
  * </pre>
- * <p> Any amount of white space is allowed between any part of the header, element or param and is ignored. A
- * missing value in any element or param will be stored as the empty {@link String}; if the "=" is also
- * missing <var>null</var> will be stored instead.
+ * <p>
+ * Any amount of white space is allowed between any part of the
+ * header, element or param and is ignored. A missing value in any
+ * element or param will be stored as the empty {@link String};
+ * if the "=" is also missing <var>null</var> will be stored instead.
  *
  * @since 4.0
  */
@@ -94,9 +100,9 @@ public interface HeaderElement {
      * Returns parameter with the given index.
      *
      * @param index index
-     *
      * @return name / value pair
      */
     NameValuePair getParameter(int index);
 
 }
+

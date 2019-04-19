@@ -28,18 +28,24 @@
 package org.apache.httpcore.params;
 
 /**
- * HttpParams interface represents a collection of immutable values that define a runtime behavior of a
- * component. HTTP parameters should be simple objects: integers, doubles, strings, collections and objects
- * that remain immutable at runtime. HttpParams is expected to be used in 'write once - read many' mode. Once
- * initialized, HTTP parameters are not expected to mutate in the course of HTTP message processing. <p> The
- * purpose of this interface is to define a behavior of other components. Usually each complex component has
- * its own HTTP parameter collection. <p> Instances of this interface can be linked together to form a
- * hierarchy. In the simplest form one set of parameters can use content of another one to obtain default
- * values of parameters not present in the local set.
+ * HttpParams interface represents a collection of immutable values that define
+ * a runtime behavior of a component. HTTP parameters should be simple objects:
+ * integers, doubles, strings, collections and objects that remain immutable
+ * at runtime. HttpParams is expected to be used in 'write once - read many' mode.
+ * Once initialized, HTTP parameters are not expected to mutate in
+ * the course of HTTP message processing.
+ * <p>
+ * The purpose of this interface is to define a behavior of other components.
+ * Usually each complex component has its own HTTP parameter collection.
+ * <p>
+ * Instances of this interface can be linked together to form a hierarchy.
+ * In the simplest form one set of parameters can use content of another one
+ * to obtain default values of parameters not present in the local set.
  *
  * @since 4.0
- * @deprecated (4.3) use configuration classes provided 'org.apache.httpcore.config' and
- *   'org.apache.httpcore.client.config'
+ *
+ * @deprecated (4.3) use configuration classes provided 'org.apache.httpcore.config'
+ *  and 'org.apache.httpcore.client.config'
  */
 @Deprecated
 public interface HttpParams {
@@ -49,8 +55,9 @@ public interface HttpParams {
      *
      * @param name the parent name.
      *
-     * @return an object that represents the value of the parameter, {@code null} if the parameter is not set
-     *   or if it is explicitly set to {@code null}
+     * @return  an object that represents the value of the parameter,
+     *          {@code null} if the parameter is not set or if it
+     *          is explicitly set to {@code null}
      *
      * @see #setParameter(String, Object)
      */
@@ -67,7 +74,7 @@ public interface HttpParams {
     /**
      * Creates a copy of these parameters.
      *
-     * @return a new set of parameters holding the same values as this one
+     * @return  a new set of parameters holding the same values as this one
      */
     HttpParams copy();
 
@@ -81,8 +88,8 @@ public interface HttpParams {
     boolean removeParameter(String name);
 
     /**
-     * Returns a {@link Long} parameter value with the given name. If the parameter is not explicitly set, the
-     * default value is returned.
+     * Returns a {@link Long} parameter value with the given name.
+     * If the parameter is not explicitly set, the default value is returned.
      *
      * @param name the parent name.
      * @param defaultValue the default value.
@@ -102,8 +109,8 @@ public interface HttpParams {
     HttpParams setLongParameter(String name, long value);
 
     /**
-     * Returns an {@link Integer} parameter value with the given name. If the parameter is not explicitly set,
-     * the default value is returned.
+     * Returns an {@link Integer} parameter value with the given name.
+     * If the parameter is not explicitly set, the default value is returned.
      *
      * @param name the parent name.
      * @param defaultValue the default value.
@@ -123,8 +130,8 @@ public interface HttpParams {
     HttpParams setIntParameter(String name, int value);
 
     /**
-     * Returns a {@link Double} parameter value with the given name. If the parameter is not explicitly set,
-     * the default value is returned.
+     * Returns a {@link Double} parameter value with the given name.
+     * If the parameter is not explicitly set, the default value is returned.
      *
      * @param name the parent name.
      * @param defaultValue the default value.
@@ -144,8 +151,8 @@ public interface HttpParams {
     HttpParams setDoubleParameter(String name, double value);
 
     /**
-     * Returns a {@link Boolean} parameter value with the given name. If the parameter is not explicitly set,
-     * the default value is returned.
+     * Returns a {@link Boolean} parameter value with the given name.
+     * If the parameter is not explicitly set, the default value is returned.
      *
      * @param name the parent name.
      * @param defaultValue the default value.
@@ -169,8 +176,8 @@ public interface HttpParams {
      *
      * @param name parameter name
      *
-     * @return {@code true} if the parameter is set to value {@code true}, {@code false} if it is not set or
-     *   set to {@code false}
+     * @return {@code true} if the parameter is set to value {@code true},
+     *         {@code false} if it is not set or set to {@code false}
      */
     boolean isParameterTrue(String name);
 
@@ -179,8 +186,9 @@ public interface HttpParams {
      *
      * @param name parameter name
      *
-     * @return {@code true} if the parameter is either not set or set to value {@code false}, {@code false} if
-     *   it is set to {@code true}
+     * @return {@code true} if the parameter is either not set or
+     *         set to value {@code false},
+     *         {@code false} if it is set to {@code true}
      */
     boolean isParameterFalse(String name);
 

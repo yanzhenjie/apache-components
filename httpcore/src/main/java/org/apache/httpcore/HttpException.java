@@ -32,16 +32,16 @@ package org.apache.httpcore;
  *
  * @since 4.0
  */
-public class HttpException
-  extends Exception {
+public class HttpException extends Exception {
 
     private static final int FIRST_VALID_CHAR = 32;
+    private static final long serialVersionUID = -5437299376222011036L;
 
     /**
      * Converts characters < 32 to hex.
      *
-     * @param message the source string.
-     *
+     * @param message
+     *            the source string.
      * @return a converted string.
      */
     static String clean(final String message) {
@@ -84,7 +84,8 @@ public class HttpException
     /**
      * Creates a new HttpException with the specified detail message.
      *
-     * @param message the exception detail message
+     * @param message
+     *            the exception detail message
      */
     public HttpException(final String message) {
         super(clean(message));
@@ -93,9 +94,12 @@ public class HttpException
     /**
      * Creates a new HttpException with the specified detail message and cause.
      *
-     * @param message the exception detail message
-     * @param cause the {@code Throwable} that caused this exception, or {@code null} if the cause is
-     *   unavailable, unknown, or not a {@code Throwable}
+     * @param message
+     *            the exception detail message
+     * @param cause
+     *            the {@code Throwable} that caused this exception, or
+     *            {@code null} if the cause is unavailable, unknown, or not a
+     *            {@code Throwable}
      */
     public HttpException(final String message, final Throwable cause) {
         super(clean(message));

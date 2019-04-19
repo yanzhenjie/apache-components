@@ -27,11 +27,12 @@
 package org.apache.httpcore.pool;
 
 /**
- * Interface to control runtime properties of a {@link ConnPool} such as maximum total number of connections
- * or maximum connections per route allowed.
+ * Interface to control runtime properties of a {@link ConnPool} such as
+ * maximum total number of connections or maximum connections per route
+ * allowed.
  *
- * @param <T> the route type that represents the opposite endpoint of a pooled connection.
- *
+ * @param <T> the route type that represents the opposite endpoint of a pooled
+ *   connection.
  * @since 4.2
  */
 public interface ConnPoolControl<T> {

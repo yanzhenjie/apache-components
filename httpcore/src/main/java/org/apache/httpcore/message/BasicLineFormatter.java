@@ -38,22 +38,25 @@ import org.apache.httpcore.util.Args;
 import org.apache.httpcore.util.CharArrayBuffer;
 
 /**
- * Interface for formatting elements of the HEAD section of an HTTP message. This is the complement to {@link
- * LineParser}. There are individual methods for formatting a request line, a status line, or a header line.
- * The formatting does <i>not</i> include the trailing line break sequence CR-LF. The formatted lines are
- * returned in memory, the formatter does not depend on any specific IO mechanism. Instances of this interface
- * are expected to be stateless and thread-safe.
+ * Interface for formatting elements of the HEAD section of an HTTP message.
+ * This is the complement to {@link LineParser}.
+ * There are individual methods for formatting a request line, a
+ * status line, or a header line. The formatting does <i>not</i> include the
+ * trailing line break sequence CR-LF.
+ * The formatted lines are returned in memory, the formatter does not depend
+ * on any specific IO mechanism.
+ * Instances of this interface are expected to be stateless and thread-safe.
  *
  * @since 4.0
  */
 @Contract(threading = ThreadingBehavior.IMMUTABLE)
-public class BasicLineFormatter
-  implements LineFormatter {
+public class BasicLineFormatter implements LineFormatter {
 
     /**
-     * A default instance of this class, for use as default or fallback. Note that {@link BasicLineFormatter}
-     * is not a singleton, there can be many instances of the class itself and of derived classes. The
-     * instance here provides non-customized, default behavior.
+     * A default instance of this class, for use as default or fallback.
+     * Note that {@link BasicLineFormatter} is not a singleton, there can
+     * be many instances of the class itself and of derived classes.
+     * The instance here provides non-customized, default behavior.
      *
      * @deprecated (4.3) use {@link #INSTANCE}
      */
@@ -71,8 +74,8 @@ public class BasicLineFormatter
      *
      * @param charBuffer a buffer already available, or {@code null}
      *
-     * @return the cleared argument buffer if there is one, or a new empty buffer that can be used for
-     *   formatting
+     * @return  the cleared argument buffer if there is one, or
+     *          a new empty buffer that can be used for formatting
      */
     protected CharArrayBuffer initBuffer(final CharArrayBuffer charBuffer) {
         CharArrayBuffer buffer = charBuffer;
@@ -88,21 +91,25 @@ public class BasicLineFormatter
     /**
      * Formats a protocol version.
      *
-     * @param version the protocol version to format
-     * @param formatter the formatter to use, or {@code null} for the {@link #INSTANCE default}
+     * @param version           the protocol version to format
+     * @param formatter         the formatter to use, or
+     *                          {@code null} for the
+     *                          {@link #INSTANCE default}
      *
-     * @return the formatted protocol version
+     * @return  the formatted protocol version
      */
-    public static String formatProtocolVersion(final ProtocolVersion version, final LineFormatter formatter) {
-        return (formatter != null ? formatter : BasicLineFormatter.INSTANCE).appendProtocolVersion(null,
-          version).toString();
+    public static
+        String formatProtocolVersion(final ProtocolVersion version,
+                                     final LineFormatter formatter) {
+        return (formatter != null ? formatter : BasicLineFormatter.INSTANCE)
+                .appendProtocolVersion(null, version).toString();
     }
 
 
     // non-javadoc, see interface LineFormatter
     @Override
     public CharArrayBuffer appendProtocolVersion(final CharArrayBuffer buffer,
-      final ProtocolVersion version) {
+                                                 final ProtocolVersion version) {
         Args.notNull(version, "Protocol version");
         // can't use initBuffer, that would clear the argument!
         CharArrayBuffer result = buffer;
@@ -124,12 +131,13 @@ public class BasicLineFormatter
 
 
     /**
-     * Guesses the length of a formatted protocol version. Needed to guess the length of a formatted request
-     * or status line.
+     * Guesses the length of a formatted protocol version.
+     * Needed to guess the length of a formatted request or status line.
      *
-     * @param version the protocol version to format, or {@code null}
+     * @param version   the protocol version to format, or {@code null}
      *
-     * @return the estimated length of the formatted protocol version, in characters
+     * @return  the estimated length of the formatted protocol version,
+     *          in characters
      */
     protected int estimateProtocolVersionLen(final ProtocolVersion version) {
         return version.getProtocol().length() + 4; // room for "HTTP/1.1"
@@ -139,20 +147,24 @@ public class BasicLineFormatter
     /**
      * Formats a request line.
      *
-     * @param reqline the request line to format
-     * @param formatter the formatter to use, or {@code null} for the {@link #INSTANCE default}
+     * @param reqline           the request line to format
+     * @param formatter         the formatter to use, or
+     *                          {@code null} for the
+     *                          {@link #INSTANCE default}
      *
-     * @return the formatted request line
+     * @return  the formatted request line
      */
-    public static String formatRequestLine(final RequestLine reqline, final LineFormatter formatter) {
-        return (formatter != null ? formatter : BasicLineFormatter.INSTANCE).formatRequestLine(null, reqline)
-          .toString();
+    public static String formatRequestLine(final RequestLine reqline,
+                                           final LineFormatter formatter) {
+        return (formatter != null ? formatter : BasicLineFormatter.INSTANCE)
+                .formatRequestLine(null, reqline).toString();
     }
 
 
     // non-javadoc, see interface LineFormatter
     @Override
-    public CharArrayBuffer formatRequestLine(final CharArrayBuffer buffer, final RequestLine reqline) {
+    public CharArrayBuffer formatRequestLine(final CharArrayBuffer buffer,
+                                             final RequestLine reqline) {
         Args.notNull(reqline, "Request line");
         final CharArrayBuffer result = initBuffer(buffer);
         doFormatRequestLine(result, reqline);
@@ -162,18 +174,21 @@ public class BasicLineFormatter
 
 
     /**
-     * Actually formats a request line. Called from {@link #formatRequestLine}.
+     * Actually formats a request line.
+     * Called from {@link #formatRequestLine}.
      *
-     * @param buffer the empty buffer into which to format, never {@code null}
-     * @param reqline the request line to format, never {@code null}
+     * @param buffer    the empty buffer into which to format,
+     *                  never {@code null}
+     * @param reqline   the request line to format, never {@code null}
      */
-    protected void doFormatRequestLine(final CharArrayBuffer buffer, final RequestLine reqline) {
+    protected void doFormatRequestLine(final CharArrayBuffer buffer,
+                                       final RequestLine reqline) {
         final String method = reqline.getMethod();
-        final String uri = reqline.getUri();
+        final String uri    = reqline.getUri();
 
         // room for "GET /index.html HTTP/1.1"
-        final int len =
-          method.length() + 1 + uri.length() + 1 + estimateProtocolVersionLen(reqline.getProtocolVersion());
+        final int len = method.length() + 1 + uri.length() + 1 +
+            estimateProtocolVersionLen(reqline.getProtocolVersion());
         buffer.ensureCapacity(len);
 
         buffer.append(method);
@@ -184,23 +199,28 @@ public class BasicLineFormatter
     }
 
 
+
     /**
      * Formats a status line.
      *
-     * @param statline the status line to format
-     * @param formatter the formatter to use, or {@code null} for the {@link #INSTANCE default}
+     * @param statline          the status line to format
+     * @param formatter         the formatter to use, or
+     *                          {@code null} for the
+     *                          {@link #INSTANCE default}
      *
-     * @return the formatted status line
+     * @return  the formatted status line
      */
-    public static String formatStatusLine(final StatusLine statline, final LineFormatter formatter) {
-        return (formatter != null ? formatter : BasicLineFormatter.INSTANCE).formatStatusLine(null, statline)
-          .toString();
+    public static String formatStatusLine(final StatusLine statline,
+                                          final LineFormatter formatter) {
+        return (formatter != null ? formatter : BasicLineFormatter.INSTANCE)
+                .formatStatusLine(null, statline).toString();
     }
 
 
     // non-javadoc, see interface LineFormatter
     @Override
-    public CharArrayBuffer formatStatusLine(final CharArrayBuffer buffer, final StatusLine statline) {
+    public CharArrayBuffer formatStatusLine(final CharArrayBuffer buffer,
+                                            final StatusLine statline) {
         Args.notNull(statline, "Status line");
         final CharArrayBuffer result = initBuffer(buffer);
         doFormatStatusLine(result, statline);
@@ -210,15 +230,18 @@ public class BasicLineFormatter
 
 
     /**
-     * Actually formats a status line. Called from {@link #formatStatusLine}.
+     * Actually formats a status line.
+     * Called from {@link #formatStatusLine}.
      *
-     * @param buffer the empty buffer into which to format, never {@code null}
-     * @param statline the status line to format, never {@code null}
+     * @param buffer    the empty buffer into which to format,
+     *                  never {@code null}
+     * @param statline  the status line to format, never {@code null}
      */
-    protected void doFormatStatusLine(final CharArrayBuffer buffer, final StatusLine statline) {
+    protected void doFormatStatusLine(final CharArrayBuffer buffer,
+                                      final StatusLine statline) {
 
-        int len =
-          estimateProtocolVersionLen(statline.getProtocolVersion()) + 1 + 3 + 1; // room for "HTTP/1.1 200 "
+        int len = estimateProtocolVersionLen(statline.getProtocolVersion())
+            + 1 + 3 + 1; // room for "HTTP/1.1 200 "
         final String reason = statline.getReasonPhrase();
         if (reason != null) {
             len += reason.length();
@@ -238,20 +261,24 @@ public class BasicLineFormatter
     /**
      * Formats a header.
      *
-     * @param header the header to format
-     * @param formatter the formatter to use, or {@code null} for the {@link #INSTANCE default}
+     * @param header            the header to format
+     * @param formatter         the formatter to use, or
+     *                          {@code null} for the
+     *                          {@link #INSTANCE default}
      *
-     * @return the formatted header
+     * @return  the formatted header
      */
-    public static String formatHeader(final Header header, final LineFormatter formatter) {
-        return (formatter != null ? formatter : BasicLineFormatter.INSTANCE).formatHeader(null, header)
-          .toString();
+    public static String formatHeader(final Header header,
+                                      final LineFormatter formatter) {
+        return (formatter != null ? formatter : BasicLineFormatter.INSTANCE)
+                .formatHeader(null, header).toString();
     }
 
 
     // non-javadoc, see interface LineFormatter
     @Override
-    public CharArrayBuffer formatHeader(final CharArrayBuffer buffer, final Header header) {
+    public CharArrayBuffer formatHeader(final CharArrayBuffer buffer,
+                                        final Header header) {
         Args.notNull(header, "Header");
         final CharArrayBuffer result;
 
@@ -268,12 +295,15 @@ public class BasicLineFormatter
 
 
     /**
-     * Actually formats a header. Called from {@link #formatHeader}.
+     * Actually formats a header.
+     * Called from {@link #formatHeader}.
      *
-     * @param buffer the empty buffer into which to format, never {@code null}
-     * @param header the header to format, never {@code null}
+     * @param buffer    the empty buffer into which to format,
+     *                  never {@code null}
+     * @param header    the header to format, never {@code null}
      */
-    protected void doFormatHeader(final CharArrayBuffer buffer, final Header header) {
+    protected void doFormatHeader(final CharArrayBuffer buffer,
+                                  final Header header) {
         final String name = header.getName();
         final String value = header.getValue();
 
@@ -289,7 +319,10 @@ public class BasicLineFormatter
             buffer.ensureCapacity(buffer.length() + value.length());
             for (int valueIndex = 0; valueIndex < value.length(); valueIndex++) {
                 char valueChar = value.charAt(valueIndex);
-                if (valueChar == '\r' || valueChar == '\n' || valueChar == '\f' || valueChar == 0x0b) {
+                if (valueChar == '\r'
+                        || valueChar == '\n'
+                        || valueChar == '\f'
+                        || valueChar == 0x0b) {
                     valueChar = ' ';
                 }
                 buffer.append(valueChar);

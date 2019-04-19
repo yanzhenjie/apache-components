@@ -27,8 +27,8 @@
 
 package org.apache.httpcore.protocol;
 
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -38,12 +38,19 @@ import org.apache.httpcore.annotation.ThreadingBehavior;
 import org.apache.httpcore.util.Args;
 
 /**
- * Maintains a map of objects keyed by a request URI pattern. <br> Patterns may have three formats: <ul>
- * <li>{@code *}</li> <li>{@code *<uri>}</li> <li>{@code <uri>*}</li> </ul> <br> This class can be used to
- * resolve an object matching a particular request URI.
+ * Maintains a map of objects keyed by a request URI pattern.
+ * <br>
+ * Patterns may have three formats:
+ * <ul>
+ *   <li>{@code *}</li>
+ *   <li>{@code *<uri>}</li>
+ *   <li>{@code <uri>*}</li>
+ * </ul>
+ * <br>
+ * This class can be used to resolve an object matching a particular request
+ * URI.
  *
  * @param <T> The type of registered objects.
- *
  * @since 4.0
  */
 @Contract(threading = ThreadingBehavior.SAFE)
@@ -53,19 +60,19 @@ public class UriPatternMatcher<T> {
 
     public UriPatternMatcher() {
         super();
-        this.map = new HashMap<>();
+        this.map = new LinkedHashMap<String, T>();
     }
 
     /**
      * Returns a {@link Set} view of the mappings contained in this matcher.
      *
-     * @return a set view of the mappings contained in this matcher.
+     * @return  a set view of the mappings contained in this matcher.
      *
      * @see Map#entrySet()
      * @since 4.4.9
      */
     public synchronized Set<Entry<String, T>> entrySet() {
-        return new HashSet<>(map.entrySet());
+        return new HashSet<Entry<String, T>>(map.entrySet());
     }
 
     /**
@@ -123,7 +130,6 @@ public class UriPatternMatcher<T> {
      * Looks up an object matching the given request path.
      *
      * @param path the request path
-     *
      * @return object or {@code null} if no match is found.
      */
     public synchronized T lookup(final String path) {
@@ -136,8 +142,9 @@ public class UriPatternMatcher<T> {
             for (final String pattern : this.map.keySet()) {
                 if (matchUriRequestPattern(pattern, path)) {
                     // we have a match. is it any better?
-                    if (bestMatch == null || (bestMatch.length() < pattern.length()) ||
-                        (bestMatch.length() == pattern.length() && pattern.endsWith("*"))) {
+                    if (bestMatch == null
+                            || (bestMatch.length() < pattern.length())
+                            || (bestMatch.length() == pattern.length() && pattern.endsWith("*"))) {
                         obj = this.map.get(pattern);
                         bestMatch = pattern;
                     }
@@ -152,16 +159,16 @@ public class UriPatternMatcher<T> {
      *
      * @param pattern the pattern
      * @param path the request path
-     *
-     * @return {@code true} if the request URI matches the pattern, {@code false} otherwise.
+     * @return {@code true} if the request URI matches the pattern,
+     *   {@code false} otherwise.
      */
     protected boolean matchUriRequestPattern(final String pattern, final String path) {
         if (pattern.equals("*")) {
             return true;
-        } else {
-            return (pattern.endsWith("*") && path.startsWith(pattern.substring(0, pattern.length() - 1))) ||
-                   (pattern.startsWith("*") && path.endsWith(pattern.substring(1, pattern.length())));
         }
+        return
+           (pattern.endsWith("*") && path.startsWith(pattern.substring(0, pattern.length() - 1))) ||
+           (pattern.startsWith("*") && path.endsWith(pattern.substring(1, pattern.length())));
     }
 
     @Override

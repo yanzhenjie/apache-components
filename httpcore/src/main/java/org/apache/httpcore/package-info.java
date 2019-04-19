@@ -26,11 +26,18 @@
  */
 
 /**
- * Core HTTP component APIs and primitives. <p> These deal with the fundamental things required for using the
- * HTTP protocol, such as representing a {@link org.apache.httpcore.HttpMessage message} including it's {@link
- * org.apache.httpcore.Header headers} and optional {@link org.apache.httpcore.HttpEntity entity}, and {@link
- * org.apache.httpcore.HttpConnection connections} over which messages are sent. In order to prepare messages
- * before sending or after receiving, there are interceptors for {@link org.apache.httpcore
- * .HttpRequestInterceptor requests} and {@link org.apache.httpcore.HttpResponseInterceptor responses}. </p>
+ * Core HTTP component APIs and primitives.
+ * <p>
+ * These deal with the fundamental things required for using the
+ * HTTP protocol, such as representing a
+ * {@link org.apache.httpcore.HttpMessage message} including it's
+ * {@link org.apache.httpcore.Header headers} and optional
+ * {@link org.apache.httpcore.HttpEntity entity}, and
+ * {@link org.apache.httpcore.HttpConnection connections}
+ * over which messages are sent. In order to prepare messages
+ * before sending or after receiving, there are interceptors for
+ * {@link org.apache.httpcore.HttpRequestInterceptor requests} and
+ * {@link org.apache.httpcore.HttpResponseInterceptor responses}.
+ * </p>
  */
 package org.apache.httpcore;

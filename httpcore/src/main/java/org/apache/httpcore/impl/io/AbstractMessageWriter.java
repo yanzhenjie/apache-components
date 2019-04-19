@@ -27,6 +27,8 @@
 
 package org.apache.httpcore.impl.io;
 
+import java.io.IOException;
+
 import org.apache.httpcore.Header;
 import org.apache.httpcore.HeaderIterator;
 import org.apache.httpcore.HttpException;
@@ -39,17 +41,14 @@ import org.apache.httpcore.params.HttpParams;
 import org.apache.httpcore.util.Args;
 import org.apache.httpcore.util.CharArrayBuffer;
 
-import java.io.IOException;
-
 /**
- * Abstract base class for HTTP message writers that serialize output to an instance of {@link
- * SessionOutputBuffer}.
+ * Abstract base class for HTTP message writers that serialize output to
+ * an instance of {@link SessionOutputBuffer}.
  *
  * @since 4.0
  */
 @SuppressWarnings("deprecation")
-public abstract class AbstractMessageWriter<T extends HttpMessage>
-  implements HttpMessageWriter<T> {
+public abstract class AbstractMessageWriter<T extends HttpMessage> implements HttpMessageWriter<T> {
 
     protected final SessionOutputBuffer sessionBuffer;
     protected final CharArrayBuffer lineBuf;
@@ -63,11 +62,12 @@ public abstract class AbstractMessageWriter<T extends HttpMessage>
      * @param params HTTP parameters.
      *
      * @deprecated (4.3) use
-     * {@link AbstractMessageWriter#AbstractMessageWriter(SessionOutputBuffer, LineFormatter)}
+     *   {@link AbstractMessageWriter#AbstractMessageWriter(SessionOutputBuffer, LineFormatter)}
      */
     @Deprecated
-    public AbstractMessageWriter(final SessionOutputBuffer buffer, final LineFormatter formatter,
-      final HttpParams params) {
+    public AbstractMessageWriter(final SessionOutputBuffer buffer,
+                                 final LineFormatter formatter,
+                                 final HttpParams params) {
         super();
         Args.notNull(buffer, "Session input buffer");
         this.sessionBuffer = buffer;
@@ -79,12 +79,14 @@ public abstract class AbstractMessageWriter<T extends HttpMessage>
      * Creates an instance of AbstractMessageWriter.
      *
      * @param buffer the session output buffer.
-     * @param formatter the line formatter If {@code null} {@link BasicLineFormatter#INSTANCE} will be
-     *   used.
+     * @param formatter the line formatter If {@code null} {@link BasicLineFormatter#INSTANCE}
+     *   will be used.
      *
      * @since 4.3
      */
-    public AbstractMessageWriter(final SessionOutputBuffer buffer, final LineFormatter formatter) {
+    public AbstractMessageWriter(
+            final SessionOutputBuffer buffer,
+            final LineFormatter formatter) {
         super();
         this.sessionBuffer = Args.notNull(buffer, "Session input buffer");
         this.lineFormatter = (formatter != null) ? formatter : BasicLineFormatter.INSTANCE;
@@ -92,11 +94,10 @@ public abstract class AbstractMessageWriter<T extends HttpMessage>
     }
 
     /**
-     * Subclasses must override this method to write out the first header line based on the {@link
-     * HttpMessage} passed as a parameter.
+     * Subclasses must override this method to write out the first header line
+     * based on the {@link HttpMessage} passed as a parameter.
      *
      * @param message the message whose first line is to be written out.
-     *
      * @throws IOException in case of an I/O error.
      */
     protected abstract void writeHeadLine(T message) throws IOException;
@@ -107,7 +108,8 @@ public abstract class AbstractMessageWriter<T extends HttpMessage>
         writeHeadLine(message);
         for (final HeaderIterator it = message.headerIterator(); it.hasNext(); ) {
             final Header header = it.nextHeader();
-            this.sessionBuffer.writeLine(lineFormatter.formatHeader(this.lineBuf, header));
+            this.sessionBuffer.writeLine
+                (lineFormatter.formatHeader(this.lineBuf, header));
         }
         this.lineBuf.clear();
         this.sessionBuffer.writeLine(this.lineBuf);

@@ -34,16 +34,19 @@ import org.apache.httpcore.io.SessionOutputBuffer;
 import org.apache.httpcore.util.Args;
 
 /**
- * Output stream that cuts off after a defined number of bytes. This class is used to send content of HTTP
- * messages where the end of the content entity is determined by the value of the {@code Content-Length
- * header}. Entities transferred using this stream can be maximum {@link Long#MAX_VALUE} long. <p> Note that
- * this class NEVER closes the underlying stream, even when close gets called.  Instead, the stream will be
- * marked as closed and no further output will be permitted.
+ * Output stream that cuts off after a defined number of bytes. This class
+ * is used to send content of HTTP messages where the end of the content entity
+ * is determined by the value of the {@code Content-Length header}.
+ * Entities transferred using this stream can be maximum {@link Long#MAX_VALUE}
+ * long.
+ * <p>
+ * Note that this class NEVER closes the underlying stream, even when close
+ * gets called.  Instead, the stream will be marked as closed and no further
+ * output will be permitted.
  *
  * @since 4.0
  */
-public class ContentLengthOutputStream
-  extends OutputStream {
+public class ContentLengthOutputStream extends OutputStream {
 
     /**
      * Wrapped session output buffer.
@@ -51,27 +54,24 @@ public class ContentLengthOutputStream
     private final SessionOutputBuffer out;
 
     /**
-     * The maximum number of bytes that can be written the stream. Subsequent write operations will be
-     * ignored.
+     * The maximum number of bytes that can be written the stream. Subsequent
+     * write operations will be ignored.
      */
     private final long contentLength;
 
-    /**
-     * Total bytes written
-     */
-    private long total = 0;
+    /** Total bytes written */
+    private long total;
+
+    /** True if the stream is closed. */
+    private boolean closed;
 
     /**
-     * True if the stream is closed.
-     */
-    private boolean closed = false;
-
-    /**
-     * Wraps a session output buffer and cuts off output after a defined number of bytes.
+     * Wraps a session output buffer and cuts off output after a defined number
+     * of bytes.
      *
      * @param out The session output buffer
-     * @param contentLength The maximum number of bytes that can be written to the stream. Subsequent write
-     *   operations will be ignored.
+     * @param contentLength The maximum number of bytes that can be written to
+     * the stream. Subsequent write operations will be ignored.
      *
      * @since 4.0
      */
@@ -108,7 +108,7 @@ public class ContentLengthOutputStream
             final long max = this.contentLength - this.total;
             int chunk = len;
             if (chunk > max) {
-                chunk = (int)max;
+                chunk = (int) max;
             }
             this.out.write(b, off, chunk);
             this.total += chunk;

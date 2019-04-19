@@ -26,6 +26,7 @@
  */
 
 /**
- * Client side connection pools APIs for synchronous, blocking communication.
+ * Client side connection pools APIs for synchronous, blocking
+ * communication.
  */
 package org.apache.httpcore.pool;

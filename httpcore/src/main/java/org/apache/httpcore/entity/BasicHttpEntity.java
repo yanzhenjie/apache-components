@@ -27,28 +27,29 @@
 
 package org.apache.httpcore.entity;
 
-import org.apache.httpcore.impl.io.EmptyInputStream;
-import org.apache.httpcore.util.Args;
-import org.apache.httpcore.util.Asserts;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.apache.httpcore.impl.io.EmptyInputStream;
+import org.apache.httpcore.util.Args;
+import org.apache.httpcore.util.Asserts;
+
 /**
- * A generic streamed, non-repeatable entity that obtains its content from an {@link InputStream}.
+ * A generic streamed, non-repeatable entity that obtains its content
+ * from an {@link InputStream}.
  *
  * @since 4.0
  */
-public class BasicHttpEntity
-  extends AbstractHttpEntity {
+public class BasicHttpEntity extends AbstractHttpEntity {
 
     private InputStream content;
     private long length;
 
     /**
-     * Creates a new basic entity. The content is initially missing, the content length is set to a negative
-     * number.
+     * Creates a new basic entity.
+     * The content is initially missing, the content length
+     * is set to a negative number.
      */
     public BasicHttpEntity() {
         super();
@@ -63,10 +64,11 @@ public class BasicHttpEntity
     /**
      * Obtains the content, once only.
      *
-     * @return the content, if this is the first call to this method since {@link #setContent setContent} has
-     *   been called
+     * @return  the content, if this is the first call to this method
+     *          since {@link #setContent setContent} has been called
      *
-     * @throws IllegalStateException if the content has not been provided
+     * @throws IllegalStateException
+     *          if the content has not been provided
      */
     @Override
     public InputStream getContent() throws IllegalStateException {
@@ -87,7 +89,8 @@ public class BasicHttpEntity
     /**
      * Specifies the length of the content.
      *
-     * @param len the number of bytes in the content, or a negative number to indicate an unknown length
+     * @param len       the number of bytes in the content, or
+     *                  a negative number to indicate an unknown length
      */
     public void setContentLength(final long len) {
         this.length = len;
@@ -96,24 +99,25 @@ public class BasicHttpEntity
     /**
      * Specifies the content.
      *
-     * @param instream the stream to return with the next call to {@link #getContent getContent}
+     * @param inStream          the stream to return with the next call to
+     *                          {@link #getContent getContent}
      */
-    public void setContent(final InputStream instream) {
-        this.content = instream;
+    public void setContent(final InputStream inStream) {
+        this.content = inStream;
     }
 
     @Override
-    public void writeTo(final OutputStream outstream) throws IOException {
-        Args.notNull(outstream, "Output stream");
-        final InputStream instream = getContent();
+    public void writeTo(final OutputStream outStream) throws IOException {
+        Args.notNull(outStream, "Output stream");
+        final InputStream inStream = getContent();
         try {
             int l;
             final byte[] tmp = new byte[OUTPUT_BUFFER_SIZE];
-            while ((l = instream.read(tmp)) != -1) {
-                outstream.write(tmp, 0, l);
+            while ((l = inStream.read(tmp)) != -1) {
+                outStream.write(tmp, 0, l);
             }
         } finally {
-            instream.close();
+            inStream.close();
         }
     }
 

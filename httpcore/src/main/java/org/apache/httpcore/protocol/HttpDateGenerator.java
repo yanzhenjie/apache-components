@@ -44,14 +44,11 @@ import java.util.TimeZone;
 @Contract(threading = ThreadingBehavior.SAFE)
 public class HttpDateGenerator {
 
-    /**
-     * Date format pattern used to generate the header in RFC 1123 format.
-     */
-    public static final String PATTERN_RFC1123 = "EEE, dd MMM yyyy HH:mm:ss zzz";
+    /** Date format pattern used to generate the header in RFC 1123 format. */
+    public static final
+        String PATTERN_RFC1123 = "EEE, dd MMM yyyy HH:mm:ss zzz";
 
-    /**
-     * The time zone to use in the date header.
-     */
+    /** The time zone to use in the date header. */
     public static final TimeZone GMT = TimeZone.getTimeZone("GMT");
 
     private final DateFormat dateformat;
