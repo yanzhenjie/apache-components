@@ -63,7 +63,7 @@ import javax.net.ssl.X509TrustManager;
 import org.apache.httpcore.util.Args;
 
 /**
- * Builder for {@link SSLContext} instances.
+ * Builder for {@link javax.net.ssl.SSLContext} instances.
  * <p>
  * Please note: the default Oracle JSSE implementation of {@link SSLContext#init(KeyManager[], TrustManager[], SecureRandom)}
  * accepts multiple key and trust managers, however only only first matching type is ever used.

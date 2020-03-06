@@ -78,11 +78,11 @@ public class MessageConstraints implements Cloneable {
         return new MessageConstraints(Args.notNegative(max, "Max line length"), -1);
     }
 
-    public static Builder custom() {
+    public static MessageConstraints.Builder custom() {
         return new Builder();
     }
 
-    public static Builder copy(final MessageConstraints config) {
+    public static MessageConstraints.Builder copy(final MessageConstraints config) {
         Args.notNull(config, "Message constraints");
         return new Builder()
             .setMaxHeaderCount(config.getMaxHeaderCount())

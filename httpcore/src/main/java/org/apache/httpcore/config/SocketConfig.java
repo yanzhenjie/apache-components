@@ -129,7 +129,7 @@ public class SocketConfig implements Cloneable {
      * Determines the default value of the {@link java.net.SocketOptions#TCP_NODELAY} parameter
      * for newly created sockets.
      * <p>
-     * Default: {@code false}
+     * Default: {@code true}
      * </p>
      *
      * @return the default value of the {@link java.net.SocketOptions#TCP_NODELAY} parameter.
@@ -202,11 +202,11 @@ public class SocketConfig implements Cloneable {
         return builder.toString();
     }
 
-    public static Builder custom() {
+    public static SocketConfig.Builder custom() {
         return new Builder();
     }
 
-    public static Builder copy(final SocketConfig config) {
+    public static SocketConfig.Builder copy(final SocketConfig config) {
         Args.notNull(config, "Socket config");
         return new Builder()
             .setSoTimeout(config.getSoTimeout())

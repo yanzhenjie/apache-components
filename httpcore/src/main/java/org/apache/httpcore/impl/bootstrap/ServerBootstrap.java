@@ -324,7 +324,7 @@ public class ServerBootstrap {
     }
 
     /**
-     * Assigns {@link ServerSocketFactory} instance.
+     * Assigns {@link javax.net.ServerSocketFactory} instance.
      *
      * @return this
      */
@@ -334,10 +334,10 @@ public class ServerBootstrap {
     }
 
     /**
-     * Assigns {@link SSLContext} instance.
+     * Assigns {@link javax.net.ssl.SSLContext} instance.
      * <p>
      * Please note this value can be overridden by the {@link #setServerSocketFactory(
-     *   ServerSocketFactory)} method.
+     *   javax.net.ServerSocketFactory)} method.
      * </p>
      *
      * @return this

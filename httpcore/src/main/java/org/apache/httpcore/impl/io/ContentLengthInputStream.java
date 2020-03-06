@@ -123,7 +123,7 @@ public class ContentLengthInputStream extends InputStream {
      * Read the next byte from the stream
      * @return The next byte or -1 if the end of stream has been reached.
      * @throws IOException If an IO problem occurs
-     * @see InputStream#read()
+     * @see java.io.InputStream#read()
      */
     @Override
     public int read() throws IOException {
@@ -157,10 +157,10 @@ public class ContentLengthInputStream extends InputStream {
      * @return The number of bytes read, or -1 if the end of content has been
      *  reached.
      *
-     * @throws IOException Should an error occur on the wrapped stream.
+     * @throws java.io.IOException Should an error occur on the wrapped stream.
      */
     @Override
-    public int read(final byte[] b, final int off, final int len) throws IOException {
+    public int read(final byte[] b, final int off, final int len) throws java.io.IOException {
         if (closed) {
             throw new IOException("Attempted read from closed stream.");
         }
@@ -191,7 +191,7 @@ public class ContentLengthInputStream extends InputStream {
      * @param b The byte array to put the new data in.
      * @return The number of bytes read into the buffer.
      * @throws IOException If an IO problem occurs
-     * @see InputStream#read(byte[])
+     * @see java.io.InputStream#read(byte[])
      */
     @Override
     public int read(final byte[] b) throws IOException {

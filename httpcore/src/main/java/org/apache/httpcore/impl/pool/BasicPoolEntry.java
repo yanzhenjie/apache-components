@@ -30,8 +30,8 @@ import java.io.IOException;
 
 import org.apache.httpcore.HttpClientConnection;
 import org.apache.httpcore.HttpHost;
-import org.apache.httpcore.annotation.ThreadingBehavior;
 import org.apache.httpcore.annotation.Contract;
+import org.apache.httpcore.annotation.ThreadingBehavior;
 import org.apache.httpcore.pool.PoolEntry;
 
 /**
@@ -52,7 +52,16 @@ public class BasicPoolEntry extends PoolEntry<HttpHost, HttpClientConnection> {
     @Override
     public void close() {
         try {
-            this.getConnection().close();
+            final HttpClientConnection connection = getConnection();
+            try {
+                final int socketTimeout = connection.getSocketTimeout();
+                if (socketTimeout <= 0 || socketTimeout > 1000) {
+                    connection.setSocketTimeout(1000);
+                }
+                connection.close();
+            } catch (final IOException ex) {
+                connection.shutdown();
+            }
         } catch (final IOException ignore) {
         }
     }

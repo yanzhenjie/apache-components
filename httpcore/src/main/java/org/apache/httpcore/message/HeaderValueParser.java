@@ -83,7 +83,9 @@ public interface HeaderValueParser {
      *
      * @throws ParseException        in case of a parsing error
      */
-    HeaderElement[] parseElements(CharArrayBuffer buffer, ParserCursor cursor) throws ParseException;
+    HeaderElement[] parseElements(
+            CharArrayBuffer buffer,
+            ParserCursor cursor) throws ParseException;
 
     /**
      * Parses a single header element.
@@ -98,7 +100,9 @@ public interface HeaderValueParser {
      *
      * @throws ParseException        in case of a parse error
      */
-    HeaderElement parseHeaderElement(CharArrayBuffer buffer, ParserCursor cursor) throws ParseException;
+    HeaderElement parseHeaderElement(
+            CharArrayBuffer buffer,
+            ParserCursor cursor) throws ParseException;
 
     /**
      * Parses a list of name-value pairs.
@@ -113,7 +117,9 @@ public interface HeaderValueParser {
      *
      * @throws ParseException        in case of a parse error
      */
-    NameValuePair[] parseParameters(CharArrayBuffer buffer, ParserCursor cursor) throws ParseException;
+    NameValuePair[] parseParameters(
+            CharArrayBuffer buffer,
+            ParserCursor cursor) throws ParseException;
 
 
     /**
@@ -126,7 +132,9 @@ public interface HeaderValueParser {
      * @return  the name-value pair, where the value is {@code null}
      *          if no value is specified
      */
-    NameValuePair parseNameValuePair(CharArrayBuffer buffer, ParserCursor cursor) throws ParseException;
+    NameValuePair parseNameValuePair(
+            CharArrayBuffer buffer,
+            ParserCursor cursor) throws ParseException;
 
 }
 

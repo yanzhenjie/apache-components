@@ -259,7 +259,7 @@ public class VersionInfo {
      *
      * @param pckg      the package for the version information
      * @param info      the map from string keys to string values,
-     *                  for example {@link Properties}
+     *                  for example {@link java.util.Properties}
      * @param clsldr    the classloader, or {@code null}
      *
      * @return  the version information

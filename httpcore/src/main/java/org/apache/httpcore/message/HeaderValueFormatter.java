@@ -61,7 +61,9 @@ public interface HeaderValueFormatter {
      *          If the {@code buffer} argument was not {@code null},
      *          that buffer will be used and returned.
      */
-    CharArrayBuffer formatElements(CharArrayBuffer buffer, HeaderElement[] elems, boolean quote);
+    CharArrayBuffer formatElements(CharArrayBuffer buffer,
+                                   HeaderElement[] elems,
+                                   boolean quote);
 
     /**
      * Formats one header element.
@@ -76,7 +78,9 @@ public interface HeaderValueFormatter {
      *          If the {@code buffer} argument was not {@code null},
      *          that buffer will be used and returned.
      */
-    CharArrayBuffer formatHeaderElement(CharArrayBuffer buffer, HeaderElement elem, boolean quote);
+    CharArrayBuffer formatHeaderElement(CharArrayBuffer buffer,
+                                        HeaderElement elem,
+                                        boolean quote);
 
     /**
      * Formats the parameters of a header element.
@@ -93,7 +97,9 @@ public interface HeaderValueFormatter {
      *          If the {@code buffer} argument was not {@code null},
      *          that buffer will be used and returned.
      */
-    CharArrayBuffer formatParameters(CharArrayBuffer buffer, NameValuePair[] nvps, boolean quote);
+    CharArrayBuffer formatParameters(CharArrayBuffer buffer,
+                                     NameValuePair[] nvps,
+                                     boolean quote);
 
     /**
      * Formats one name-value pair, where the value is optional.
@@ -108,7 +114,9 @@ public interface HeaderValueFormatter {
      *          If the {@code buffer} argument was not {@code null},
      *          that buffer will be used and returned.
      */
-    CharArrayBuffer formatNameValuePair(CharArrayBuffer buffer, NameValuePair nvp, boolean quote);
+    CharArrayBuffer formatNameValuePair(CharArrayBuffer buffer,
+                                        NameValuePair nvp,
+                                        boolean quote);
 
 }
 

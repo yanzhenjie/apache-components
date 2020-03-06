@@ -34,7 +34,7 @@ import javax.net.ssl.SSLServerSocket;
  * configure various SSL protocol aspects such as supported protocol versions, cypher suites,
  * and mandatory / optional client authentication.
  *
- * @see SSLServerSocket
+ * @see javax.net.ssl.SSLServerSocket
  * @see javax.net.ssl.SSLSession
  * @since 4.4
  */

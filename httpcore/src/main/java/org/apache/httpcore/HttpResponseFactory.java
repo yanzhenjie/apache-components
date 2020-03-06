@@ -47,7 +47,8 @@ public interface HttpResponseFactory {
      *
      * @return  the new response with an initialized status line
      */
-    HttpResponse newHttpResponse(ProtocolVersion ver, int status, HttpContext context);
+    HttpResponse newHttpResponse(ProtocolVersion ver, int status,
+                                 HttpContext context);
 
     /**
      * Creates a new response from a status line.
@@ -60,6 +61,7 @@ public interface HttpResponseFactory {
      *
      * @return  the new response with the argument status line
      */
-    HttpResponse newHttpResponse(StatusLine statusline, HttpContext context);
+    HttpResponse newHttpResponse(StatusLine statusline,
+                                 HttpContext context);
 
 }

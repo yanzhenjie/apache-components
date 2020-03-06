@@ -314,7 +314,7 @@ public final class HttpHost implements Cloneable, Serializable {
     }
 
     /**
-     * @see Object#hashCode()
+     * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {

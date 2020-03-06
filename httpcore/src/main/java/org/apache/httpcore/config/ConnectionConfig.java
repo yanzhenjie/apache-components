@@ -110,11 +110,11 @@ public class ConnectionConfig implements Cloneable {
         return builder.toString();
     }
 
-    public static Builder custom() {
+    public static ConnectionConfig.Builder custom() {
         return new Builder();
     }
 
-    public static Builder copy(final ConnectionConfig config) {
+    public static ConnectionConfig.Builder copy(final ConnectionConfig config) {
         Args.notNull(config, "Connection config");
         return new Builder()
             .setBufferSize(config.getBufferSize())

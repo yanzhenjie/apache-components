@@ -59,7 +59,9 @@ public interface LineParser {
      *
      * @throws ParseException        in case of a parse error
      */
-    ProtocolVersion parseProtocolVersion(CharArrayBuffer buffer, ParserCursor cursor) throws ParseException;
+    ProtocolVersion parseProtocolVersion(
+            CharArrayBuffer buffer,
+            ParserCursor cursor) throws ParseException;
 
     /**
      * Checks whether there likely is a protocol version in a line.
@@ -80,7 +82,9 @@ public interface LineParser {
      *          argument index (possibly ignoring whitespace),
      *          {@code false} otherwise
      */
-    boolean hasProtocolVersion(CharArrayBuffer buffer, ParserCursor cursor);
+    boolean hasProtocolVersion(
+            CharArrayBuffer buffer,
+            ParserCursor cursor);
 
     /**
      * Parses a request line.
@@ -93,7 +97,9 @@ public interface LineParser {
      *
      * @throws ParseException        in case of a parse error
      */
-    RequestLine parseRequestLine(CharArrayBuffer buffer, ParserCursor cursor) throws ParseException;
+    RequestLine parseRequestLine(
+            CharArrayBuffer buffer,
+            ParserCursor cursor) throws ParseException;
 
     /**
      * Parses a status line.
@@ -106,7 +112,9 @@ public interface LineParser {
      *
      * @throws ParseException        in case of a parse error
      */
-    StatusLine parseStatusLine(CharArrayBuffer buffer, ParserCursor cursor) throws ParseException;
+    StatusLine parseStatusLine(
+            CharArrayBuffer buffer,
+            ParserCursor cursor) throws ParseException;
 
     /**
      * Creates a header from a line.

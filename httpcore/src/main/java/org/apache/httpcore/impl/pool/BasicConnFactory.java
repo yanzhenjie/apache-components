@@ -29,6 +29,9 @@ package org.apache.httpcore.impl.pool;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.security.AccessController;
+import java.security.PrivilegedActionException;
+import java.security.PrivilegedExceptionAction;
 
 import javax.net.SocketFactory;
 import javax.net.ssl.SSLSocketFactory;
@@ -36,8 +39,8 @@ import javax.net.ssl.SSLSocketFactory;
 import org.apache.httpcore.HttpClientConnection;
 import org.apache.httpcore.HttpConnectionFactory;
 import org.apache.httpcore.HttpHost;
-import org.apache.httpcore.annotation.ThreadingBehavior;
 import org.apache.httpcore.annotation.Contract;
+import org.apache.httpcore.annotation.ThreadingBehavior;
 import org.apache.httpcore.config.ConnectionConfig;
 import org.apache.httpcore.config.SocketConfig;
 import org.apache.httpcore.impl.DefaultBHttpClientConnection;
@@ -47,6 +50,7 @@ import org.apache.httpcore.params.HttpParamConfig;
 import org.apache.httpcore.params.HttpParams;
 import org.apache.httpcore.pool.ConnFactory;
 import org.apache.httpcore.util.Args;
+import org.apache.httpcore.util.Asserts;
 
 /**
  * A very basic {@link ConnFactory} implementation that creates
@@ -145,15 +149,14 @@ public class BasicConnFactory implements ConnFactory<HttpHost, HttpClientConnect
     @Override
     public HttpClientConnection create(final HttpHost host) throws IOException {
         final String scheme = host.getSchemeName();
-        Socket socket = null;
+        final Socket socket;
         if ("http".equalsIgnoreCase(scheme)) {
             socket = this.plainfactory != null ? this.plainfactory.createSocket() :
                     new Socket();
-        } if ("https".equalsIgnoreCase(scheme)) {
+        } else if ("https".equalsIgnoreCase(scheme)) {
             socket = (this.sslfactory != null ? this.sslfactory :
                     SSLSocketFactory.getDefault()).createSocket();
-        }
-        if (socket == null) {
+        } else {
             throw new IOException(scheme + " scheme is not supported");
         }
         final String hostname = host.getHostName();
@@ -178,7 +181,23 @@ public class BasicConnFactory implements ConnFactory<HttpHost, HttpClientConnect
             socket.setSoLinger(true, linger);
         }
         socket.setKeepAlive(this.sconfig.isSoKeepAlive());
-        socket.connect(new InetSocketAddress(hostname, port), this.connectTimeout);
+        // Run this under a doPrivileged to support lib users that run under a SecurityManager this allows granting connect permissions
+        // only to this library
+        final InetSocketAddress address = new InetSocketAddress(hostname, port);
+        try {
+            AccessController.doPrivileged(new PrivilegedExceptionAction<Object>() {
+                @Override
+                public Object run() throws IOException {
+                    socket.connect(address, BasicConnFactory.this.connectTimeout);
+                    return null;
+                }
+            });
+        } catch (final PrivilegedActionException e) {
+            Asserts.check(e.getCause() instanceof IOException,
+                    "method contract violation only checked exceptions are wrapped: " + e.getCause());
+            // only checked exceptions are wrapped - error and RTExceptions are rethrown by doPrivileged
+            throw (IOException) e.getCause();
+        }
         return this.connFactory.createConnection(socket);
     }
 

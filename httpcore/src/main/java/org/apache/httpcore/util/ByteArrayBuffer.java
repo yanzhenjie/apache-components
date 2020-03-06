@@ -135,8 +135,16 @@ public final class ByteArrayBuffer implements Serializable {
         if (newlen > this.buffer.length) {
             expand(newlen);
         }
+
         for (int i1 = off, i2 = oldlen; i2 < newlen; i1++, i2++) {
-            this.buffer[i2] = (byte) b[i1];
+            final int c = b[i1];
+            if ((c >= 0x20 && c <= 0x7E) || // Visible ASCII
+                (c >= 0xA0 && c <= 0xFF) || // Visible ISO-8859-1
+                c == 0x09) {                // TAB
+                this.buffer[i2] = (byte) c;
+            } else {
+                this.buffer[i2] = '?';
+            }
         }
         this.len = newlen;
     }

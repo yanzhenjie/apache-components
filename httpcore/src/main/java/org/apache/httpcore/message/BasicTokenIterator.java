@@ -192,7 +192,7 @@ public class BasicTokenIterator implements TokenIterator {
      * Creates a new token to be returned.
      * Called from {@link #findNext findNext} after the token is identified.
      * The default implementation simply calls
-     * {@link String#substring String.substring}.
+     * {@link java.lang.String#substring String.substring}.
      * <p>
      * If header values are significantly longer than tokens, and some
      * tokens are permanently referenced by the application, there can

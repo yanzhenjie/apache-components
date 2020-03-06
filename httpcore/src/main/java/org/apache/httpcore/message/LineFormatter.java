@@ -75,7 +75,8 @@ public interface LineFormatter {
      *          If the {@code buffer} argument is not {@code null},
      *          the returned buffer is the argument buffer.
      */
-    CharArrayBuffer appendProtocolVersion(CharArrayBuffer buffer, ProtocolVersion version);
+    CharArrayBuffer appendProtocolVersion(CharArrayBuffer buffer,
+                                          ProtocolVersion version);
 
     /**
      * Formats a request line.
@@ -87,7 +88,8 @@ public interface LineFormatter {
      *
      * @return  the formatted request line
      */
-    CharArrayBuffer formatRequestLine(CharArrayBuffer buffer, RequestLine reqline);
+    CharArrayBuffer formatRequestLine(CharArrayBuffer buffer,
+                                      RequestLine reqline);
 
     /**
      * Formats a status line.
@@ -101,7 +103,8 @@ public interface LineFormatter {
      *
      * @throws org.apache.httpcore.ParseException        in case of a parse error
      */
-    CharArrayBuffer formatStatusLine(CharArrayBuffer buffer, StatusLine statline);
+    CharArrayBuffer formatStatusLine(CharArrayBuffer buffer,
+                                     StatusLine statline);
 
     /**
      * Formats a header.
@@ -123,6 +126,7 @@ public interface LineFormatter {
      *
      * @throws org.apache.httpcore.ParseException        in case of a parse error
      */
-    CharArrayBuffer formatHeader(CharArrayBuffer buffer, Header header);
+    CharArrayBuffer formatHeader(CharArrayBuffer buffer,
+                                 Header header);
 
 }

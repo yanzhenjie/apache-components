@@ -33,7 +33,7 @@ import java.security.NoSuchAlgorithmException;
 import javax.net.ssl.SSLContext;
 
 /**
- * {@link SSLContext} factory methods.
+ * {@link javax.net.ssl.SSLContext} factory methods.
  *
  * @since 4.4
  */
