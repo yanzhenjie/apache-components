@@ -28,6 +28,7 @@ package org.apache.httpcore.impl.bootstrap;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.util.Set;
 import java.util.concurrent.SynchronousQueue;
@@ -109,9 +110,10 @@ public class HttpServer {
 
     public void start() throws IOException {
         if (this.status.compareAndSet(Status.READY, Status.ACTIVE)) {
-            this.serverSocket = this.serverSocketFactory.createServerSocket(
-                    this.port, this.socketConfig.getBacklogSize(), this.ifAddress);
+            this.serverSocket = this.serverSocketFactory.createServerSocket();
             this.serverSocket.setReuseAddress(this.socketConfig.isSoReuseAddress());
+            this.serverSocket.bind(new InetSocketAddress(this.ifAddress, this.port),
+                this.socketConfig.getBacklogSize());
             if (this.socketConfig.getRcvBufSize() > 0) {
                 this.serverSocket.setReceiveBufferSize(this.socketConfig.getRcvBufSize());
             }

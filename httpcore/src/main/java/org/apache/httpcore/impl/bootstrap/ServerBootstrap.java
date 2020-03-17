@@ -446,7 +446,7 @@ public class ServerBootstrap {
         }
 
         return new HttpServer(
-                this.listenerPort > 0 ? this.listenerPort : 0,
+                Math.max(this.listenerPort, 0),
                 this.localAddress,
                 this.socketConfig != null ? this.socketConfig : SocketConfig.DEFAULT,
                 serverSocketFactoryCopy,
