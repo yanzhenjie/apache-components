@@ -4,3 +4,14 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile rootProject.ext.dependencies.io
 }
+
+apply from: '../publish.gradle'
+version = bintray.version
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            pom.groupId = bintray.group
+            pom.artifactId = project.name
+        }
+    }
+}

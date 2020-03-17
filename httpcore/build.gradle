@@ -3,3 +3,14 @@ apply plugin: rootProject.ext.plugins.java
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
+
+apply from: '../publish.gradle'
+version = bintray.version
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            pom.groupId = bintray.group
+            pom.artifactId = project.name
+        }
+    }
+}
