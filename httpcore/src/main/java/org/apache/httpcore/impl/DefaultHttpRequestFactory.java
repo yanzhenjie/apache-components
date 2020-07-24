@@ -53,19 +53,16 @@ public class DefaultHttpRequestFactory implements HttpRequestFactory {
 
     private static final String[] RFC2616_ENTITY_ENC_METHODS = {
         "POST",
-        "PUT"
+        "PUT",
+        "DELETE",
+        "PATCH"
     };
 
     private static final String[] RFC2616_SPECIAL_METHODS = {
         "HEAD",
         "OPTIONS",
-        "DELETE",
         "TRACE",
         "CONNECT"
-    };
-
-    private static final String[] RFC5789_ENTITY_ENC_METHODS = {
-        "PATCH"
     };
 
     public DefaultHttpRequestFactory() {
@@ -92,8 +89,6 @@ public class DefaultHttpRequestFactory implements HttpRequestFactory {
             return new BasicHttpEntityEnclosingRequest(requestline);
         } else if (isOneOf(RFC2616_SPECIAL_METHODS, method)) {
             return new BasicHttpRequest(requestline);
-        } else if (isOneOf(RFC5789_ENTITY_ENC_METHODS, method)) {
-            return new BasicHttpEntityEnclosingRequest(requestline);
         } else {
             throw new MethodNotSupportedException(method + " method not supported");
         }
@@ -108,8 +103,6 @@ public class DefaultHttpRequestFactory implements HttpRequestFactory {
             return new BasicHttpEntityEnclosingRequest(method, uri);
         } else if (isOneOf(RFC2616_SPECIAL_METHODS, method)) {
             return new BasicHttpRequest(method, uri);
-        } else if (isOneOf(RFC5789_ENTITY_ENC_METHODS, method)) {
-            return new BasicHttpEntityEnclosingRequest(method, uri);
         } else {
             throw new MethodNotSupportedException(method
                     + " method not supported");
