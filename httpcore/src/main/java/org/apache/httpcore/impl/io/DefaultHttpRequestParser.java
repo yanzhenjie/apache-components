@@ -28,6 +28,7 @@
 package org.apache.httpcore.impl.io;
 
 import java.io.IOException;
+import java.net.Socket;
 
 import org.apache.httpcore.ConnectionClosedException;
 import org.apache.httpcore.HttpException;
@@ -121,7 +122,7 @@ public class DefaultHttpRequestParser extends AbstractMessageParser<HttpRequest>
     }
 
     @Override
-    protected HttpRequest parseHead(
+    protected HttpRequest parseHead(final Socket socket,
             final SessionInputBuffer sessionBuffer)
         throws IOException, HttpException, ParseException {
 
@@ -132,7 +133,7 @@ public class DefaultHttpRequestParser extends AbstractMessageParser<HttpRequest>
         }
         final ParserCursor cursor = new ParserCursor(0, this.lineBuf.length());
         final RequestLine requestline = this.lineParser.parseRequestLine(this.lineBuf, cursor);
-        return this.requestFactory.newHttpRequest(requestline);
+        return this.requestFactory.newHttpRequest(socket, requestline);
     }
 
 }

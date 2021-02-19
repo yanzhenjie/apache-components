@@ -28,6 +28,7 @@
 package org.apache.httpcore.impl.io;
 
 import java.io.IOException;
+import java.net.Socket;
 
 import org.apache.httpcore.HttpException;
 import org.apache.httpcore.HttpResponse;
@@ -122,6 +123,7 @@ public class DefaultHttpResponseParser extends AbstractMessageParser<HttpRespons
 
     @Override
     protected HttpResponse parseHead(
+            final Socket socket,
             final SessionInputBuffer sessionBuffer)
         throws IOException, HttpException, ParseException {
 

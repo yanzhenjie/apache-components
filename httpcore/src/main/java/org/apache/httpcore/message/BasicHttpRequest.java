@@ -33,6 +33,11 @@ import org.apache.httpcore.ProtocolVersion;
 import org.apache.httpcore.RequestLine;
 import org.apache.httpcore.util.Args;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketAddress;
+
 /**
  * Basic implementation of {@link HttpRequest}.
  *
@@ -40,6 +45,7 @@ import org.apache.httpcore.util.Args;
  */
 public class BasicHttpRequest extends AbstractHttpMessage implements HttpRequest {
 
+    private final Socket socket;
     private final String method;
     private final String uri;
 
@@ -52,8 +58,9 @@ public class BasicHttpRequest extends AbstractHttpMessage implements HttpRequest
      * @param method request method.
      * @param uri request URI.
      */
-    public BasicHttpRequest(final String method, final String uri) {
+    public BasicHttpRequest(final Socket socket, final String method, final String uri) {
         super();
+        this.socket = socket;
         this.method = Args.notNull(method, "Method name");
         this.uri = Args.notNull(uri, "Request URI");
         this.requestline = null;
@@ -67,8 +74,9 @@ public class BasicHttpRequest extends AbstractHttpMessage implements HttpRequest
      * @param uri request URI.
      * @param ver HTTP protocol version.
      */
-    public BasicHttpRequest(final String method, final String uri, final ProtocolVersion ver) {
-        this(new BasicRequestLine(method, uri, ver));
+    public BasicHttpRequest(final Socket socket, final String method,
+                            final String uri, final ProtocolVersion ver) {
+        this(socket, new BasicRequestLine(method, uri, ver));
     }
 
     /**
@@ -76,8 +84,9 @@ public class BasicHttpRequest extends AbstractHttpMessage implements HttpRequest
      *
      * @param requestline request line.
      */
-    public BasicHttpRequest(final RequestLine requestline) {
+    public BasicHttpRequest(final Socket socket, final RequestLine requestline) {
         super();
+        this.socket = socket;
         this.requestline = Args.notNull(requestline, "Request line");
         this.method = requestline.getMethod();
         this.uri = requestline.getUri();
@@ -86,7 +95,7 @@ public class BasicHttpRequest extends AbstractHttpMessage implements HttpRequest
     /**
      * Returns the HTTP protocol version to be used for this request.
      *
-     * @see #BasicHttpRequest(String, String)
+     * @see #BasicHttpRequest(Socket, String, String)
      */
     @Override
     public ProtocolVersion getProtocolVersion() {
@@ -96,7 +105,7 @@ public class BasicHttpRequest extends AbstractHttpMessage implements HttpRequest
     /**
      * Returns the request line of this request.
      *
-     * @see #BasicHttpRequest(String, String)
+     * @see #BasicHttpRequest(Socket, String, String)
      */
     @Override
     public RequestLine getRequestLine() {
@@ -104,6 +113,99 @@ public class BasicHttpRequest extends AbstractHttpMessage implements HttpRequest
             this.requestline = new BasicRequestLine(this.method, this.uri, HttpVersion.HTTP_1_1);
         }
         return this.requestline;
+    }
+
+    private String localName;
+
+    @Override
+    public String getLocalName() {
+        if (localName != null) {
+            return localName;
+        }
+
+        SocketAddress socketAddress = socket.getLocalSocketAddress();
+        if (socketAddress instanceof InetSocketAddress) {
+            localName = ((InetSocketAddress) socketAddress).getHostName();
+        }
+        return localName;
+    }
+
+    private String localAddr;
+
+    @Override
+    public String getLocalAddr() {
+        if (localAddr != null) {
+            return localAddr;
+        }
+
+        SocketAddress socketAddress = socket.getLocalSocketAddress();
+        if (socketAddress instanceof InetSocketAddress) {
+            localAddr = ((InetSocketAddress) socketAddress).getAddress().getHostAddress();
+        }
+        return localAddr;
+    }
+
+    private int localPort = -1;
+
+    @Override
+    public int getLocalPort() {
+        if (localPort != -1) {
+            return localPort;
+        }
+
+        SocketAddress socketAddress = socket.getLocalSocketAddress();
+        if (socketAddress instanceof InetSocketAddress) {
+            localPort = ((InetSocketAddress) socketAddress).getPort();
+        }
+        return localPort;
+    }
+
+    private String remoteAddr;
+
+    @Override
+    public String getRemoteAddr() {
+        if (remoteAddr != null) {
+            return remoteAddr;
+        }
+
+        SocketAddress socketAddress = socket.getRemoteSocketAddress();
+        if (socketAddress instanceof InetSocketAddress) {
+            remoteAddr = ((InetSocketAddress) socketAddress).getAddress().getHostAddress();
+        }
+        return remoteAddr;
+    }
+
+    private String remoteHost;
+
+    @Override
+    public String getRemoteHost() {
+        if (remoteHost != null) {
+            return remoteHost;
+        }
+
+        SocketAddress socketAddress = socket.getRemoteSocketAddress();
+        if (socketAddress instanceof InetSocketAddress) {
+            remoteHost = ((InetSocketAddress) socketAddress).getAddress().getHostName();
+            if (remoteAddr == null) {
+                remoteAddr = ((InetSocketAddress) socketAddress).getAddress().getHostAddress();
+            }
+        }
+        return remoteHost;
+    }
+
+    private int remotePort = -1;
+
+    @Override
+    public int getRemotePort() {
+        if (remotePort != -1) {
+            return remotePort;
+        }
+
+        SocketAddress socketAddress = socket.getRemoteSocketAddress();
+        if (socketAddress instanceof InetSocketAddress) {
+            remotePort = ((InetSocketAddress) socketAddress).getPort();
+        }
+        return remotePort;
     }
 
     @Override

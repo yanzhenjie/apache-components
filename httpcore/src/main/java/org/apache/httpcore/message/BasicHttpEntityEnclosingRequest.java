@@ -34,6 +34,8 @@ import org.apache.httpcore.ProtocolVersion;
 import org.apache.httpcore.RequestLine;
 import org.apache.httpcore.protocol.HTTP;
 
+import java.net.Socket;
+
 /**
  * Basic implementation of {@link HttpEntityEnclosingRequest}.
  *
@@ -44,17 +46,17 @@ public class BasicHttpEntityEnclosingRequest
 
     private HttpEntity entity;
 
-    public BasicHttpEntityEnclosingRequest(final String method, final String uri) {
-        super(method, uri);
+    public BasicHttpEntityEnclosingRequest(final Socket socket, final String method, final String uri) {
+        super(socket, method, uri);
     }
 
-    public BasicHttpEntityEnclosingRequest(final String method, final String uri,
-            final ProtocolVersion ver) {
-        super(method, uri, ver);
+    public BasicHttpEntityEnclosingRequest(final Socket socket, final String method,
+                                           final String uri, final ProtocolVersion ver) {
+        super(socket, method, uri, ver);
     }
 
-    public BasicHttpEntityEnclosingRequest(final RequestLine requestline) {
-        super(requestline);
+    public BasicHttpEntityEnclosingRequest(final Socket socket, final RequestLine requestline) {
+        super(socket, requestline);
     }
 
     @Override

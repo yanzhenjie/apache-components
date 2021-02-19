@@ -37,6 +37,8 @@ import org.apache.httpcore.message.BasicHttpEntityEnclosingRequest;
 import org.apache.httpcore.message.BasicHttpRequest;
 import org.apache.httpcore.util.Args;
 
+import java.net.Socket;
+
 /**
  * Default factory for creating {@link HttpRequest} objects.
  *
@@ -76,26 +78,26 @@ public class DefaultHttpRequestFactory implements HttpRequestFactory {
     }
 
     @Override
-    public HttpRequest newHttpRequest(final RequestLine requestline)
+    public HttpRequest newHttpRequest(Socket socket, RequestLine requestline)
             throws MethodNotSupportedException {
         Args.notNull(requestline, "Request line");
         final String method = requestline.getMethod();
         if (isOneOf(URL_METHODS, method)) {
-            return new BasicHttpRequest(requestline);
+            return new BasicHttpRequest(socket, requestline);
         } else if (isOneOf(BODY_METHODS, method)) {
-            return new BasicHttpEntityEnclosingRequest(requestline);
+            return new BasicHttpEntityEnclosingRequest(socket, requestline);
         } else {
             throw new MethodNotSupportedException(method + " method not supported");
         }
     }
 
     @Override
-    public HttpRequest newHttpRequest(final String method, final String uri)
+    public HttpRequest newHttpRequest(Socket socket, String method, String uri)
             throws MethodNotSupportedException {
         if (isOneOf(URL_METHODS, method)) {
-            return new BasicHttpRequest(method, uri);
+            return new BasicHttpRequest(socket, method, uri);
         } else if (isOneOf(BODY_METHODS, method)) {
-            return new BasicHttpEntityEnclosingRequest(method, uri);
+            return new BasicHttpEntityEnclosingRequest(socket, method, uri);
         } else {
             throw new MethodNotSupportedException(method
                     + " method not supported");

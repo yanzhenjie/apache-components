@@ -28,6 +28,7 @@
 package org.apache.httpcore.impl.io;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -247,16 +248,16 @@ public abstract class AbstractMessageParser<T extends HttpMessage> implements Ht
      * @throws HttpException in case of HTTP protocol violation.
      * @throws ParseException in case of a parse error.
      */
-    protected abstract T parseHead(SessionInputBuffer sessionBuffer)
+    protected abstract T parseHead(Socket socket, SessionInputBuffer sessionBuffer)
         throws IOException, HttpException, ParseException;
 
     @Override
-    public T parse() throws IOException, HttpException {
+    public T parse(Socket socket) throws IOException, HttpException {
         final int st = this.state;
         switch (st) {
         case HEAD_LINE:
             try {
-                this.message = parseHead(this.sessionBuffer);
+                this.message = parseHead(socket, this.sessionBuffer);
             } catch (final ParseException px) {
                 throw new ProtocolException(px.getMessage(), px);
             }

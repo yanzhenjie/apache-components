@@ -27,6 +27,8 @@
 
 package org.apache.httpcore;
 
+import java.net.Socket;
+
 /**
  * A factory for {@link HttpRequest HttpRequest} objects.
  *
@@ -34,10 +36,10 @@ package org.apache.httpcore;
  */
 public interface HttpRequestFactory {
 
-    HttpRequest newHttpRequest(RequestLine requestline)
+    HttpRequest newHttpRequest(Socket socket, RequestLine requestline)
         throws MethodNotSupportedException;
 
-    HttpRequest newHttpRequest(String method, String uri)
+    HttpRequest newHttpRequest(Socket socket, String method, String uri)
         throws MethodNotSupportedException;
 
 }

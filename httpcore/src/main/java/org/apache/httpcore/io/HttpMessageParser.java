@@ -28,6 +28,7 @@
 package org.apache.httpcore.io;
 
 import java.io.IOException;
+import java.net.Socket;
 
 import org.apache.httpcore.HttpException;
 import org.apache.httpcore.HttpMessage;
@@ -50,7 +51,7 @@ public interface HttpMessageParser<T extends HttpMessage> {
      * @throws IOException in case of an I/O error
      * @throws HttpException in case of HTTP protocol violation
      */
-    T parse()
+    T parse(Socket socket)
         throws IOException, HttpException;
 
 }
