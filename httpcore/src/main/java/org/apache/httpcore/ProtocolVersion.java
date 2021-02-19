@@ -188,7 +188,7 @@ public class ProtocolVersion implements Serializable, Cloneable {
      * Compares this protocol version with another one.
      * Only protocol versions with the same protocol name can be compared.
      * This method does <i>not</i> define a total ordering, as it would be
-     * required for {@link java.lang.Comparable}.
+     * required for {@link Comparable}.
      *
      * @param that      the protocol version to compare with
      *

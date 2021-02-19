@@ -149,7 +149,7 @@ public class ServerBootstrap {
      * Adds this protocol interceptor to the head of the protocol processing list.
      * <p>
      * Please note this value can be overridden by the {@link #setHttpProcessor(
-     * org.apache.httpcore.protocol.HttpProcessor)} method.
+     * HttpProcessor)} method.
      * </p>
      *
      * @return this
@@ -169,7 +169,7 @@ public class ServerBootstrap {
      * Adds this protocol interceptor to the tail of the protocol processing list.
      * <p>
      * Please note this value can be overridden by the {@link #setHttpProcessor(
-     * org.apache.httpcore.protocol.HttpProcessor)} method.
+     * HttpProcessor)} method.
      * </p>
      *
      * @return this
@@ -189,7 +189,7 @@ public class ServerBootstrap {
      * Adds this protocol interceptor to the head of the protocol processing list.
      * <p>
      * Please note this value can be overridden by the {@link #setHttpProcessor(
-     * org.apache.httpcore.protocol.HttpProcessor)} method.
+     * HttpProcessor)} method.
      * </p>
      *
      * @return this
@@ -209,7 +209,7 @@ public class ServerBootstrap {
      * Adds this protocol interceptor to the tail of the protocol processing list.
      * <p>
      * Please note this value can be overridden by the {@link #setHttpProcessor(
-     * org.apache.httpcore.protocol.HttpProcessor)} method.
+     * HttpProcessor)} method.
      * </p>
      *
      * @return this
@@ -229,7 +229,7 @@ public class ServerBootstrap {
      * Assigns {@code Server} response header value.
      * <p>
      * Please note this value can be overridden by the {@link #setHttpProcessor(
-     * org.apache.httpcore.protocol.HttpProcessor)} method.
+     * HttpProcessor)} method.
      * </p>
      *
      * @return this
@@ -274,7 +274,7 @@ public class ServerBootstrap {
      * matching the given pattern.
      * <p>
      * Please note this value can be overridden by the {@link #setHandlerMapper(
-     *   org.apache.httpcore.protocol.HttpRequestHandlerMapper)} method.
+     *   HttpRequestHandlerMapper)} method.
      * </p>
      *
      * @param pattern the pattern to register the handler for.
@@ -314,7 +314,7 @@ public class ServerBootstrap {
     }
 
     /**
-     * Assigns {@link org.apache.httpcore.impl.bootstrap.SSLServerSetupHandler} instance.
+     * Assigns {@link SSLServerSetupHandler} instance.
      *
      * @return this
      */
@@ -324,7 +324,7 @@ public class ServerBootstrap {
     }
 
     /**
-     * Assigns {@link javax.net.ServerSocketFactory} instance.
+     * Assigns {@link ServerSocketFactory} instance.
      *
      * @return this
      */
@@ -334,10 +334,10 @@ public class ServerBootstrap {
     }
 
     /**
-     * Assigns {@link javax.net.ssl.SSLContext} instance.
+     * Assigns {@link SSLContext} instance.
      * <p>
      * Please note this value can be overridden by the {@link #setServerSocketFactory(
-     *   javax.net.ServerSocketFactory)} method.
+     *   ServerSocketFactory)} method.
      * </p>
      *
      * @return this
@@ -446,7 +446,7 @@ public class ServerBootstrap {
         }
 
         return new HttpServer(
-                Math.max(this.listenerPort, 0),
+                this.listenerPort > 0 ? this.listenerPort : 0,
                 this.localAddress,
                 this.socketConfig != null ? this.socketConfig : SocketConfig.DEFAULT,
                 serverSocketFactoryCopy,

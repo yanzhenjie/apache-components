@@ -46,6 +46,7 @@ import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -63,7 +64,7 @@ import javax.net.ssl.X509TrustManager;
 import org.apache.httpcore.util.Args;
 
 /**
- * Builder for {@link javax.net.ssl.SSLContext} instances.
+ * Builder for {@link SSLContext} instances.
  * <p>
  * Please note: the default Oracle JSSE implementation of {@link SSLContext#init(KeyManager[], TrustManager[], SecureRandom)}
  * accepts multiple key and trust managers, however only only first matching type is ever used.
@@ -232,9 +233,7 @@ public class SSLContextBuilder {
                     }
                 }
             }
-            for (final TrustManager tm : tms) {
-                this.trustManagers.add(tm);
-            }
+            Collections.addAll(this.trustManagers, tms);
         }
         return this;
     }
@@ -310,9 +309,7 @@ public class SSLContextBuilder {
                     }
                 }
             }
-            for (final KeyManager km : kms) {
-                keyManagers.add(km);
-            }
+            Collections.addAll(keyManagers, kms);
         }
         return this;
     }

@@ -102,7 +102,7 @@ public class HttpEntityWrapper implements HttpEntity {
     }
 
     /**
-     * @deprecated (4.1) Either use {@link #getContent()} and call {@link java.io.InputStream#close()} on that;
+     * @deprecated (4.1) Either use {@link #getContent()} and call {@link InputStream#close()} on that;
      * otherwise call {@link #writeTo(OutputStream)} which is required to free the resources.
      */
     @Override

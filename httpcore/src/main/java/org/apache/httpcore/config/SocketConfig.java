@@ -202,11 +202,11 @@ public class SocketConfig implements Cloneable {
         return builder.toString();
     }
 
-    public static SocketConfig.Builder custom() {
+    public static Builder custom() {
         return new Builder();
     }
 
-    public static SocketConfig.Builder copy(final SocketConfig config) {
+    public static Builder copy(final SocketConfig config) {
         Args.notNull(config, "Socket config");
         return new Builder()
             .setSoTimeout(config.getSoTimeout())
