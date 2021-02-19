@@ -1,0 +1,17 @@
+plugins {
+    id 'java'
+}
+
+group 'org.apache.httpcore.sample'
+version '1.0.0'
+
+repositories {
+    mavenLocal()
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+    compile project(':httpcore')
+    compile 'commons-io:commons-io:2.6'
+}

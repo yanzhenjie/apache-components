@@ -1,1 +1,3 @@
 include ':httpcore', ':fileupload'
+include 'httpcore-sample'
+
