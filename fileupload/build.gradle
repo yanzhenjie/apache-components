@@ -4,4 +4,4 @@ dependencies {
     compile 'commons-io:commons-io:2.6'
 }
 
-apply from: '../bintray.gradle'
+apply from: 'https://raw.githubusercontent.com/yanzhenjie/GradleToMaven/master/publish.gradle'

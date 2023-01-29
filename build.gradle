@@ -1,23 +1,16 @@
 buildscript {
     repositories {
         mavenLocal()
-        google { url 'https://maven.aliyun.com/repository/google' }
-        jcenter { url 'https://maven.aliyun.com/repository/jcenter' }
         mavenCentral { url 'https://maven.aliyun.com/repository/central' }
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.1'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5'
     }
 }
 
 allprojects {
     repositories {
         mavenLocal()
-        google { url 'https://maven.aliyun.com/repository/google' }
-        jcenter { url 'https://maven.aliyun.com/repository/jcenter' }
         mavenCentral { url 'https://maven.aliyun.com/repository/central' }
     }
 }
