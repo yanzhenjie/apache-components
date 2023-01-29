@@ -27,13 +27,13 @@ compile 'com.yanzhenjie.apache:fileupload:1.4'
 It comes from [Apache httpcomponents-core-ga](http://hc.apache.org/httpcomponents-core-ga/).
 
 ```
-implementation 'com.yanzhenjie.apache:httpcore:4.4.13.2'
+implementation 'com.yanzhenjie.apache:httpcore:4.4.16'
 ```
 
 ```
 <dependency>
   <groupId>com.yanzhenjie.apache</groupId>
   <artifactId>httpcore</artifactId>
-  <version>4.4.13.2</version>
+  <version>4.4.16</version>
 </dependency>
 ```
